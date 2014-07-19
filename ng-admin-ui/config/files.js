@@ -15,6 +15,9 @@ module.exports = function(lineman) {
       ],
       app: [
         "app/js/app.js",
+        "app/js/ng_user_admin_app.js",
+        "app/js/core/**/*.js",
+        "app/js/create_usrs/*.js",
         "app/js/**/*.js"
       ]
     },
