@@ -12,22 +12,22 @@
  *
  */
 
+var _ = require('underscore');
 module.exports = {
   drawRoutes: function(app) {
-    app.post('/login', function(req, res) {
-      res.json({ message: 'logging in!' });
+    var users = [
+      {name: "Asimoov", email: "asimov@mail.com", admin: false},
+      {name: "Jon Doe", email: "jondoe@mail.com", admin: false},
+      {name: "Jane Smith", email: "janesmith@mail.com", admin: false}
+    ];
+    app.post('/api/users', function (req, res) {
+      if (!_.findWhere(users, {email: req.body.email})) users.push(req.body);
+      console.log("Users: ", users);
+      res.json(req.body);
     });
 
-    app.post('/logout', function(req, res) {
-      res.json({ message: 'logging out!'});
-    });
-
-    app.get('/books', function (req, res) {
-      res.json([
-        {title: 'Great Expectations', author: 'Dickens'},
-        {title: 'Foundation Series', author: 'Asimov'},
-        {title: 'Treasure Island', author: 'Stephenson'}
-      ]);
+    app.get('/api/users', function(req, res){
+      res.json(users);
     });
   }
 };

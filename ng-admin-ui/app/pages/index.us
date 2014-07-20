@@ -5,10 +5,31 @@
     <link rel="stylesheet" type="text/css" href="/css/app.css" media="all" />
   </head>
   <body>
+    <header>
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+          <div class="container-fluid">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="#">User Administration</a>
+            </div>
+        </nav>
+    </header>
     <div class="row">
-      <div class="large-12">
-        <h1>A Lineman Angular Setup</h1>
-        <div id="view" ng-view></div>
+      <div class="col-md-12">
+        <div role="navigation" class="col-md-4">
+          <div class="btn-group-vertical">
+            <a class="btn btn-default" ui-sref="list_users">List Users</a>
+            <a class="btn btn-default" ui-sref="create_users">Create Users</a>
+          </div>
+        </div>
+        <div id="view" class="col-md-6" ui-view>
+          <h1>User Administration</h1>
+        </div>
       </div>
     </div>
 

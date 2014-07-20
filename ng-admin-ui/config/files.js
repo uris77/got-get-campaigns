@@ -10,14 +10,16 @@ module.exports = function(lineman) {
   return {
     js: {
       vendor: [
+        "vendor/js/jquery.js",
         "vendor/js/angular.js",
+        "vender/js/angular-ui-router.js",
         "vendor/js/**/*.js"
       ],
       app: [
         "app/js/app.js",
-        "app/js/ng_user_admin_app.js",
         "app/js/core/**/*.js",
-        "app/js/create_usrs/*.js",
+        "app/js/router.js",
+        "app/js/create_users/*.js",
         "app/js/**/*.js"
       ]
     },
