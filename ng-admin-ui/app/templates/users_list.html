@@ -1,3 +1,23 @@
-<div class="row">
-    <h1>Users</h1>
+<div class="row" ng-controller="ListUsersController as ctrl">
+  <div class="panel panel-primary">
+    <div class="panel-heading">
+      Users List
+    </div>
+    <div class="panel-body">
+      <table class="table table-striped table-bordered">
+        <thead>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Admin</th>
+        </thead>
+        <tbody>
+          <tr ng-repeat="user in ctrl.users">
+            <td>{{ user.name }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.admin }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>

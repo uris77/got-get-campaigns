@@ -1,17 +1,23 @@
 <div id="create_user_form" class="row">
-  <h1>Create New User</h1>
-  <form role="form" ng-controller="CreateUserController as ctrl">
-    <div class="form-group">
-      <label for="username">Username</label>
-      <input type="text" class="form-control" id="username" placeholder="Username" ng-model="ctrl.username" required>
+  <div class="panel panel-primary">
+    <div class="panel-heading">
+      Create New User
     </div>
-    <div class="form-group">
-      <label for="email">Email</label>
-      <input type="email" class="form-control" id="email" placeholder="Email" ng-model="ctrl.email" required>
+    <div class="panel-body">
+      <form role="form" ng-controller="CreateUserController as ctrl">
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="text" class="form-control" id="username" placeholder="Username" ng-model="ctrl.username" required>
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" class="form-control" id="email" placeholder="Email" ng-model="ctrl.email" required>
+        </div>
+        <button type="submit" class="btn btn-primary" ng-click="ctrl.submit()">
+          Submit
+        </button>
+      </form>
     </div>
-    <button type="submit" class="btn btn-primary" ng-click="ctrl.submit()">
-      Submit
-    </button>
-  </form>
+  </div>
 </div>
 

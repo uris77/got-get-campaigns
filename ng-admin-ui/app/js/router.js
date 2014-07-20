@@ -1,14 +1,21 @@
 angular.module('app')
   .config(function($stateProvider, $urlRouterProvider){
-    $stateProvider
-      .state('create_users', {
+    /*
+     * Define states
+     */
+    var createState = {
         url: '/users/create',
         templateUrl: "create_user_form.html",
         controller: "CreateUserController"
-      })
-      .state('list_users', {
+    },
+    listState = {
         url: '/users/list',
         templateUrl: 'users_list.html',
-        controller: function(){ console.log('listing...');}
-      });
+        controller: "ListUsersController"
+    };
+
+    // Hook up the states to ui-router
+    $stateProvider
+      .state('create_users', createState)
+      .state('list_users', listState);
   });

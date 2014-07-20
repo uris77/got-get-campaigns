@@ -20,6 +20,7 @@ module.exports = function(lineman) {
         "app/js/core/**/*.js",
         "app/js/router.js",
         "app/js/create_users/*.js",
+        "app/js/list_users/*.js",
         "app/js/**/*.js"
       ]
     },
