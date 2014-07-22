@@ -12,10 +12,16 @@ angular.module('app')
         url: '/users/list',
         templateUrl: 'users_list.html',
         controller: "ListUsersController"
+    },
+    home = {
+      url: '/',
+      templateUrl: 'home.html',
+      controller: function(){}
     };
 
     // Hook up the states to ui-router
     $stateProvider
       .state('create_users', createState)
-      .state('list_users', listState);
+      .state('list_users', listState)
+      .state('home', home);
   });

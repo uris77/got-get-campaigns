@@ -18,6 +18,7 @@ module.exports = function(lineman) {
       app: [
         "app/js/app.js",
         "app/js/core/**/*.js",
+        "app/js/authentication_service.js",
         "app/js/router.js",
         "app/js/create_users/*.js",
         "app/js/list_users/*.js",

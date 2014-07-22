@@ -22,12 +22,20 @@ module.exports = {
     ];
     app.post('/api/users', function (req, res) {
       if (!_.findWhere(users, {email: req.body.email})) users.push(req.body);
-      console.log("Users: ", users);
       res.json(req.body);
     });
 
     app.get('/api/users', function(req, res){
       res.json(users);
+    });
+
+    app.get("/api/my_details", function(req, res){
+      var user_details = {
+        name: "Akiva Karou",
+        email: "akiva@estere.com",
+        admin: true
+      };
+      res.json(user_details);
     });
   }
 };
