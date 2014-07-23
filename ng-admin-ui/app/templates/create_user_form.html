@@ -6,6 +6,11 @@
     <div class="panel-body">
       <form role="form" ng-controller="CreateUserController as ctrl">
         <div class="form-group">
+          <div class="alert alert-danger" role="alert" ng-show="ctrl.errors">
+            {{ ctrl.errors }}
+          </div>
+        </div>
+        <div class="form-group">
           <label for="username">Username</label>
           <input type="text" class="form-control" id="username" placeholder="Username" ng-model="ctrl.username" required>
         </div>

@@ -10,8 +10,9 @@ angular.module('app')
         email: self.email,
         admin: self.admin
       }).success(function(data){
-        console.log("Created users successfully");
         $state.transitionTo("list_users");
+      }).error(function(data){
+        self.errors = data.error;
       });
     };
   }]);

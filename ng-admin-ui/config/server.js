@@ -21,8 +21,13 @@ module.exports = {
       {name: "Jane Smith", email: "janesmith@mail.com", admin: false}
     ];
     app.post('/api/users', function (req, res) {
-      if (!_.findWhere(users, {email: req.body.email})) users.push(req.body);
-      res.json(req.body);
+      if (!_.findWhere(users, {email: req.body.email})){
+        users.push(req.body);
+        res.json(req.body);
+      } else {
+        res.status(501);
+        res.json({error: "A user with this email already exists."});
+      }
     });
 
     app.get('/api/users', function(req, res){

@@ -14,7 +14,11 @@
           <tr ng-repeat="user in ctrl.users">
             <td>{{ user.name }}</td>
             <td>{{ user.email }}</td>
-            <td>{{ user.admin }}</td>
+            <td>
+              <span ng-if="user.admin">
+                  <span class="glyphicon glyphicon-ok"></span>
+              </span>
+            </td>
           </tr>
         </tbody>
       </table>
