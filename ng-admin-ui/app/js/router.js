@@ -18,6 +18,10 @@ angular.module('app')
       templateUrl: 'edit_user_form.html',
       controller: "EditUserController"
     },
+    logout = {
+      url: "/logout",
+      controller: "LogoutController"
+    },
     home = {
       url: '/',
       templateUrl: 'home.html'
@@ -28,5 +32,6 @@ angular.module('app')
       .state('users', home)
       .state('users_create', createState)
       .state('users_list', listState)
-      .state("users_edit", editUser);
+      .state("users_edit", editUser)
+      .state("logout", logout);
   });

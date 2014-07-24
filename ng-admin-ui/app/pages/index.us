@@ -25,6 +25,9 @@
           <div class="btn-group-vertical">
             <a class="btn btn-default" ui-sref="users_list">List Users</a>
             <a class="btn btn-default" ui-sref="users_create">Create Users</a>
+            <a class="btn btn-default btn-lg" ui-sref="logout">
+              <span class="glyphicon glyphicon-log-out"></span> Logout
+            </a>
           </div>
         </div>
         <div id="view" class="col-md-6" ui-view>

@@ -28,4 +28,8 @@ angular.module("app")
       }
     };
 
+    self.logout = function() {
+      delete self.user;
+    };
+
   }]);

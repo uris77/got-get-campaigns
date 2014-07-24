@@ -75,5 +75,9 @@ module.exports = {
       users = _users;
       res.json({user: user});
     });
+
+    app.post("/logout", function(req, res){
+      res.redirect("/");
+    });
   }
 };
