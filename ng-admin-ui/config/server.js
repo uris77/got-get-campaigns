@@ -16,14 +16,19 @@ var _ = require('underscore');
 module.exports = {
   drawRoutes: function(app) {
     var users = [
-      {name: "Asimoov", email: "asimov@mail.com", admin: false},
-      {name: "Jon Doe", email: "jondoe@mail.com", admin: false},
-      {name: "Jane Smith", email: "janesmith@mail.com", admin: false}
+      {id: 1, username: "Asimoov", email: "asimov@mail.com", admin: false},
+      {id: 2, username: "Jon Doe", email: "jondoe@mail.com", admin: false},
+      {id: 3, username: "Jane Smith", email: "janesmith@mail.com", admin: false}
     ];
     app.post('/api/users', function (req, res) {
       if (!_.findWhere(users, {email: req.body.email})){
-        users.push(req.body);
-        res.json(req.body);
+        var maxId = _.max(users, function(user){
+          return user.id;
+        }).id;
+        var newUser = req.body;
+        newUser.id = maxId + 1;
+        users.push(newUser);
+        res.json(newUser);
       } else {
         res.status(501);
         res.json({error: "A user with this email already exists."});
@@ -41,6 +46,22 @@ module.exports = {
         admin: true
       };
       res.json(user_details);
+    });
+
+    app.get("/api/users/:id", function(req, res){
+      var user = _.findWhere(users, {id: parseInt(req.param('id'))});
+      res.json({user: user});
+    });
+
+    app.put("/api/users/:id", function(req, res){
+      var user = _.findWhere(users, {id: parseInt(req.param('id'))});
+      var _users = _.without(users, user);
+      user.username = req.body.username;
+      user.email = req.body.email;
+      user.admin = req.body.admin;
+      _users.push(user);
+      users = _users;
+      res.json({user: user});
     });
   }
 };

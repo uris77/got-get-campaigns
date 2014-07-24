@@ -9,15 +9,21 @@
           <th>Name</th>
           <th>Email</th>
           <th>Admin</th>
+          <th></th>
         </thead>
         <tbody>
           <tr ng-repeat="user in ctrl.users">
-            <td>{{ user.name }}</td>
+            <td>{{ user.username }}</td>
             <td>{{ user.email }}</td>
             <td>
               <span ng-if="user.admin">
                   <span class="glyphicon glyphicon-ok"></span>
               </span>
+            </td>
+            <td>
+              <a class="btn btn-default" ui-sref="users_edit({id: user.id})">
+                Edit
+              </a>
             </td>
           </tr>
         </tbody>

@@ -13,10 +13,10 @@ NgAdminApp.UserFactory = {
       errors: {}
     };
     if(params){
-      if (params.name) {
-        user.name = params.name;
+      if (params.username) {
+        user.username = params.username;
       }else {
-        user.errors.name = "Name can not be empty.";
+        user.errors.username = "Username can not be empty.";
       }
       if (params.email) {
         user.email = params.email;

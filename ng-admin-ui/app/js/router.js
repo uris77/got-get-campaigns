@@ -4,24 +4,29 @@ angular.module('app')
      * Define states
      */
     var createState = {
-        url: '/users/create',
+        url: '/create',
         templateUrl: "create_user_form.html",
         controller: "CreateUserController"
     },
     listState = {
-        url: '/users/list',
+        url: '/list',
         templateUrl: 'users_list.html',
         controller: "ListUsersController"
     },
+    editUser = {
+      url: '/edit/:id',
+      templateUrl: 'edit_user_form.html',
+      controller: "EditUserController"
+    },
     home = {
       url: '/',
-      templateUrl: 'home.html',
-      controller: function(){}
+      templateUrl: 'home.html'
     };
 
     // Hook up the states to ui-router
     $stateProvider
-      .state('create_users', createState)
-      .state('list_users', listState)
-      .state('home', home);
+      .state('users', home)
+      .state('users_create', createState)
+      .state('users_list', listState)
+      .state("users_edit", editUser);
   });
