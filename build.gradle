@@ -1,0 +1,49 @@
+buildscript {
+  repositories {
+    jcenter()
+  }
+  dependencies {
+    classpath "io.ratpack:ratpack-gradle:0.9.6"
+  }
+}
+
+apply plugin: "ratpack-groovy"
+apply plugin: "idea"
+apply plugin: "eclipse"
+
+repositories {
+  jcenter()
+  maven { url "http://repo.springsource.org/repo" }
+}
+
+dependencies {
+    springloaded "org.springsource.loaded:springloaded:1.1.5.RELEASE"
+    compile ratpack.dependency("pac4j")
+    compile "org.pac4j:pac4j-openid:1.5.1"
+    compile "org.pac4j:pac4j-oauth:1.5.1"
+
+    testCompile "org.spockframework:spock-core:0.7-groovy-2.0"
+}
+
+task stage{
+    dependsOn installApp
+}
+
+
+run{
+    Properties properties = new Properties(System.getProperties())
+    try {
+        FileInputStream inputStream = new FileInputStream(".env")
+        properties.load(inputStream)
+        System.setProperties(properties)
+        System.getProperties().each { prop ->
+            systemProperty prop.key, prop.value
+        }
+    }catch (FileNotFoundException ex) {
+        println "Could not find env file"
+        println "This is normal in production."
+    } catch (Exception e) {
+        e.printStackTrace()
+    }
+
+}
