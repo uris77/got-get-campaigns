@@ -4,7 +4,12 @@ angular.module('app')
       return $http.get("/api/users/" + id);
     };
   }])
-  .controller('EditUserController',['$scope', '$state', '$stateParams', 'EditUserService', 'FetchUserService', 'AuthenticationService', function($scope, $state, $stateParams, EditUserService, FetchUserService, AuthenticationService){
+  .service("DeleteUserService", ["$http", function($http) {
+    this.delete = function(id) {
+      return $http.delete("/api/users/" + id);
+    };
+  }])
+  .controller('EditUserController',['$scope', '$state', '$stateParams', 'EditUserService', 'FetchUserService', 'DeleteUserService', 'AuthenticationService', function($scope, $state, $stateParams, EditUserService, FetchUserService, DeleteUserService, AuthenticationService){
     var self = this;
     console.log("State Params: ", $stateParams);
     if(!AuthenticationService.isLoggedIn()){
@@ -25,6 +30,14 @@ angular.module('app')
           $state.transitionTo("users_list");
         }).error(function(data){
           self.errors = data.error;
+        });
+      }
+    };
+
+    this.delete = function() {
+      if(confirm("Do you want to delete this user?")) {
+        DeleteUserService.delete($scope.user.id).success(function() {
+          $state.transitionTo("users_list");
         });
       }
     };

@@ -10,6 +10,7 @@ NgAdminApp.UserFactory = {
   create: function(params) {
     var user = {
       admin: false,
+      enabled: true,
       errors: {}
     };
     if(params){

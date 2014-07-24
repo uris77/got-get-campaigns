@@ -16,9 +16,9 @@ var _ = require('underscore');
 module.exports = {
   drawRoutes: function(app) {
     var users = [
-      {id: 1, username: "Asimoov", email: "asimov@mail.com", admin: false},
-      {id: 2, username: "Jon Doe", email: "jondoe@mail.com", admin: false},
-      {id: 3, username: "Jane Smith", email: "janesmith@mail.com", admin: false}
+      {id: 1, username: "Asimoov", email: "asimov@mail.com", admin: false, enabled: true},
+      {id: 2, username: "Jon Doe", email: "jondoe@mail.com", admin: false, enabled: true},
+      {id: 3, username: "Jane Smith", email: "janesmith@mail.com", admin: false, enabled: true}
     ];
     app.post('/api/users', function (req, res) {
       if (!_.findWhere(users, {email: req.body.email})){
@@ -36,7 +36,10 @@ module.exports = {
     });
 
     app.get('/api/users', function(req, res){
-      res.json(users);
+      var enabledUsers = _.filter(users, function(user){
+        return user.enabled;
+      });
+      res.json(enabledUsers);
     });
 
     app.get("/api/my_details", function(req, res){
@@ -59,6 +62,15 @@ module.exports = {
       user.username = req.body.username;
       user.email = req.body.email;
       user.admin = req.body.admin;
+      _users.push(user);
+      users = _users;
+      res.json({user: user});
+    });
+
+    app.delete("/api/users/:id", function(req, res){
+      var user = _.findWhere(users, {id: parseInt(req.param('id'))});
+      var _users = _.without(users, user);
+      user.enabled = false;
       _users.push(user);
       users = _users;
       res.json({user: user});
