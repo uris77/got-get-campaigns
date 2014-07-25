@@ -12,9 +12,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Every Vagrant virtual environment requires a box to build off of.
   config.vm.box = "Ubuntu.14.04"
 
-  config.vm.network :private_network, ip: "10.0.2.15"
+  config.vm.network :private_network, ip: "10.0.2.16"
   config.vm.network :forwarded_port, guest: 27017, host:27017
-  config.vm.hostname = "db.pasmo.com"
+  config.vm.hostname = "db.pasmo.org"
 
   # The url from where the 'config.vm.box' box will be fetched if it
   # doesn't already exist on the user's system.
