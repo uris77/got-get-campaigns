@@ -1,5 +1,5 @@
-import com.uris.ratpack.examples.oauth.AuthPathAuthorizer
-import org.pac4j.core.profile.UserProfile
+import org.pasmo.gotitget.auth.AuthPathAuthorizer
+import org.pasmo.gotitget.auth.CurrentUser
 import org.pac4j.oauth.client.Google2Client
 import org.pasmo.gotitget.repositories.UserMongoRepository
 import org.pasmo.gotitget.repositories.UserRepositoryModule
@@ -7,6 +7,7 @@ import org.pasmo.gotitget.repositories.entities.UserEntity
 import ratpack.jackson.JacksonModule
 import ratpack.pac4j.Pac4jModule
 import ratpack.pac4j.internal.Pac4jCallbackHandler
+import ratpack.registry.Registries
 import ratpack.session.SessionModule
 import ratpack.session.store.MapSessionsModule
 import ratpack.session.store.SessionStorage
@@ -34,27 +35,52 @@ ratpack {
             render groovyTemplate("index.html")
         }
         prefix("admin") {
-            get("secured"){
-                SessionStorage sessionStorage = request.get(SessionStorage)
-                UserProfile profile = sessionStorage.get(USER_PROFILE)
-                render groovyTemplate([userName: profile.getAttribute('name')], "secured.html")
-            }
-            get("logout"){
-                SessionStorage sessionStorage = request.get(SessionStorage)
-                sessionStorage.remove(sessionStorage.get(USER_PROFILE))
-                redirect("/")
-            }
-
-            post("setup") { UserMongoRepository repository ->
-                blocking {
-                    String setupUser = System.getProperty("USER_SETUP_NAME")
-                    String setupEmail = System.getProperty("USER_SETUP_EMAIL")
-                    repository.create("{'username': '${setupUser}', 'email': '${setupEmail}'}")
-                } then {UserEntity user ->
-                    render json(user.toMap())
+            register(Registries.just(new CurrentUser())) {
+                handler {
+                    SessionStorage sessionStorage = request.get(SessionStorage)
+                    CurrentUser currentUser = context.get(CurrentUser.class).setSessionStorage(sessionStorage)
+                    context.next(Registries.just(currentUser))
+                }
+                get("secured"){
+                    CurrentUser currentUser = context.get(CurrentUser)
+                    render groovyTemplate([userName: currentUser.getUsername()], "secured.html")
+                }
+                get("logout"){
+                    SessionStorage sessionStorage = request.get(SessionStorage)
+                    sessionStorage.remove(sessionStorage.get(USER_PROFILE))
+                    redirect("/")
                 }
 
+                post("setup") { UserMongoRepository repository ->
+                    blocking {
+                        String setupUser = System.getProperty("USER_SETUP_NAME")
+                        String setupEmail = System.getProperty("USER_SETUP_EMAIL")
+                        repository.create("{'username': '${setupUser}', 'email': '${setupEmail}', 'admin': true}")
+                    } then {UserEntity user ->
+                        render json(user.toMap())
+                    }
+
+                }
             }
+        }
+
+        prefix("api") {
+            register(Registries.just(new CurrentUser())) {
+                handler {
+                    SessionStorage sessionStorage = request.get(SessionStorage)
+                    CurrentUser currentUser = context.get(CurrentUser.class).setSessionStorage(sessionStorage)
+                    context.next(Registries.just(currentUser))
+                }
+                get("my_details") { UserMongoRepository repository ->
+                    String email = context.get(CurrentUser).getEmail()
+                    blocking {
+                        repository.findByEmail(email)
+                    } then {UserEntity user ->
+                        render json(user.toMap())
+                    }
+                }
+            }
+
         }
 
 
