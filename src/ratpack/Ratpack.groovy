@@ -3,6 +3,7 @@ import org.pac4j.core.profile.UserProfile
 import org.pac4j.oauth.client.Google2Client
 import org.pasmo.gotitget.repositories.UserMongoRepository
 import org.pasmo.gotitget.repositories.UserRepositoryModule
+import org.pasmo.gotitget.repositories.entities.UserEntity
 import ratpack.pac4j.Pac4jModule
 import ratpack.pac4j.internal.Pac4jCallbackHandler
 import ratpack.session.SessionModule
@@ -13,6 +14,7 @@ import static ratpack.groovy.Groovy.groovyTemplate
 import static ratpack.groovy.Groovy.ratpack
 import static ratpack.pac4j.internal.SessionConstants.USER_PROFILE
 
+import static ratpack.jackson.Jackson.json
 
 ratpack {
     bindings {
@@ -36,15 +38,21 @@ ratpack {
                 render groovyTemplate([userName: profile.getAttribute('name')], "secured.html")
             }
             get("logout"){
-                //request.get(SessionStorage).clear()
                 SessionStorage sessionStorage = request.get(SessionStorage)
                 sessionStorage.remove(sessionStorage.get(USER_PROFILE))
                 redirect("/")
             }
 
             post("setup") { UserMongoRepository repository ->
-                repository.save("{'name': 'roberto'}")
-                render "OK"
+                blocking {
+                    String setupUser = System.getProperty("USER_SETUP_NAME")
+                    String setupEmail = System.getProperty("USER_SETUP_EMAIL")
+                    repository.create("{'username': '${setupUser}', 'email': '${setupEmail}'}")
+                } then {UserEntity user ->
+                    println "User: ${user}"
+                    render json(user.toString())
+                }
+
             }
         }
 

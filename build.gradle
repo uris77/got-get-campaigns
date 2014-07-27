@@ -21,6 +21,9 @@ dependencies {
     compile ratpack.dependency("pac4j")
     compile "org.pac4j:pac4j-openid:1.5.1"
     compile "org.pac4j:pac4j-oauth:1.5.1"
+
+    compile ratpack.dependency("jackson")
+
     compile 'org.mongodb:mongo-java-driver:2.11.2'
     compile 'com.gmongo:gmongo:1.3'
 
