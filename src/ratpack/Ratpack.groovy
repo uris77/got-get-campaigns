@@ -1,5 +1,4 @@
 import com.uris.ratpack.examples.oauth.AuthPathAuthorizer
-import com.uris.ratpack.examples.oauth.CurrentUser
 import org.pac4j.core.profile.UserProfile
 import org.pac4j.oauth.client.Google2Client
 import ratpack.pac4j.Pac4jModule
@@ -38,28 +37,6 @@ ratpack {
             }
         }
 
-        handler("withContext") {
-            println "With Context"
-            handler {
-                CurrentUser currentUser = new CurrentUser(request.get(SessionStorage))
-                println currentUser.getUsername()
-                next()
-            }
-
-//            context(new CurrentUser(request.get(SessionStorage))){
-//                get("withContext") {
-//                    println get(CurrentUser).getUsername()
-//                    render get(CurrentUser).getUsername()
-//                }
-//            }
-            byMethod {
-                get {
-                    //println get(CurrentUser).getUsername()
-                    render "With Context"
-                }
-            }
-
-        }
 
         assets "public"
     }
