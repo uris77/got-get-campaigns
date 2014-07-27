@@ -4,6 +4,7 @@ import org.pac4j.oauth.client.Google2Client
 import org.pasmo.gotitget.repositories.UserMongoRepository
 import org.pasmo.gotitget.repositories.UserRepositoryModule
 import org.pasmo.gotitget.repositories.entities.UserEntity
+import ratpack.jackson.JacksonModule
 import ratpack.pac4j.Pac4jModule
 import ratpack.pac4j.internal.Pac4jCallbackHandler
 import ratpack.session.SessionModule
@@ -20,6 +21,7 @@ ratpack {
     bindings {
         add new SessionModule()
         add new MapSessionsModule(10, 5)
+        add new JacksonModule()
         bind Pac4jCallbackHandler
         Google2Client google2Client = new Google2Client(System.getProperty("GOOGLE_ID"), System.getProperty("GOOGLE_SECRET"))
         add new Pac4jModule<>(google2Client, new AuthPathAuthorizer())
@@ -49,8 +51,7 @@ ratpack {
                     String setupEmail = System.getProperty("USER_SETUP_EMAIL")
                     repository.create("{'username': '${setupUser}', 'email': '${setupEmail}'}")
                 } then {UserEntity user ->
-                    println "User: ${user}"
-                    render json(user.toString())
+                    render json(user.toMap())
                 }
 
             }
