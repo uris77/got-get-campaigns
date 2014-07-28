@@ -24,9 +24,7 @@ class UserMongoRepository extends AbstractMongoRepository {
 
     BasicDBObject save(String json) {
         DBObject obj = JSON.parse(json) as BasicDBObject
-        if (obj.get("admin") == null) {
-            obj.append("admin", Boolean.FALSE)
-        }
+        if (obj.get("admin") == null) obj.append("admin", Boolean.FALSE)
         if (obj.get("enabled") == null) obj.append("enabled", Boolean.TRUE)
         collection.insert(obj)
         obj
