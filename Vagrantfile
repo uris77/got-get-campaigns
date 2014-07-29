@@ -7,6 +7,12 @@ VAGRANTFILE_API_VERSION = "2"
 ip_address = "192.168.10.11"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+
+  config.hostmanager.enabled = true
+  config.hostmanager.manage_host = true
+  config.hostmanager.ignore_private_ip = false
+
+  config.vm.provision :hostmanager
   # All Vagrant configuration is done here. The most common configuration
   # options are documented and commented below. For a complete reference,
   # please see the online documentation at vagrantup.com.

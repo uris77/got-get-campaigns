@@ -1,55 +1,40 @@
 package org.pasmo.gotitget.restapi.users
 
-import com.fasterxml.jackson.databind.node.ObjectNode
 import com.google.inject.Inject
 import org.pasmo.gotitget.repositories.UserMongoRepository
 import org.pasmo.gotitget.repositories.entities.UserEntity
 import ratpack.groovy.handling.GroovyContext
 import ratpack.groovy.handling.GroovyHandler
 
-import static ratpack.jackson.Jackson.jsonNode
 import static ratpack.jackson.Jackson.json
 
-class UsersHandler extends GroovyHandler{
+
+class UsersByIdHandler extends GroovyHandler {
+
     private final UserMongoRepository userRepository
 
     @Inject
-    UsersHandler(UserMongoRepository repository) {
-        userRepository = repository
+    UsersByIdHandler(UserMongoRepository userRepository) {
+        this.userRepository = userRepository
     }
 
     @Override
     protected void handle(GroovyContext context) {
         context.with {
             byMethod {
-                post {
-                    context.byContent {
-                        type("application/json") {
-                            blocking {
-                                ObjectNode node = parse jsonNode()
-                                userRepository.create node.toString()
-                            } then { UserEntity user ->
-                                render json(user.toMap())
-                            }
-
-                        }
-                    }
-                }
-
                 get {
                     context.byContent {
                         type("application/json") {
                             blocking {
-                                userRepository.findAll()
-                            } then { List<UserEntity> users ->
-                                render json(users.collect {UserEntity user -> user.toMap() })
+                                userRepository.findById(pathTokens.id)
+                            } then { UserEntity user ->
+                                render json(user.toMap())
                             }
                         }
                     }
                 }
             }
-
-
         }
     }
+
 }

@@ -1,9 +1,12 @@
 package org.pasmo.gotitget.repositories
 
 import com.mongodb.BasicDBObject
+import com.mongodb.DBCursor
 import com.mongodb.DBObject
 import com.mongodb.Mongo
 import com.mongodb.util.JSON
+import groovy.stream.Stream
+import org.bson.types.ObjectId
 import org.pasmo.gotitget.repositories.entities.UserEntity
 
 
@@ -36,4 +39,16 @@ class UserMongoRepository extends AbstractMongoRepository {
         new UserEntity(obj)
     }
 
+    List<UserEntity> findAll() {
+        DBCursor cursor = collection.find()
+        Stream stream = Stream.from(cursor).map{ item ->
+            new UserEntity(item)
+        }
+        stream.collect()
+    }
+
+    UserEntity findById(String id) {
+        DBObject obj = [_id: new ObjectId(id)]  as BasicDBObject
+        new UserEntity(collection.findOne(obj))
+    }
 }

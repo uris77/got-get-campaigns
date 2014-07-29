@@ -5,6 +5,7 @@ import org.pac4j.oauth.client.Google2Client
 import org.pasmo.gotitget.repositories.UserMongoRepository
 import org.pasmo.gotitget.repositories.UserRepositoryModule
 import org.pasmo.gotitget.repositories.entities.UserEntity
+import org.pasmo.gotitget.restapi.users.UsersByIdHandler
 import org.pasmo.gotitget.restapi.users.UsersHandler
 import ratpack.jackson.JacksonModule
 import ratpack.pac4j.Pac4jModule
@@ -41,7 +42,6 @@ ratpack {
                 CurrentUser currentUser = new CurrentUser()
                 currentUser.setSessionStorage(sessionStorage)
                 request.register(currentUser)
-                println "currentUser: ${currentUser.getUsername()}"
                 next()
             }
 
@@ -85,16 +85,8 @@ ratpack {
                 }
             }
 
-//            post("users") { UserMongoRepository repository ->
-//                context.byContent {
-//                    type("application/json") {
-//                        ObjectNode node =  parse jsonNode()
-//                        repository.create(node.toString())
-//                        render json([:])
-//                    }
-//                }
-//            }
             handler("users", registry.get(UsersHandler))
+            handler("users/:id", registry.get(UsersByIdHandler))
         }
 
         assets "public"
