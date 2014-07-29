@@ -46,7 +46,6 @@ ratpack {
             }
 
             get("secured") {CurrentUser currentUser ->
-                println "user in secured: ${currentUser}"
                 render groovyTemplate([userName: currentUser.getUsername()], "secured.html")
             }
 
