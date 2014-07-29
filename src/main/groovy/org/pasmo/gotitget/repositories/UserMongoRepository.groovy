@@ -51,4 +51,15 @@ class UserMongoRepository extends AbstractMongoRepository {
         DBObject obj = [_id: new ObjectId(id)]  as BasicDBObject
         new UserEntity(collection.findOne(obj))
     }
+
+    UserEntity update(String id, Map params) {
+        DBObject searchQuery = new BasicDBObject().append("_id", new ObjectId(id))
+        BasicDBObject updateDoc = new BasicDBObject()
+        params.each{key, value ->
+            if(value) updateDoc.append(key, value.toString())
+        }
+        BasicDBObject update = new BasicDBObject('$set', updateDoc)
+        collection.update(searchQuery, update)
+        findById(id)
+    }
 }
