@@ -43,8 +43,8 @@ class UsersByIdHandler extends GroovyHandler {
                                 ObjectNode node = parse jsonNode()
                                 String username = node.get("username")
                                 String email = node.get("email")
-                                String enabled = node.get("enabled")
-                                String admin = node.get("admin")
+                                String enabled = node.get("enabled") ?: Boolean.FALSE
+                                String admin = node.get("admin") ?: Boolean.FALSE
                                 userRepository.update(pathTokens.id, [
                                         username: username,
                                         email: email,
@@ -56,6 +56,12 @@ class UsersByIdHandler extends GroovyHandler {
                             }
                         }
                     }
+                }
+
+                delete {
+                    println "Removing user with id: ${pathTokens.id}"
+                    userRepository.remove(pathTokens.id)
+                    render json(["message": "removed user"])
                 }
             }
         }
