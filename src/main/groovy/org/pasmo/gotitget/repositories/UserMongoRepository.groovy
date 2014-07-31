@@ -4,6 +4,8 @@ import com.allanbank.mongodb.MongoCollection
 import com.allanbank.mongodb.bson.builder.BuilderFactory
 import com.allanbank.mongodb.bson.builder.DocumentBuilder
 import com.allanbank.mongodb.bson.Document
+import com.allanbank.mongodb.builder.Find
+
 import static com.allanbank.mongodb.builder.QueryBuilder.where
 import com.mongodb.BasicDBObject
 import com.mongodb.DBCursor
@@ -49,8 +51,7 @@ class UserMongoRepository extends AbstractMongoRepository {
     }
 
     List<UserEntity> findAll() {
-        DBCursor cursor = collection.find()
-        Stream stream = Stream.from(cursor).map{ item ->
+        Stream stream = Stream.from(mongoCollection.find(Find.ALL)).map{ Document item ->
             new UserEntity(item)
         }
         stream.collect()
