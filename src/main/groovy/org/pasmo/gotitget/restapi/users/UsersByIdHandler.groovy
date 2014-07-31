@@ -41,10 +41,10 @@ class UsersByIdHandler extends GroovyHandler {
                         type("application/json") {
                             blocking {
                                 ObjectNode node = parse jsonNode()
-                                String username = node.get("username")
-                                String email = node.get("email")
-                                String enabled = node.get("enabled") ?: Boolean.FALSE
-                                String admin = node.get("admin") ?: Boolean.FALSE
+                                def username = node.get("username").asText()
+                                def email = node.get("email").asText()
+                                def enabled = node.get("enabled") ?: Boolean.FALSE
+                                def admin = node.get("admin") ?: Boolean.FALSE
                                 userRepository.update(pathTokens.id, [
                                         username: username,
                                         email: email,
