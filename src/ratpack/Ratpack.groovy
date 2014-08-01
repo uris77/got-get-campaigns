@@ -1,4 +1,3 @@
-import com.fasterxml.jackson.databind.node.ObjectNode
 import org.pasmo.gotitget.auth.AuthPathAuthorizer
 import org.pasmo.gotitget.auth.CurrentUser
 import org.pac4j.oauth.client.Google2Client
@@ -19,7 +18,6 @@ import static ratpack.groovy.Groovy.ratpack
 import static ratpack.pac4j.internal.SessionConstants.USER_PROFILE
 
 import static ratpack.jackson.Jackson.json
-import static ratpack.jackson.Jackson.jsonNode
 
 ratpack {
     bindings {
