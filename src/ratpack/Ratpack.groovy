@@ -1,7 +1,7 @@
 import org.pasmo.gotitget.auth.AuthPathAuthorizer
 import org.pasmo.gotitget.auth.CurrentUser
 import org.pac4j.oauth.client.Google2Client
-import org.pasmo.gotitget.repositories.UserMongoRepository
+import org.pasmo.gotitget.repositories.UserRepository
 import org.pasmo.gotitget.repositories.UserRepositoryModule
 import org.pasmo.gotitget.repositories.entities.UserEntity
 import org.pasmo.gotitget.restapi.users.UsersByIdHandler
@@ -53,7 +53,7 @@ ratpack {
                 redirect("/")
             }
 
-            post("setup") { UserMongoRepository repository ->
+            post("setup") { UserRepository repository ->
                 blocking {
                     String setupUser = System.getProperty("USER_SETUP_NAME")
                     String setupEmail = System.getProperty("USER_SETUP_EMAIL")
@@ -74,7 +74,7 @@ ratpack {
                 next()
             }
 
-            get("my_details") { CurrentUser currentUser, UserMongoRepository repository ->
+            get("my_details") { CurrentUser currentUser, UserRepository repository ->
                 String email = currentUser.getEmail()
                 blocking {
                     repository.findByEmail(email)

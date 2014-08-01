@@ -15,7 +15,7 @@ class UserRepositoryModule extends AbstractModule {
 
     @Override
     protected void configure() {
-        bind(UserMongoRepository).toInstance(new UserMongoRepository(mongo, System.getProperty("USER_DB_NAME")))
+        bind(UserRepository).toInstance(new UserMongoRepository(mongo, System.getProperty("USER_DB_NAME")))
     }
 
     private static MongoClient getMongo() {

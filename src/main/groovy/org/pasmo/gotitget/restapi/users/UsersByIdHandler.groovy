@@ -3,6 +3,7 @@ package org.pasmo.gotitget.restapi.users
 import com.fasterxml.jackson.databind.node.ObjectNode
 import com.google.inject.Inject
 import org.pasmo.gotitget.repositories.UserMongoRepository
+import org.pasmo.gotitget.repositories.UserRepository
 import org.pasmo.gotitget.repositories.entities.UserEntity
 import ratpack.groovy.handling.GroovyContext
 import ratpack.groovy.handling.GroovyHandler
@@ -13,10 +14,10 @@ import static ratpack.jackson.Jackson.jsonNode
 
 class UsersByIdHandler extends GroovyHandler {
 
-    private final UserMongoRepository userRepository
+    private final UserRepository userRepository
 
     @Inject
-    UsersByIdHandler(UserMongoRepository userRepository) {
+    UsersByIdHandler(UserRepository userRepository) {
         this.userRepository = userRepository
     }
 
