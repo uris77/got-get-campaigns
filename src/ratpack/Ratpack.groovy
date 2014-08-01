@@ -72,14 +72,19 @@ ratpack {
             handler {SessionStorage  sessionStorage ->
                 CurrentUser currentUser = new CurrentUser()
                 currentUser.setSessionStorage(sessionStorage)
+                request.register(currentUser)
                 next()
             }
 
-            get("my_details") { UserMongoRepository repository ->
-                String email = context.get(CurrentUser).getEmail()
+            get("my_details") { CurrentUser currentUser, UserMongoRepository repository ->
+                //CurrentUser _user = context.get(CurrentUser)
+                //String email = context.get(CurrentUser).getEmail()
+                String email = currentUser.getEmail()
+                println "email: ${email}"
                 blocking {
                     repository.findByEmail(email)
                 } then {UserEntity user ->
+                    println "user: ${user.toMap()}"
                     render json(user.toMap())
                 }
             }

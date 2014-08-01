@@ -1,19 +1,15 @@
 package org.pasmo.gotitget.repositories
 
+import com.allanbank.mongodb.MongoClient
 import com.allanbank.mongodb.MongoCollection
 import com.allanbank.mongodb.bson.builder.BuilderFactory
 import com.allanbank.mongodb.bson.builder.DocumentBuilder
 import com.allanbank.mongodb.bson.Document
 import com.allanbank.mongodb.builder.Find
-
+import com.allanbank.mongodb.bson.element.ObjectId
 import static com.allanbank.mongodb.builder.QueryBuilder.where
-import com.mongodb.BasicDBObject
-import com.mongodb.DBCursor
-import com.mongodb.DBObject
-import com.mongodb.Mongo
 import com.mongodb.util.JSON
 import groovy.stream.Stream
-import org.bson.types.ObjectId
 import org.pasmo.gotitget.repositories.entities.UserEntity
 
 
@@ -22,7 +18,7 @@ class UserMongoRepository extends AbstractMongoRepository {
 
     private MongoCollection mongoCollection
 
-    UserMongoRepository(Mongo mongo, String databaseName) {
+    UserMongoRepository(MongoClient mongo, String databaseName) {
         super(mongo, databaseName)
         mongoCollection = mongoDatabase.getCollection(collectionName)
     }
@@ -36,18 +32,19 @@ class UserMongoRepository extends AbstractMongoRepository {
         new UserEntity(save(json))
     }
 
-    BasicDBObject save(String json) {
-        DBObject obj = JSON.parse(json) as BasicDBObject
-        if (obj.get("admin") == null) obj.append("admin", Boolean.FALSE)
-        if (obj.get("enabled") == null) obj.append("enabled", Boolean.TRUE)
-        collection.insert(obj)
-        obj
+    Document save(String json) {
+        DocumentBuilder document = BuilderFactory.start()
+        def obj = JSON.parse(json)
+        obj.each{ key, value ->
+            document.add(key, value)
+        }
+        mongoCollection.insert(document)
+        mongoCollection.findOne(where("email").equals(obj.email))
     }
 
     UserEntity findByEmail(String email) {
-        BasicDBObject query = [email: email]  as BasicDBObject
-        BasicDBObject obj = collection.findOne(query)
-        new UserEntity(obj)
+        Document userDoc = mongoCollection.findOne(where("email").equals(email))
+        new UserEntity(userDoc)
     }
 
     List<UserEntity> findAll() {
@@ -58,8 +55,8 @@ class UserMongoRepository extends AbstractMongoRepository {
     }
 
     UserEntity findById(String id) {
-        DBObject obj = [_id: new ObjectId(id)]  as BasicDBObject
-        new UserEntity(collection.findOne(obj))
+        Document userDoc = mongoCollection.findOne(where("_id").equals(new ObjectId(id)))
+        new UserEntity(userDoc)
     }
 
     UserEntity update(String id, Map params) {
@@ -67,12 +64,12 @@ class UserMongoRepository extends AbstractMongoRepository {
         params.each{key, value ->
             update.add(key, value)
         }
-        Document queryDocument = where("_id").equals(new com.allanbank.mongodb.bson.element.ObjectId(id)).asDocument()
+        Document queryDocument = where("_id").equals(new ObjectId(id)).asDocument()
         mongoCollection.update(queryDocument, update)
         findById(id)
     }
 
     public void remove(String id) {
-        update(id, [enabled: false])
+        mongoCollection.delete(where("_id").equals(new ObjectId(id)))
     }
 }

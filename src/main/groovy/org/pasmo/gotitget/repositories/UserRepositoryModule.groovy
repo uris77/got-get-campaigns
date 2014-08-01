@@ -1,7 +1,9 @@
 package org.pasmo.gotitget.repositories
 
+import com.allanbank.mongodb.MongoClient
+import com.allanbank.mongodb.MongoClientConfiguration
+import com.allanbank.mongodb.MongoFactory
 import com.google.inject.AbstractModule
-import com.mongodb.MongoClient
 import groovy.transform.CompileStatic
 
 @CompileStatic
@@ -17,10 +19,11 @@ class UserRepositoryModule extends AbstractModule {
     }
 
     private static MongoClient getMongo() {
+        MongoClientConfiguration config = new MongoClientConfiguration()
+        config.addServer(DB_HOST)
         if(_mongo == null) {
-            _mongo  = new MongoClient(DB_HOST, DB_PORT)
+             _mongo = MongoFactory.createClient(config)
         }
-
         _mongo
     }
 
