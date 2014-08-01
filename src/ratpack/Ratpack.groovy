@@ -77,14 +77,10 @@ ratpack {
             }
 
             get("my_details") { CurrentUser currentUser, UserMongoRepository repository ->
-                //CurrentUser _user = context.get(CurrentUser)
-                //String email = context.get(CurrentUser).getEmail()
                 String email = currentUser.getEmail()
-                println "email: ${email}"
                 blocking {
                     repository.findByEmail(email)
                 } then {UserEntity user ->
-                    println "user: ${user.toMap()}"
                     render json(user.toMap())
                 }
             }
