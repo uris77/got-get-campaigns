@@ -3,11 +3,11 @@ buildscript {
     jcenter()
   }
   dependencies {
-    classpath "io.ratpack:ratpack-gradle:0.9.6"
+    classpath "io.ratpack:ratpack-gradle:0.9.7"
   }
 }
 
-apply plugin: "ratpack-groovy"
+apply plugin: "io.ratpack.ratpack-groovy"
 apply plugin: "idea"
 apply plugin: "eclipse"
 
@@ -24,6 +24,7 @@ dependencies {
     compile "org.pac4j:pac4j-oauth:1.5.1"
 
     compile ratpack.dependency("jackson")
+    runtime 'org.slf4j:slf4j-simple:1.7.7'
 
     compile 'org.mongodb:mongo-java-driver:2.12.3'
     compile 'com.gmongo:gmongo:1.3'
