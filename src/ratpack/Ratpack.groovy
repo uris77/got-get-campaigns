@@ -54,6 +54,7 @@ ratpack {
             }
 
             post("setup") { UserRepository repository ->
+                //TODO: try async interface
                 blocking {
                     String setupUser = System.getProperty("USER_SETUP_NAME")
                     String setupEmail = System.getProperty("USER_SETUP_EMAIL")
