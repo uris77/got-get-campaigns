@@ -6,6 +6,8 @@ import org.pasmo.gotitget.repositories.UserRepositoryModule
 import org.pasmo.gotitget.repositories.entities.UserEntity
 import org.pasmo.gotitget.restapi.users.UsersByIdHandler
 import org.pasmo.gotitget.restapi.users.UsersHandler
+import org.pasmo.gotitget.surveys.SurveyCrudModule
+import org.pasmo.gotitget.surveys.SurveyHandlers
 import ratpack.jackson.JacksonModule
 import ratpack.pac4j.Pac4jModule
 import ratpack.pac4j.internal.Pac4jCallbackHandler
@@ -29,6 +31,7 @@ ratpack {
         add new Pac4jModule<>(google2Client, new AuthPathAuthorizer())
 
         add new UserRepositoryModule()
+        add new SurveyCrudModule()
     }
 
     handlers {
@@ -86,8 +89,18 @@ ratpack {
 
             handler("users", registry.get(UsersHandler))
             handler("users/:id", registry.get(UsersByIdHandler))
+            handler("surveys", registry.get(SurveyHandlers))
+        }
+
+        get("app") {
+            render groovyTemplate("app.html")
+        }
+
+        get("surveys") {
+            render groovyTemplate("surveys.html")
         }
 
         assets "public"
+        assets "public/app/templates"
     }
 }

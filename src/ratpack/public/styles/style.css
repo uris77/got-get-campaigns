@@ -35,3 +35,7 @@ body {
     background-color: transparent;
     border-color: #cdbfe3;
 }
+
+header {
+    padding-top: 5em;
+}

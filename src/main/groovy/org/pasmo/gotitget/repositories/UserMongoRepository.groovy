@@ -13,7 +13,6 @@ import groovy.stream.Stream
 import org.pasmo.gotitget.repositories.entities.UserEntity
 
 
-
 class UserMongoRepository extends AbstractMongoRepository implements UserRepository {
 
     private MongoCollection mongoCollection
