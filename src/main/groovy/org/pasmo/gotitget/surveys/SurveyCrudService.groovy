@@ -5,8 +5,10 @@ import com.allanbank.mongodb.MongoCollection
 import com.allanbank.mongodb.bson.Document
 import com.allanbank.mongodb.bson.builder.BuilderFactory
 import com.allanbank.mongodb.bson.builder.DocumentBuilder
+import com.allanbank.mongodb.builder.Aggregate
 import com.allanbank.mongodb.builder.Find
 import com.allanbank.mongodb.builder.QueryBuilder
+import com.allanbank.mongodb.builder.Sort
 import com.mongodb.util.JSON
 import org.pasmo.gotitget.repositories.AbstractMongoRepository
 
@@ -50,7 +52,9 @@ class SurveyCrudService extends AbstractMongoRepository {
 
     List<SurveyEntity> findAll() {
         List<SurveyEntity> surveys = []
-        mongoCollection.find(Find.ALL).each{ doc ->
+        Aggregate.Builder builder = new Aggregate.Builder()
+        builder.sort(Sort.desc("year"))
+        mongoCollection.aggregate(builder).each { doc ->
             surveys << new SurveyEntity(doc)
         }
         surveys

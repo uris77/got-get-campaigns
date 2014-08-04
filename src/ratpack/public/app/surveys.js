@@ -62,7 +62,7 @@ PasmoApp.SurveysCreateController = function($scope, $state, CreateSurveyService)
 		}else{
 			CreateSurveyService.create({month: $scope.month.name, year: $scope.year})
 			.success(function() {
-				$state.transitionTo("surveys");
+				$state.transitionTo("surveys.list");
 			})
 			.error(function(data){
 				$scope.errors = data.errors;
