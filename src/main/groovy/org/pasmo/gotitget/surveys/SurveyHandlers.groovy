@@ -2,7 +2,6 @@ package org.pasmo.gotitget.surveys
 
 import com.fasterxml.jackson.databind.node.ObjectNode
 import com.google.inject.Inject
-import org.pasmo.gotitget.entities.PersistentEntity
 import ratpack.groovy.handling.GroovyContext
 import ratpack.groovy.handling.GroovyHandler
 import ratpack.jackson.Jackson
@@ -34,6 +33,15 @@ class SurveyHandlers extends GroovyHandler {
                                     render Jackson.json(survey.toMap())
                                 }
                             }
+                        }
+                    }
+                }
+
+                get {
+                    context.byContent {
+                        type("application/json") {
+                            List<SurveyEntity>  surveys = crudService.findAll()
+                            render Jackson.json(surveys.collect{ SurveyEntity survey -> survey.toMap()})
                         }
                     }
                 }

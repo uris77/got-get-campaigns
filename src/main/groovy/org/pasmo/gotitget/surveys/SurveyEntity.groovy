@@ -19,7 +19,7 @@ class SurveyEntity implements PersistentEntity {
     SurveyEntity(Document doc) {
         ObjectIdElement objectId = doc.get("_id")
         _id = new ObjectId(objectId.getId().toHexString())
-        month = doc.get("month")
+        month = doc.get("month").getValueAsString()
         year = doc.get("year").getValueAsString().toInteger()
         this
     }

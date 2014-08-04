@@ -1,6 +1,7 @@
 PasmoApp.apiUrls = {
 	survey: {
-		create: "/api/surveys"
+		create: "/api/surveys",
+		list: "/api/surveys"
 	}
 };
 
@@ -27,11 +28,22 @@ PasmoApp.CreateSurveyService = function($http) {
 	var self = this;
 	self.create = function(params) {
 		return $http.post(PasmoApp.apiUrls.survey.create, params);
-	}
+	};
 };
 
-PasmoApp.SurveysListController = function($scope) {
-	console.log("Started controller");
+PasmoApp.ListSurveyService = function($http) {
+	var self = this;
+	self.list = function() {
+		return $http.get(PasmoApp.apiUrls.survey.list);
+	};
+};
+
+PasmoApp.SurveysListController = function($scope, ListSurveyService) {
+	console.log("Started List controller");
+	ListSurveyService.list()
+		.success( function(data) {
+			$scope.surveys = data;
+		});
 };
 
 PasmoApp.SurveysCreateController = function($scope, $state, CreateSurveyService) {
@@ -63,5 +75,6 @@ PasmoApp.SurveysCreateController = function($scope, $state, CreateSurveyService)
 angular
 	.module("PasmoApp")
 	.service("CreateSurveyService", PasmoApp.CreateSurveyService)
+	.service("ListSurveyService", PasmoApp.ListSurveyService)
 	.controller('SurveysListController', PasmoApp.SurveysListController)
 	.controller('SurveysCreateController', PasmoApp.SurveysCreateController);

@@ -8,7 +8,6 @@ import com.allanbank.mongodb.bson.builder.DocumentBuilder
 import com.allanbank.mongodb.builder.Find
 import com.allanbank.mongodb.builder.QueryBuilder
 import com.mongodb.util.JSON
-import org.pasmo.gotitget.entities.ErrorEntity
 import org.pasmo.gotitget.repositories.AbstractMongoRepository
 
 class SurveyCrudService extends AbstractMongoRepository {
