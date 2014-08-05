@@ -9,7 +9,7 @@ class LocationEntity implements PersistentEntity {
     ObjectId _id
     String name
     String district
-    def loc = [:]
+    def loc
 
     LocationEntity() {
         this
@@ -33,7 +33,8 @@ class LocationEntity implements PersistentEntity {
                 id: id,
                 name: name,
                 district: district,
-                loc: loc
+                loc: [lon: loc.getElements().first().valueAsString, lat: loc.getElements().last().valueAsString]
+
         ]
     }
 

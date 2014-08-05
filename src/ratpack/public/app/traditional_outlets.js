@@ -10,8 +10,20 @@ PasmoApp.LocationCreateService = function($http) {
 	};
 };
 
-PasmoApp.TraditionalOutletsListController = function($scope) {
+PasmoApp.LocationListService = function($http) {
+	var self = this;
+	self.list = function() {
+		return $http.get(PasmoApp.apiUrls.locations.list);
+	};
+};
+
+PasmoApp.TraditionalOutletsListController = function($scope, LocationListService) {
 	console.log("Started controller");
+	LocationListService.list()
+		.success(function (data) {
+			$scope.locations = data;
+			console.log("locations: ", $scope.locations);
+		});
 };
 
 PasmoApp.TraditionalOutletsCreateController = function($scope, $state, LocationCreateService) {
@@ -42,5 +54,6 @@ PasmoApp.TraditionalOutletsCreateController = function($scope, $state, LocationC
 angular
 	.module("PasmoApp")
 	.service("LocationCreateService", PasmoApp.LocationCreateService)
+	.service("LocationListService", PasmoApp.LocationListService)
 	.controller('TraditionalOutletsListController', PasmoApp.TraditionalOutletsListController)
 	.controller('TraditionalOutletsCreateController', PasmoApp.TraditionalOutletsCreateController);
