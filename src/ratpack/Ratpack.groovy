@@ -1,6 +1,8 @@
 import org.pasmo.gotitget.auth.AuthPathAuthorizer
 import org.pasmo.gotitget.auth.CurrentUser
 import org.pac4j.oauth.client.Google2Client
+import org.pasmo.gotitget.locations.LocationCrudModule
+import org.pasmo.gotitget.locations.LocationHandlers
 import org.pasmo.gotitget.repositories.UserRepository
 import org.pasmo.gotitget.repositories.UserRepositoryModule
 import org.pasmo.gotitget.repositories.entities.UserEntity
@@ -32,6 +34,7 @@ ratpack {
 
         add new UserRepositoryModule()
         add new SurveyCrudModule()
+        add new LocationCrudModule()
     }
 
     handlers {
@@ -90,6 +93,7 @@ ratpack {
             handler("users", registry.get(UsersHandler))
             handler("users/:id", registry.get(UsersByIdHandler))
             handler("surveys", registry.get(SurveyHandlers))
+            handler("locations", registry.get(LocationHandlers))
         }
 
         get("app") {

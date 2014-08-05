@@ -6,7 +6,6 @@ import com.allanbank.mongodb.bson.Document
 import com.allanbank.mongodb.bson.builder.BuilderFactory
 import com.allanbank.mongodb.bson.builder.DocumentBuilder
 import com.allanbank.mongodb.builder.Aggregate
-import com.allanbank.mongodb.builder.Find
 import com.allanbank.mongodb.builder.QueryBuilder
 import com.allanbank.mongodb.builder.Sort
 import com.mongodb.util.JSON

@@ -1,8 +1,6 @@
-PasmoApp.apiUrls = {
-	survey: {
+PasmoApp.apiUrls.survey = {
 		create: "/api/surveys",
 		list: "/api/surveys"
-	}
 };
 
 PasmoApp.isNumber = function(str) {
