@@ -17,17 +17,17 @@ PasmoApp.LocationListService = function($http) {
 	};
 };
 
-PasmoApp.TraditionalOutletsListController = function($scope, LocationListService) {
+PasmoApp.LocationListController = function($scope, LocationListService) {
 	LocationListService.list()
 		.success(function (data) {
 			$scope.locations = data;
 		});
 };
 
-PasmoApp.TraditionalOutletsCreateController = function($scope, $state, LocationCreateService) {
+PasmoApp.LocationCreateController = function($scope, $state, LocationCreateService) {
 	var self = this;
 	$scope.districts = [
-		{name: 'Corozal'}, {name: 'Orangew Walk'}, {name: 'Belize'},
+		{name: 'Corozal'}, {name: 'Orange Walk'}, {name: 'Belize'},
 		{name: 'Cayo'}, {name: 'Stann Creek'}, {name: 'Toledo'}
 	];
 
@@ -46,7 +46,7 @@ PasmoApp.TraditionalOutletsCreateController = function($scope, $state, LocationC
 		};
 		LocationCreateService.create(params)
 			.success(function() {
-				$state.transitionTo("traditional_outlets.list")
+				$state.transitionTo("locations.list")
 			})
 			.error(function(data) {
 				$scope.errors = data.errors;
@@ -58,5 +58,5 @@ angular
 	.module("PasmoApp")
 	.service("LocationCreateService", PasmoApp.LocationCreateService)
 	.service("LocationListService", PasmoApp.LocationListService)
-	.controller('TraditionalOutletsListController', PasmoApp.TraditionalOutletsListController)
-	.controller('TraditionalOutletsCreateController', PasmoApp.TraditionalOutletsCreateController);
+	.controller('LocationListController', PasmoApp.LocationListController)
+	.controller('LocationCreateController', PasmoApp.LocationCreateController);

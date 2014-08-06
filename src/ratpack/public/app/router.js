@@ -1,17 +1,17 @@
-PasmoApp.traditionalOutlets = {
+PasmoApp.locations = {
     root: {
-        url: 'traditional_outlets',
-        templateUrl: "traditional_outlets/index.html"
+        url: 'locations',
+        templateUrl: "locations/index.html"
     },
 	list: {
 		url: '/list',
-		templateUrl: "traditional_outlets/list.html",
-		controller: 'TraditionalOutletsListController'
+		templateUrl: "locations/list.html",
+		controller: 'LocationListController'
 	},
     create: {
         url: '/create',
-        templateUrl: "traditional_outlets/create.html",
-        controller: 'TraditionalOutletsCreateController'
+        templateUrl: "locations/create.html",
+        controller: 'LocationCreateController'
     }
 };
 
@@ -34,9 +34,9 @@ PasmoApp.surveysRoutes = {
 
 PasmoApp.routes = function($stateProvider) {
     $stateProvider
-        .state("traditional_outlets", PasmoApp.traditionalOutlets.root)
-        .state("traditional_outlets.list", PasmoApp.traditionalOutlets.list)
-        .state("traditional_outlets.create", PasmoApp.traditionalOutlets.create)
+        .state("locations", PasmoApp.locations.root)
+        .state("locations.list", PasmoApp.locations.list)
+        .state("locations.create", PasmoApp.locations.create)
         .state("surveys", PasmoApp.surveysRoutes.root)
         .state("surveys.list", PasmoApp.surveysRoutes.list)
         .state("surveys.create", PasmoApp.surveysRoutes.create);
