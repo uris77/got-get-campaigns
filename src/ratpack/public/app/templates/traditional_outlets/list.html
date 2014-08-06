@@ -1,1 +1,25 @@
-<h4>List</h4>
+<div class="panel panel-primary" ui-view>
+	<div class="panel-heading">
+		Locations List
+	</div>
+	<div class="panel-body" ng-if="locations">
+		<table class="table table-striped table-bordered">
+			<thead>
+				<th>Name</th>
+				<th>Type of Outlet</th>
+				<th>District</th>
+				<th>Longitude</th>
+				<th>Latitude</th>
+			</thead>
+			<tbody>
+				<tr ng-repeat="location in locations">
+						<td>{{ location.name }}</td>
+						<td>{{ location.typeOfOutlet }}</td>
+						<td>{{ location.district }}</td>
+						<td>{{ location.loc.lon }}</td>
+						<td>{{ location.loc.lat }}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>

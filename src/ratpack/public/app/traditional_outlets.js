@@ -18,29 +18,32 @@ PasmoApp.LocationListService = function($http) {
 };
 
 PasmoApp.TraditionalOutletsListController = function($scope, LocationListService) {
-	console.log("Started controller");
 	LocationListService.list()
 		.success(function (data) {
 			$scope.locations = data;
-			console.log("locations: ", $scope.locations);
 		});
 };
 
 PasmoApp.TraditionalOutletsCreateController = function($scope, $state, LocationCreateService) {
-	console.log("Started Create Controller");
 	var self = this;
 	$scope.districts = [
 		{name: 'Corozal'}, {name: 'Orangew Walk'}, {name: 'Belize'},
 		{name: 'Cayo'}, {name: 'Stann Creek'}, {name: 'Toledo'}
 	];
 
+	$scope.typesOfOutlets = [
+		{name: "Traditional"},
+		{name: "Non-Traditional"},
+		{name: "Hotspot"}
+	];
+
 	$scope.submit = function () {
 		var params = {
 			name: $scope.name,
 			district: $scope.district.name,
+			typeOfOutlet: $scope.typeOfOutlet.name,
 			loc: {lon: $scope.longitude, lat: $scope.latitude}
 		};
-		console.log("Params: ", params);
 		LocationCreateService.create(params)
 			.success(function() {
 				$state.transitionTo("traditional_outlets.list")

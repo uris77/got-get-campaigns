@@ -9,6 +9,7 @@ class LocationEntity implements PersistentEntity {
     ObjectId _id
     String name
     String district
+    String typeOfOutlet
     def loc
 
     LocationEntity() {
@@ -20,6 +21,7 @@ class LocationEntity implements PersistentEntity {
         _id = new ObjectId(objectId.getId().toHexString())
         name =  doc.get("name").getValueAsString()
         district = doc.get("district").getValueAsString()
+        typeOfOutlet = doc.get("typeOfOutlet").getValueAsString()
         loc = doc.get("loc").getValueAsObject()
         this
     }
@@ -33,6 +35,7 @@ class LocationEntity implements PersistentEntity {
                 id: id,
                 name: name,
                 district: district,
+                typeOfOutlet: typeOfOutlet,
                 loc: [lon: loc.getElements().first().valueAsString, lat: loc.getElements().last().valueAsString]
 
         ]
