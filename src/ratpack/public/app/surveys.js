@@ -3,12 +3,8 @@ PasmoApp.apiUrls.survey = {
 		list: "/api/surveys"
 };
 
-PasmoApp.isNumber = function(str) {
-	return !_.isUndefined(str) && (!_.isEmpty(str.trim()) && _.isNumber(parseInt(str.trim())))
-};
-
 PasmoApp.isYear = function(num) {
-	return PasmoApp.isNumber(num) && (parseInt(num) > 2010 && parseInt(num) < 2030)
+	return PasmoApp.utils.isNumber(num) && (parseInt(num) > 2010 && parseInt(num) < 2030)
 };
 
 PasmoApp.validateSurveyForm = function(month, year) {

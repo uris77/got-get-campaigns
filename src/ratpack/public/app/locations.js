@@ -3,10 +3,6 @@ PasmoApp.apiUrls.locations = {
 	list: "/api/locations"
 };
 
-PasmoApp.isNumber = function(str) {
-	return !_.isUndefined(str) && (!_.isEmpty(str.trim()) && _.isNumber(parseInt(str.trim())))
-};
-
 PasmoApp.validateLocationForm = function(params) {
 	var errors = [];
 	if(_.isUndefined(params.name) || _.isEmpty(params.name.trim())) {
@@ -25,10 +21,10 @@ PasmoApp.validateLocationForm = function(params) {
 		errors.push("Latitude: specify the latitude.");
 		errors.push("Longitude: specify the longitude.");
 	} else {
-		if(_.isUndefined(params.loc.lon) || !PasmoApp.isNumber(params.loc.lon)) {
+		if(_.isUndefined(params.loc.lon) || !PasmoApp.utils.isNumber(params.loc.lon)) {
 			errors.push("Longitude: specify a valid longitude");
 		}
-		if(_.isUndefined(params.loc.lat) || !PasmoApp.isNumber(params.loc.lat)) {
+		if(_.isUndefined(params.loc.lat) || !PasmoApp.utils.isNumber(params.loc.lat)) {
 			errors.push("Latitude: specify a valid latitude.");
 		}
 	}
