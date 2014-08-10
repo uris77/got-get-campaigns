@@ -1,6 +1,9 @@
+import org.pasmo.gotitget.DatabaseClient
+import org.pasmo.gotitget.DatabaseClientModule
 import org.pasmo.gotitget.auth.AuthPathAuthorizer
 import org.pasmo.gotitget.auth.CurrentUser
 import org.pac4j.oauth.client.Google2Client
+import org.pasmo.gotitget.locations.LocationByTypeHandler
 import org.pasmo.gotitget.locations.LocationCrudModule
 import org.pasmo.gotitget.locations.LocationHandlers
 import org.pasmo.gotitget.repositories.UserRepository
@@ -8,7 +11,9 @@ import org.pasmo.gotitget.repositories.UserRepositoryModule
 import org.pasmo.gotitget.repositories.entities.UserEntity
 import org.pasmo.gotitget.restapi.users.UsersByIdHandler
 import org.pasmo.gotitget.restapi.users.UsersHandler
+import org.pasmo.gotitget.surveys.SurveyByIdHandler
 import org.pasmo.gotitget.surveys.SurveyCrudModule
+import org.pasmo.gotitget.surveys.SurveyGatewayModule
 import org.pasmo.gotitget.surveys.SurveyHandlers
 import ratpack.jackson.JacksonModule
 import ratpack.pac4j.Pac4jModule
@@ -32,6 +37,8 @@ ratpack {
         Google2Client google2Client = new Google2Client(System.getProperty("GOOGLE_ID"), System.getProperty("GOOGLE_SECRET"))
         add new Pac4jModule<>(google2Client, new AuthPathAuthorizer())
 
+        add new DatabaseClientModule()
+        add new SurveyGatewayModule(new DatabaseClient())
         add new UserRepositoryModule()
         add new SurveyCrudModule()
         add new LocationCrudModule()
@@ -93,7 +100,9 @@ ratpack {
             handler("users", registry.get(UsersHandler))
             handler("users/:id", registry.get(UsersByIdHandler))
             handler("surveys", registry.get(SurveyHandlers))
+            handler("surveys/:id", registry.get(SurveyByIdHandler))
             handler("locations", registry.get(LocationHandlers))
+            handler("locations/byType/:locationType", registry.get(LocationByTypeHandler))
         }
 
         get("app") {

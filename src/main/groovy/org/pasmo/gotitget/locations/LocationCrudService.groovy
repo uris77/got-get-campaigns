@@ -12,17 +12,11 @@ import com.mongodb.util.JSON
 import org.pasmo.gotitget.repositories.AbstractMongoRepository
 
 
-class LocationCrudService extends AbstractMongoRepository {
-    private MongoCollection mongoCollection
+class LocationCrudService extends AbstractMongoRepository implements LocationRepositoryTrait{
 
     LocationCrudService(MongoClient mongo, String databaseName) {
         super(mongo, databaseName)
         mongoCollection = mongoDatabase.getCollection(collectionName)
-    }
-
-    @Override
-    String getCollectionName() {
-        "pasmo_locations"
     }
 
     LocationEntity create(String json) {

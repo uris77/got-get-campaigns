@@ -39,3 +39,12 @@ body {
 header {
     padding-top: 5em;
 }
+
+.spaced-row {
+    margin-right: 25%;
+    margin-left: 10%;
+}
+
+.content-panel {
+    margin-top: 1em;
+}

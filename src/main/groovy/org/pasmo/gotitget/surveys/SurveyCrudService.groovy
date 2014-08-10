@@ -1,28 +1,28 @@
 package org.pasmo.gotitget.surveys
 
-import com.allanbank.mongodb.MongoClient
 import com.allanbank.mongodb.MongoCollection
 import com.allanbank.mongodb.bson.Document
 import com.allanbank.mongodb.bson.builder.BuilderFactory
 import com.allanbank.mongodb.bson.builder.DocumentBuilder
+import com.allanbank.mongodb.bson.element.ObjectId
 import com.allanbank.mongodb.builder.Aggregate
 import com.allanbank.mongodb.builder.QueryBuilder
 import com.allanbank.mongodb.builder.Sort
 import com.mongodb.util.JSON
-import org.pasmo.gotitget.repositories.AbstractMongoRepository
+import org.pasmo.gotitget.DatabaseClient
 
-class SurveyCrudService extends AbstractMongoRepository {
+import javax.inject.Inject
 
-    private MongoCollection mongoCollection
+class SurveyCrudService  {
+    private final String COLLECTION_NAME = "pasmo_surveys"
 
-    SurveyCrudService(MongoClient mongo, String databaseName) {
-        super(mongo, databaseName)
-        mongoCollection = mongoDatabase.getCollection(collectionName)
-    }
+    private final MongoCollection mongoCollection
+    private final SurveyGateway surveyGateway
 
-    @Override
-    String getCollectionName() {
-        "pasmo_surveys"
+    @Inject
+    SurveyCrudService(DatabaseClient databaseClient, SurveyGateway surveyGateway) {
+        mongoCollection = databaseClient.getCollection(COLLECTION_NAME)
+        this.surveyGateway = surveyGateway
     }
 
     SurveyEntity create(String json){
@@ -41,6 +41,7 @@ class SurveyCrudService extends AbstractMongoRepository {
             }
             mongoCollection.insert(doc)
             surveyEntity = new SurveyEntity(find(params.month, Integer.parseInt(params.year.toString())))
+            //surveyEntity = new SurveyEntity(surveyGateway.findByMonthAndYear(params.month, params.year))
         }
         surveyEntity
     }
@@ -57,5 +58,10 @@ class SurveyCrudService extends AbstractMongoRepository {
             surveys << new SurveyEntity(doc)
         }
         surveys
+    }
+
+    SurveyEntity findById(String id) {
+        Document doc = mongoCollection.findOne(QueryBuilder.where("_id").equals(new ObjectId(id)))
+        new SurveyEntity(doc)
     }
 }

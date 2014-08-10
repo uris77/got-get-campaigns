@@ -24,17 +24,18 @@
              </div>
         </nav>
     </header>
-    <div class="row">
+    <div class="spaced-row">
         <div class="col-md-12">
-            <div role="navigation" class="col-md-2 col-xs-2">
-                <div class="btn-group-vertical">
-                    <a class="btn btn-default" ui-sref="locations">Traditional Outlets</a>
-                    <a class="btn btn-default">Non-Traditional Outlets</a>
-                    <a class="btn btn-default">Hot Spots</a>
-                </div>
+            <div class="btn-group">
+                <a class="btn btn-default" ui-sref="surveys.list">
+                    Surveys
+                </a>
+                <a class="btn btn-default" ui-sref="locations.list">
+                   Locations
+                </a>
             </div>
-            <div id="view" class="col-md-6" ui-view>
-                <h1>High Risk Zones Mappings</h1>
+            <div class="content-panel" ui-view>
+                <h1>Traditional Outlets</h1>
             </div>
         </div>
     </div>
@@ -50,6 +51,8 @@
 <script type="text/javascript" src="/app/pasmo_crud_app.js"></script>
 <script type="text/javascript" src="/app/utils.js"></script>
 <script type="text/javascript" src="/app/locations.js"></script>
+<script type="text/javascript" src="/app/surveys.js"></script>
+<script type="text/javascript" src="app/traditional_outlet_survey.js"></script>
 <script type="text/javascript" src="/app/router.js"></script>
 
 </body>

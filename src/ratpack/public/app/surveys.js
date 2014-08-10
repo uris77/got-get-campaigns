@@ -1,6 +1,7 @@
 PasmoApp.apiUrls.survey = {
 		create: "/api/surveys",
-		list: "/api/surveys"
+		list: "/api/surveys",
+		getById: function(id) { return "/api/surveys/" + id; }
 };
 
 PasmoApp.isYear = function(num) {
@@ -25,16 +26,19 @@ PasmoApp.CreateSurveyService = function($http) {
 	};
 };
 
-PasmoApp.ListSurveyService = function($http) {
+PasmoApp.SurveyRepositoryService = function($http) {
 	var self = this;
 	self.list = function() {
 		return $http.get(PasmoApp.apiUrls.survey.list);
 	};
+
+	self.fetch = function(surveyId) {
+		return $http.get(PasmoApp.apiUrls.survey.getById(surveyId));
+	};
 };
 
-PasmoApp.SurveysListController = function($scope, ListSurveyService) {
-	console.log("Started List controller");
-	ListSurveyService.list()
+PasmoApp.SurveysListController = function($scope, SurveyRepositoryService) {
+	SurveyRepositoryService.list()
 		.success( function(data) {
 			$scope.surveys = data;
 		});
@@ -42,7 +46,6 @@ PasmoApp.SurveysListController = function($scope, ListSurveyService) {
 
 PasmoApp.SurveysCreateController = function($scope, $state, CreateSurveyService) {
 	var self = this;
-	console.log("Started Create Controller");
 	$scope.months = [
 		{name: "January"}, {name: "February"}, {name: "March"}, {name: "April"},
 		{name: "May"}, {name: "June"}, {name: "July"}, {name: "August"},
@@ -65,10 +68,27 @@ PasmoApp.SurveysCreateController = function($scope, $state, CreateSurveyService)
 	};
 };
 
+PasmoApp.SurveyShowController = function($scope, $stateParams, SurveyRepositoryService) {
+	$scope.locations = [
+		{name: "Traditional", total: "21", surveyed: "0"},
+		{name: "Non-Traditional", total: "10", surveyed: "0"},
+		{name: "Hotspot", total: "11", surveyed: "0"}
+	];
+
+	SurveyRepositoryService.fetch($stateParams.id)
+		.success( function(data) {
+			$scope.survey = data.survey;
+		})
+		.error( function(data) {
+			console.error("ERROR: ", data);
+		});
+};
+
 
 angular
 	.module("PasmoApp")
 	.service("CreateSurveyService", PasmoApp.CreateSurveyService)
-	.service("ListSurveyService", PasmoApp.ListSurveyService)
+	.service("SurveyRepositoryService", PasmoApp.SurveyRepositoryService)
 	.controller('SurveysListController', PasmoApp.SurveysListController)
-	.controller('SurveysCreateController', PasmoApp.SurveysCreateController);
+	.controller('SurveysCreateController', PasmoApp.SurveysCreateController)
+	.controller("SurveyShowController", PasmoApp.SurveyShowController);

@@ -6,10 +6,10 @@ import com.allanbank.mongodb.bson.element.ObjectIdElement
 import org.pasmo.gotitget.entities.PersistentEntity
 
 class LocationEntity implements PersistentEntity {
-    ObjectId _id
+    String _id
     String name
     String district
-    String typeOfOutlet
+    String locationType
     def loc
 
     LocationEntity() {
@@ -18,10 +18,10 @@ class LocationEntity implements PersistentEntity {
 
     LocationEntity(Document  doc) {
         ObjectIdElement objectId = doc.get("_id")
-        _id = new ObjectId(objectId.getId().toHexString())
+        _id = objectId.getId().toHexString()
         name =  doc.get("name").getValueAsString()
         district = doc.get("district").getValueAsString()
-        typeOfOutlet = doc.get("typeOfOutlet").getValueAsString()
+        locationType = doc.get("locationType").getValueAsString()
         loc = doc.get("loc").getValueAsObject()
         this
     }
@@ -35,7 +35,7 @@ class LocationEntity implements PersistentEntity {
                 id: id,
                 name: name,
                 district: district,
-                typeOfOutlet: typeOfOutlet,
+                locationType: locationType,
                 loc: [lon: loc.getElements().first().valueAsString, lat: loc.getElements().last().valueAsString]
 
         ]

@@ -3,6 +3,7 @@ package org.pasmo.gotitget.repositories
 import com.allanbank.mongodb.MongoClient
 import com.allanbank.mongodb.MongoCollection
 import com.allanbank.mongodb.MongoDatabase
+import org.pasmo.gotitget.DatabaseClient
 
 abstract class AbstractMongoRepository {
     abstract String getCollectionName()
@@ -14,4 +15,5 @@ abstract class AbstractMongoRepository {
         mongoDatabase = mongo.getDatabase(databaseName)
         mongoCollection = mongoDatabase.getCollection(collectionName)
     }
+
 }

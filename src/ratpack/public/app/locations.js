@@ -13,8 +13,8 @@ PasmoApp.validateLocationForm = function(params) {
 		errors.push("District: select a district.");
 	}
 
-	if(_.isUndefined(params.typeOfOutlet)) {
-		errors.push("Type of Outlet: select what type of outlet this location is.");
+	if(_.isUndefined(params.locationType)) {
+		errors.push("Type of location: select what type of outlet this location is.");
 	}
 
 	if(_.isUndefined(params.loc)) {
@@ -59,7 +59,7 @@ PasmoApp.LocationCreateController = function($scope, $state, LocationCreateServi
 		{name: 'Cayo'}, {name: 'Stann Creek'}, {name: 'Toledo'}
 	];
 
-	$scope.typesOfOutlets = [
+	$scope.locationTypes = [
 		{name: "Traditional"},
 		{name: "Non-Traditional"},
 		{name: "Hotspot"}
@@ -69,7 +69,7 @@ PasmoApp.LocationCreateController = function($scope, $state, LocationCreateServi
 		var params = {
 			name: $scope.name,
 			district: $scope.district ? $scope.district.name : undefined,
-			typeOfOutlet: $scope.typeOfOutlet ? $scope.typeOfOutlet.name : undefined,
+			locationType: $scope.locationType ? $scope.locationType.name : undefined,
 			loc: {lon: $scope.longitude, lat: $scope.latitude}
 		};
 		var errors = PasmoApp.validateLocationForm(params);

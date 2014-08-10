@@ -1,6 +1,9 @@
 <div class="panel panel-primary" ui-view>
 	<div class="panel-heading">
-		Locations List
+		<span>Locations List</span> | 
+		<a class="btn btn-primary btn-xs" ui-sref="locations.create">
+			<span class="glyphicon glyphicon-plus"></span>	
+		</a>
 	</div>
 	<div class="panel-body" ng-if="locations">
 		<table class="table table-striped table-bordered">
@@ -14,7 +17,7 @@
 			<tbody>
 				<tr ng-repeat="location in locations">
 						<td>{{ location.name }}</td>
-						<td>{{ location.typeOfOutlet }}</td>
+						<td>{{ location.locationType }}</td>
 						<td>{{ location.district }}</td>
 						<td>{{ location.loc.lon }}</td>
 						<td>{{ location.loc.lat }}</td>

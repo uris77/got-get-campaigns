@@ -1,0 +1,39 @@
+<div class="jumbotron" ng-show="noLocations">
+	<h1>No Traditional Locations have been created.</h1>
+</div>
+
+<div class="panel panel-primary" ng-hide="noLocations">
+	<div class="panel-heading">
+		Survey | Traditional Outlet
+	</div>
+	<div class="panel-body">
+		<form role="form" class="form-horizontal">
+			<div class="form-group">
+				<label class="col-sm-2 control-label"></label>
+			</div>
+			<div class="form-group">
+				<label for="location" class="col-sm-2 control-label">Location</label>
+				<div class="col-sm-5">
+					<select ng-model="location" ng-options="location.name for location in locations"></select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="condoms" class="col-sm-2 control-label">Condoms Available</label>
+				<div class="col-sm-5">
+					<input type="checkbox" ng-model="condoms_available"></input>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="lube" class="col-sm-2 control-label">Lube Available</label>
+				<div class="col-sm-5">
+					<input type="checkbox" ng-model="lube_available"></input>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-5">
+					<button type="submit" class="btn btn-primary" ng-click="submit()">Save</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
