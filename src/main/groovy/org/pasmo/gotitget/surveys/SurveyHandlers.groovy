@@ -9,10 +9,12 @@ import ratpack.jackson.Jackson
 
 class SurveyHandlers extends GroovyHandler {
     private final SurveyCrudService crudService
+    private final SurveyGateway surveyGateway
 
     @Inject
-    SurveyHandlers(SurveyCrudService crudService) {
+    SurveyHandlers(SurveyCrudService crudService, SurveyGateway surveyGateway) {
         this.crudService = crudService
+        this.surveyGateway = surveyGateway
     }
 
     @Override
@@ -40,7 +42,7 @@ class SurveyHandlers extends GroovyHandler {
                 get {
                     context.byContent {
                         type("application/json") {
-                            List<SurveyEntity>  surveys = crudService.findAll()
+                            List<SurveyEntity>  surveys = surveyGateway.list()
                             render Jackson.json(surveys.collect{ SurveyEntity survey -> survey.toMap()})
                         }
                     }

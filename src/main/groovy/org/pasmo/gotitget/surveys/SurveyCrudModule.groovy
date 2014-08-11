@@ -10,7 +10,6 @@ class SurveyCrudModule extends AbstractModule implements MongoClientTrait {
 
     @Override
     protected void configure(){
-        //bind(SurveyCrudService.class).toInstance(new SurveyCrudService(mongoClient, System.getProperty("USER_DB_NAME")))
         bind(SurveyCrudService.class).in(Scopes.SINGLETON)
         bind(LocationGateway.class).toInstance(new LocationMongoGateway(mongoClient, System.getProperty("USER_DB_NAME")))
     }

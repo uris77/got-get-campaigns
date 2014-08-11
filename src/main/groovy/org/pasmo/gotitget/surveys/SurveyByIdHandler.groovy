@@ -9,12 +9,14 @@ import static ratpack.jackson.Jackson.json
 class SurveyByIdHandler extends GroovyHandler {
     private final SurveyCrudService surveyCrudService
     private final LocationGateway locationGateway
+    private final SurveyGateway surveyGateway
     private final List<String> LOCATION_TYPES = ["Traditional", "Non-Traditional", "Hotspot"]
 
     @Inject
-    SurveyByIdHandler(SurveyCrudService surveyCrudService, LocationGateway locationGateway) {
+    SurveyByIdHandler(SurveyCrudService surveyCrudService, LocationGateway locationGateway, SurveyGateway surveyGateway) {
         this.surveyCrudService = surveyCrudService
         this.locationGateway = locationGateway
+        this.surveyGateway = surveyGateway
     }
 
     @Override
@@ -22,7 +24,7 @@ class SurveyByIdHandler extends GroovyHandler {
         context.with {
             byMethod {
                 get {
-                    SurveyEntity survey = surveyCrudService.findById(pathTokens.id)
+                    SurveyEntity survey = surveyGateway.findById(pathTokens.id)
                     def locations = []
                     LOCATION_TYPES.each { String locationType ->
                         locations << [name: locationType, totalLocations: locationGateway.countByType(locationType), surveyed: 0]
