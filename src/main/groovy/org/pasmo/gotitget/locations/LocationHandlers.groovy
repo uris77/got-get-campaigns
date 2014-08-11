@@ -19,22 +19,14 @@ class LocationHandlers extends GroovyHandler {
         context.with {
             byMethod {
                 post {
-                    context.byContent {
-                        type("application/json") {
-                            ObjectNode node = parse Jackson.jsonNode()
-                            LocationEntity location = locationCrudService.create(node.toString())
-                            render Jackson.json(location.toMap())
-                        }
-                    }
+                    ObjectNode node = parse Jackson.jsonNode()
+                    LocationEntity location = locationCrudService.create(node.toString())
+                    render Jackson.json(location.toMap())
                 }
 
                 get {
-                    context.byContent {
-                        type("application/json") {
-                            List<LocationEntity> locations = locationCrudService.findAll()
-                            render Jackson.json(locations.collect{ LocationEntity location -> location.toMap()})
-                        }
-                    }
+                    List<LocationEntity> locations = locationCrudService.findAll()
+                    render Jackson.json(locations.collect{ LocationEntity location -> location.toMap()})
                 }
             }
         }
