@@ -6,7 +6,6 @@ import ratpack.groovy.handling.GroovyContext
 import ratpack.groovy.handling.GroovyHandler
 import ratpack.jackson.Jackson
 
-
 class SurveyHandlers extends GroovyHandler {
     private final SurveyCrudService crudService
     private final SurveyGateway surveyGateway
@@ -22,30 +21,22 @@ class SurveyHandlers extends GroovyHandler {
         context.with {
             byMethod {
                 post {
-                    context.byContent {
-                        type("application/json") {
-                            blocking {
-                                ObjectNode node = parse Jackson.jsonNode()
-                                crudService.create(node.toString())
-                            } then { SurveyEntity survey ->
-                                if(survey.hasErrors()) {
-                                    response.status(500)
-                                    render Jackson.json(survey.errors)
-                                } else {
-                                    render Jackson.json(survey.toMap())
-                                }
-                            }
+                    blocking {
+                        ObjectNode node = parse Jackson.jsonNode()
+                        crudService.create(node.toString())
+                    } then { SurveyEntity survey ->
+                        if(survey.hasErrors()) {
+                            response.status(500)
+                            render Jackson.json(survey.errors)
+                        } else {
+                            render Jackson.json(survey.toMap())
                         }
                     }
                 }
 
                 get {
-                    context.byContent {
-                        type("application/json") {
-                            List<SurveyEntity>  surveys = surveyGateway.list()
-                            render Jackson.json(surveys.collect{ SurveyEntity survey -> survey.toMap()})
-                        }
-                    }
+                    List<SurveyEntity> surveys = surveyGateway.list()
+                    render Jackson.json(surveys.collect{ SurveyEntity survey -> survey.toMap() })
                 }
             }
         }
