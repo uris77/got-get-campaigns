@@ -1,10 +1,11 @@
 PasmoApp.Surveys = {
 	TraditionalOutlet: {
 		OutletGatewayService: function($http) {
-			var self = this;
 			//Fetch all traditional outlets from server.
-			self.fetchTraditionalOutlets = function() {
-				return $http.get("/api/locations/byType/traditional");
+			return {
+				fetchTraditionalOutlets: function() {
+					return $http.get("/api/locations/byType/traditional");
+				};
 			};
 			
 		},
@@ -38,6 +39,6 @@ PasmoApp.Surveys = {
 
 angular
 	.module("PasmoApp")
-	.service("OutletGatewayService", PasmoApp.Surveys.TraditionalOutlet.OutletGatewayService)
+	.factory("OutletGatewayService", PasmoApp.Surveys.TraditionalOutlet.OutletGatewayService)
 	.controller("TraditionalOutletCreateController", PasmoApp.Surveys.TraditionalOutlet.CreateController);
 	
