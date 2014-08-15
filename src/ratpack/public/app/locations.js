@@ -1,9 +1,13 @@
-PasmoApp.apiUrls.locations = {
-	create: "/api/locations",
-	list: "/api/locations"
+PasmoLocation = {
+	apiUrls: {
+		locations: {
+			create: "/api/locations",
+			list: "/api/locations"
+		}
+	}
 };
 
-PasmoApp.validateLocationForm = function(params) {
+PasmoLocation.validateLocationForm = function(params) {
 	var errors = [];
 	if(_.isUndefined(params.name) || _.isEmpty(params.name.trim())) {
 		errors.push("Name: provide a name for the location.");
@@ -31,28 +35,17 @@ PasmoApp.validateLocationForm = function(params) {
 	return errors;
 };
 
-PasmoApp.LocationCreateService = function($http) {
+PasmoLocation.LocationCreateService = function($http) {
 	var self = this;
-	self.create = function(params) {
-		return $http.post(PasmoApp.apiUrls.locations.create, params);
-	};
+	return {
+		create: function(params) {
+			return $http.post(PasmoLocation.apiUrls.locations.create, params);
+		}
+	};	
 };
 
-PasmoApp.LocationListService = function($http) {
-	var self = this;
-	self.list = function() {
-		return $http.get(PasmoApp.apiUrls.locations.list);
-	};
-};
 
-PasmoApp.LocationListController = function($scope, LocationListService) {
-	LocationListService.list()
-		.success(function (data) {
-			$scope.locations = data;
-		});
-};
-
-PasmoApp.LocationCreateController = function($scope, $state, LocationCreateService) {
+PasmoLocation.LocationCreateController = function($scope, $state, LocationCreateService) {
 	var self = this;
 	$scope.districts = [
 		{name: 'Corozal'}, {name: 'Orange Walk'}, {name: 'Belize'},
@@ -72,7 +65,8 @@ PasmoApp.LocationCreateController = function($scope, $state, LocationCreateServi
 			locationType: $scope.locationType ? $scope.locationType.name : undefined,
 			loc: {lon: $scope.longitude, lat: $scope.latitude}
 		};
-		var errors = PasmoApp.validateLocationForm(params);
+		var errors = PasmoLocation
+	.validateLocationForm(params);
 		if(errors.length > 0) {
 			$scope.errors = errors;
 		} else {
@@ -87,9 +81,30 @@ PasmoApp.LocationCreateController = function($scope, $state, LocationCreateServi
 	};
 };
 
+angular.module("PasmoLocation.create", [])
+	.controller("LocationCreateController", PasmoLocation.LocationCreateController)
+	.factory("LocationCreateService", PasmoLocation.LocationCreateService);
+
+
+PasmoLocation.LocationListService = function($http) {
+	return {
+		list: function() {
+			return $http.get(PasmoLocation.apiUrls.locations.list);
+		}
+	};
+};
+
+PasmoLocation.LocationListController = function($scope, LocationListService) {
+	LocationListService.list()
+		.success(function (data) {
+			$scope.locations = data;
+		});
+};
+
+angular.module("PasmoLocation.list", [])
+	.factory("LocationListService", PasmoLocation.LocationListService)
+	.controller("LocationListController", PasmoLocation.LocationListController);
+
+
 angular
-	.module("PasmoApp")
-	.service("LocationCreateService", PasmoApp.LocationCreateService)
-	.service("LocationListService", PasmoApp.LocationListService)
-	.controller('LocationListController', PasmoApp.LocationListController)
-	.controller('LocationCreateController', PasmoApp.LocationCreateController);
+	.module("PasmoLocation", ["PasmoLocation.create", "PasmoLocation.list"]);

@@ -1,16 +1,18 @@
-PasmoApp.apiUrls.survey = {
+var surveys = {
+	apiUrls: {
 		create: "/api/surveys",
 		list: "/api/surveys",
 		getById: function(id) { return "/api/surveys/" + id; }
+	}
 };
 
-PasmoApp.isYear = function(num) {
-	return PasmoApp.utils.isNumber(num) && (parseInt(num) > 2010 && parseInt(num) < 2030)
+surveys.isYear = function(num) {
+	return surveys.utils.isNumber(num) && (parseInt(num) > 2010 && parseInt(num) < 2030)
 };
 
-PasmoApp.validateSurveyForm = function(month, year) {
+surveys.validateSurveyForm = function(month, year) {
 	var errors = [];
-	if(!PasmoApp.isYear(year)) {
+	if(!surveys.isYear(year)) {
 		errors.push("Year: Provide a valid year! (E.g. 2014)");
 	}
 	if(_.isUndefined(month)) {
@@ -19,56 +21,26 @@ PasmoApp.validateSurveyForm = function(month, year) {
 	return errors;
 };
 
-PasmoApp.CreateSurveyService = function($http) {
-	var self = this;
-	self.create = function(params) {
-		return $http.post(PasmoApp.apiUrls.survey.create, params);
-	};
+
+surveys.SurveyRepositoryService = function($http) {
+	return {
+		list: function() {
+			return $http.get(surveys.apiUrls.list);
+		},
+		fetch: function(surveyId) {
+			return $http.get(surveys.apiUrls.getById(surveyId));
+		}
+	}
 };
 
-PasmoApp.SurveyRepositoryService = function($http) {
-	var self = this;
-	self.list = function() {
-		return $http.get(PasmoApp.apiUrls.survey.list);
-	};
-
-	self.fetch = function(surveyId) {
-		return $http.get(PasmoApp.apiUrls.survey.getById(surveyId));
-	};
-};
-
-PasmoApp.SurveysListController = function($scope, SurveyRepositoryService) {
+surveys.SurveysListController = function($scope, SurveyRepositoryService) {
 	SurveyRepositoryService.list()
 		.success( function(data) {
 			$scope.surveys = data;
 		});
 };
 
-PasmoApp.SurveysCreateController = function($scope, $state, CreateSurveyService) {
-	var self = this;
-	$scope.months = [
-		{name: "January"}, {name: "February"}, {name: "March"}, {name: "April"},
-		{name: "May"}, {name: "June"}, {name: "July"}, {name: "August"},
-		{name: "September"}, {name: "October"}, {name: "November"}, {name: "December"}
-	];
-
-	$scope.submit = function() {
-		var errors = PasmoApp.validateSurveyForm($scope.month, $scope.year);
-		if(errors.length > 0){
-			$scope.errors = errors;
-		}else{
-			CreateSurveyService.create({month: $scope.month.name, year: $scope.year})
-			.success(function() {
-				$state.transitionTo("surveys.list");
-			})
-			.error(function(data){
-				$scope.errors = data.errors;
-			});
-		}
-	};
-};
-
-PasmoApp.SurveyShowController = function($scope, $stateParams, SurveyRepositoryService) {
+surveys.SurveyShowController = function($scope, $stateParams, SurveyRepositoryService) {
 	$scope.locations = [
 		{name: "Traditional", total: "21", surveyed: "0"},
 		{name: "Non-Traditional", total: "10", surveyed: "0"},
@@ -85,10 +57,49 @@ PasmoApp.SurveyShowController = function($scope, $stateParams, SurveyRepositoryS
 };
 
 
-angular
-	.module("PasmoApp")
-	.service("CreateSurveyService", PasmoApp.CreateSurveyService)
-	.service("SurveyRepositoryService", PasmoApp.SurveyRepositoryService)
-	.controller('SurveysListController', PasmoApp.SurveysListController)
-	.controller('SurveysCreateController', PasmoApp.SurveysCreateController)
-	.controller("SurveyShowController", PasmoApp.SurveyShowController);
+angular.module("surveys.list", [])
+	.factory("SurveyRepositoryService", surveys.SurveyRepositoryService)
+	.controller("SurveysListController", surveys.SurveysListController)
+	.controller("SurveyShowController", surveys.SurveyShowController);
+
+
+surveys.CreateSurveyService = function($http) {
+	return {
+		create: function(params) {
+			return $http.post(surveys.apiUrls.survey.create, params);
+		}
+	}
+};
+
+
+surveys.SurveysCreateController = function($scope, $state, CreateSurveyService) {
+	var self = this;
+	$scope.months = [
+		{name: "January"}, {name: "February"}, {name: "March"}, {name: "April"},
+		{name: "May"}, {name: "June"}, {name: "July"}, {name: "August"},
+		{name: "September"}, {name: "October"}, {name: "November"}, {name: "December"}
+	];
+
+	$scope.submit = function() {
+		var errors = surveys.validateSurveyForm($scope.month, $scope.year);
+		if(errors.length > 0){
+			$scope.errors = errors;
+		}else{
+			CreateSurveyService.create({month: $scope.month.name, year: $scope.year})
+			.success(function() {
+				$state.transitionTo("surveys.list");
+			})
+			.error(function(data){
+				$scope.errors = data.errors;
+			});
+		}
+	};
+};
+
+angular.module("surveys.create", [])
+	.factory("SurveysCreateController", surveys.SurveysCreateController)
+	.controller("CreateSurveyService", surveys.CreateSurveyService);
+
+
+angular.module("PasmoApp.surveys", ["surveys.list", "surveys.create"]);
+
