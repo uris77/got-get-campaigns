@@ -65,8 +65,7 @@ PasmoLocation.LocationCreateController = function($scope, $state, LocationCreate
 			locationType: $scope.locationType ? $scope.locationType.name : undefined,
 			loc: {lon: $scope.longitude, lat: $scope.latitude}
 		};
-		var errors = PasmoLocation
-	.validateLocationForm(params);
+		var errors = PasmoLocation.validateLocationForm(params);
 		if(errors.length > 0) {
 			$scope.errors = errors;
 		} else {

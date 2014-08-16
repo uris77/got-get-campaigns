@@ -5,11 +5,14 @@ PasmoApp.Surveys = {
 			return {
 				fetchTraditionalOutlets: function() {
 					return $http.get("/api/locations/byType/traditional");
-				};
+				},
+				createTraditonalOutlet: function(params) {
+					return $http.post("/api/surveys/traditional_outlets", params);
+				}
 			};
 			
 		},
-		CreateController: function($scope, OutletGatewayService) {
+		CreateController: function($scope, $state, $stateParams, OutletGatewayService) {
 			$scope.condoms_available = false;
 			$scope.lube_available = false;
 			OutletGatewayService
@@ -27,18 +30,36 @@ PasmoApp.Surveys = {
 				});
 
 			$scope.submit = function() {
-				console.log("Condoms? ", $scope.condoms_available);
-				console.log("Lube? ", $scope.lube_available);
-			}
+				
+				var params = {
+					condoms: $scope.condoms_available,
+					lube: $scope.lube_available,
+					gigi: $scope.gigi,
+					location: $scope.location,
+					survey_id: $stateParams.id
+				}
+				OutletGatewayService.createTraditonalOutlet(params)
+					.success(function(data) {
+						$state.transitionTo("surveys.show", {id: $stateParams.id});
+					});
+			};
+		},
+		routes: function($stateProvider) {
+			$stateProvider
+				.state("surveys.traditionalOutlet", {
+					url: "/:id/traditional_outlet/create",
+        			templateUrl: "/surveys/forms/traditional_outlet.html",
+        			controller: "TraditionalOutletCreateController"
+				});
 		}
 	}
 };
 
 
 
-
 angular
-	.module("PasmoApp")
+	.module("TraditionaOutletSurvey", ["ui.router"])
+	.config(PasmoApp.Surveys.TraditionalOutlet.routes)
 	.factory("OutletGatewayService", PasmoApp.Surveys.TraditionalOutlet.OutletGatewayService)
 	.controller("TraditionalOutletCreateController", PasmoApp.Surveys.TraditionalOutlet.CreateController);
 	

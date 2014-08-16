@@ -97,8 +97,8 @@ surveys.SurveysCreateController = function($scope, $state, CreateSurveyService) 
 };
 
 angular.module("surveys.create", [])
-	.factory("SurveysCreateController", surveys.SurveysCreateController)
-	.controller("CreateSurveyService", surveys.CreateSurveyService);
+	.factory("CreateSurveyService", surveys.SurveysCreateController)
+	.controller("SurveysCreateController", surveys.CreateSurveyService);
 
 
 angular.module("PasmoApp.surveys", ["surveys.list", "surveys.create"]);

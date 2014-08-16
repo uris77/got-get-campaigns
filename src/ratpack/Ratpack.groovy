@@ -6,6 +6,7 @@ import org.pac4j.oauth.client.Google2Client
 import org.pasmo.gotitget.locations.LocationByTypeHandler
 import org.pasmo.gotitget.locations.LocationCrudModule
 import org.pasmo.gotitget.locations.LocationHandlers
+import org.pasmo.gotitget.persistence.MongoDBClientModule
 import org.pasmo.gotitget.repositories.UserRepository
 import org.pasmo.gotitget.repositories.UserRepositoryModule
 import org.pasmo.gotitget.repositories.entities.UserEntity
@@ -15,6 +16,8 @@ import org.pasmo.gotitget.surveys.SurveyByIdHandler
 import org.pasmo.gotitget.surveys.SurveyCrudModule
 import org.pasmo.gotitget.surveys.SurveyGatewayModule
 import org.pasmo.gotitget.surveys.SurveyHandlers
+import org.pasmo.gotitget.surveys.outlets.OutletSurveyHandler
+import org.pasmo.gotitget.surveys.outlets.OutletSurveyModule
 import ratpack.jackson.JacksonModule
 import ratpack.pac4j.Pac4jModule
 import ratpack.pac4j.internal.Pac4jCallbackHandler
@@ -33,6 +36,7 @@ ratpack {
         add new SessionModule()
         add new MapSessionsModule(10, 5)
         add new JacksonModule()
+        add new MongoDBClientModule()
         bind Pac4jCallbackHandler
         Google2Client google2Client = new Google2Client(System.getProperty("GOOGLE_ID"), System.getProperty("GOOGLE_SECRET"))
         add new Pac4jModule<>(google2Client, new AuthPathAuthorizer())
@@ -42,6 +46,7 @@ ratpack {
         add new UserRepositoryModule()
         add new SurveyCrudModule()
         add new LocationCrudModule()
+        add new OutletSurveyModule()
     }
 
     handlers {
@@ -78,6 +83,13 @@ ratpack {
 
             }
 
+            get("app") {
+                render groovyTemplate("app.html")
+            }
+
+            get("surveys") {
+                render groovyTemplate("surveys.html")
+            }
         }
 
         prefix("api") {
@@ -100,18 +112,14 @@ ratpack {
             handler("users", registry.get(UsersHandler))
             handler("users/:id", registry.get(UsersByIdHandler))
             handler("surveys", registry.get(SurveyHandlers))
+            handler("surveys/traditional_outlets", registry.get(OutletSurveyHandler))
             handler("surveys/:id", registry.get(SurveyByIdHandler))
             handler("locations", registry.get(LocationHandlers))
             handler("locations/byType/:locationType", registry.get(LocationByTypeHandler))
         }
 
-        get("app") {
-            render groovyTemplate("app.html")
-        }
 
-        get("surveys") {
-            render groovyTemplate("surveys.html")
-        }
+
 
         assets "public"
         assets "public/app/templates"

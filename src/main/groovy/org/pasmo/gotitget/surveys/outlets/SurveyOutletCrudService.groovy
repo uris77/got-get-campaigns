@@ -1,37 +1,47 @@
 package org.pasmo.gotitget.surveys.outlets
 
-import com.allanbank.mongodb.MongoClient
-import com.allanbank.mongodb.bson.builder.BuilderFactory
-import com.allanbank.mongodb.bson.builder.DocumentBuilder
-import com.mongodb.util.JSON
-import org.pasmo.gotitget.repositories.AbstractMongoRepository
+import com.mongodb.BasicDBObject
+import com.mongodb.DBCollection
+import org.bson.types.ObjectId
+import org.pasmo.gotitget.persistence.MongoDBClient
 import org.pasmo.gotitget.surveys.SurveyEntity
+import org.pasmo.gotitget.surveys.SurveyGateway
+import javax.inject.Inject
 
-import static com.allanbank.mongodb.builder.QueryBuilder.where
+class SurveyOutletCrudService {
+    private final String COLLECTION_NAME = "outlet_surveys"
+    private final SurveyGateway surveyGateway
+    private final DBCollection mongoCollection
 
-class SurveyOutletCrudService extends AbstractMongoRepository {
 
-    SurveyOutletCrudService(MongoClient mongo, String databaseName) {
-        super(mongo, databaseName)
-        mongoCollection = mongoDatabase.getCollection(collectionName)
+    @Inject
+    SurveyOutletCrudService(MongoDBClient mongoDBClient, SurveyGateway surveyGateway) {
+        mongoCollection = mongoDBClient.getCollection(COLLECTION_NAME)
+        this.surveyGateway = surveyGateway
     }
 
-    @Override
-    String getCollectionName() {
-        "outlet_surveys"
-    }
-
-    def create(String json) {
-        def params = JSON.parse(json)
-        DocumentBuilder doc = BuilderFactory.start()
+    OutletSurveyEntity create(Map params) {
+        BasicDBObject doc = new BasicDBObject()
         params.each{ key, value ->
-            doc.add(key, value)
+            if(key == "survey_id") {
+                doc.append(key, new ObjectId(value))
+            } else if(key == "location") {
+                value.id = new ObjectId(value.id)
+                doc.append(key, value)
+            } else {
+                doc.append(key, value)
+            }
         }
         mongoCollection.insert(doc)
-        new OutletSurveyEntity(find(survey, params.json.location.id))
+        SurveyEntity survey = surveyGateway.findById(doc.survey_id.toString())
+        new OutletSurveyEntity(
+            id: doc.get("_id").toString(),
+            condomsAvailable: doc.get("condoms_available").asBoolean(),
+            lubesAvailable: doc.get("lubes_available").asBoolean(),
+            gigi: doc.get("gigi").asBoolean(),
+            locationName: doc.get("location").name,
+            survey: [month: survey.month.toString() ,year: survey.year.toString()]
+        )
     }
 
-    def find(SurveyEntity  survey, String locationId) {
-        mongoCollection.findOne(where("month").equals(survey.month).where("year").equals(survey.year).where("location_id").equals(locationId))
-    }
 }

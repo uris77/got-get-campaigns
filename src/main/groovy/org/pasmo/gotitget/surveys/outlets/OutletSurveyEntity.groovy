@@ -1,19 +1,15 @@
 package org.pasmo.gotitget.surveys.outlets
 
-import com.allanbank.mongodb.bson.Document
-import com.allanbank.mongodb.bson.element.ObjectIdElement
+import groovy.transform.Immutable
 
+@Immutable
 class OutletSurveyEntity {
 
     String id
     Boolean condomsAvailable
     Boolean lubesAvailable
+    Boolean gigi
     String locationName
+    Map<String, String> survey
 
-    OutletSurveyEntity(Document doc) {
-        ObjectIdElement _id = doc.get("_id")
-        id = _id.getId().toHexString()
-        condomsAvailable = doc.get("condoms_available").asBoolean()
-        lubesAvailable = doc.get("lubees_available").asBoolean()
-    }
 }
