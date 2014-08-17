@@ -8,19 +8,19 @@ import org.pasmo.surveys.SurveyEntity
 import org.pasmo.surveys.SurveyGateway
 import javax.inject.Inject
 
-class SurveyOutletCrudService {
-    private final String COLLECTION_NAME = "outlet_surveys"
+class TraditionalOutletSurveyCrud {
+    private final String COLLECTION_NAME = "traditional_outlet_surveys"
     private final SurveyGateway surveyGateway
     private final DBCollection mongoCollection
 
 
     @Inject
-    SurveyOutletCrudService(MongoDBClient mongoDBClient, SurveyGateway surveyGateway) {
+    TraditionalOutletSurveyCrud(MongoDBClient mongoDBClient, SurveyGateway surveyGateway) {
         mongoCollection = mongoDBClient.getCollection(COLLECTION_NAME)
         this.surveyGateway = surveyGateway
     }
 
-    OutletSurveyEntity create(Map params) {
+    TraditionalOutletSurveyEntity create(Map params) {
         BasicDBObject doc = new BasicDBObject()
         params.each{ key, value ->
             if(key == "survey_id") {
@@ -34,7 +34,7 @@ class SurveyOutletCrudService {
         }
         mongoCollection.insert(doc)
         SurveyEntity survey = surveyGateway.findById(doc.survey_id.toString())
-        new OutletSurveyEntity(
+        new TraditionalOutletSurveyEntity(
             id: doc.get("_id").toString(),
             condomsAvailable: doc.get("condoms_available").asBoolean(),
             lubesAvailable: doc.get("lubes_available").asBoolean(),

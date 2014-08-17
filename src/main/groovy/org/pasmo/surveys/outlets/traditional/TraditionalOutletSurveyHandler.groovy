@@ -7,11 +7,11 @@ import javax.inject.Inject
 
 import static ratpack.jackson.Jackson.json
 
-class OutletSurveyHandler extends GroovyHandler {
-    private final SurveyOutletCrudService surveyOutletCrudService
+class TraditionalOutletSurveyHandler extends GroovyHandler {
+    private final TraditionalOutletSurveyCrud surveyOutletCrudService
 
     @Inject
-    OutletSurveyHandler(SurveyOutletCrudService surveyOutletCrudService) {
+    TraditionalOutletSurveyHandler(TraditionalOutletSurveyCrud surveyOutletCrudService) {
         this.surveyOutletCrudService = surveyOutletCrudService
     }
 
@@ -23,7 +23,7 @@ class OutletSurveyHandler extends GroovyHandler {
                     blocking {
                         def params = parse Map
                         surveyOutletCrudService.create(params)
-                    }  then { OutletSurveyEntity outletSurveyEntity ->
+                    }  then { TraditionalOutletSurveyEntity outletSurveyEntity ->
                         render json(outletSurveyEntity)
                     }
                 }

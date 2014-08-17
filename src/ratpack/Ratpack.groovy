@@ -16,8 +16,8 @@ import org.pasmo.surveys.SurveyByIdHandler
 import org.pasmo.surveys.SurveyCrudModule
 import org.pasmo.surveys.SurveyGatewayModule
 import org.pasmo.surveys.SurveyHandlers
-import org.pasmo.surveys.outlets.traditional.OutletSurveyHandler
-import org.pasmo.surveys.outlets.traditional.OutletSurveyModule
+import org.pasmo.surveys.outlets.traditional.TraditionalOutletSurveyHandler
+import org.pasmo.surveys.outlets.traditional.TraditionalOutletSurveyModule
 import ratpack.jackson.JacksonModule
 import ratpack.pac4j.Pac4jModule
 import ratpack.pac4j.internal.Pac4jCallbackHandler
@@ -46,7 +46,7 @@ ratpack {
         add new UserRepositoryModule()
         add new SurveyCrudModule()
         add new LocationCrudModule()
-        add new OutletSurveyModule()
+        add new TraditionalOutletSurveyModule()
     }
 
     handlers {
@@ -112,7 +112,7 @@ ratpack {
             handler("users", registry.get(UsersHandler))
             handler("users/:id", registry.get(UsersByIdHandler))
             handler("surveys", registry.get(SurveyHandlers))
-            handler("surveys/traditional_outlets", registry.get(OutletSurveyHandler))
+            handler("surveys/traditional_outlets", registry.get(TraditionalOutletSurveyHandler))
             handler("surveys/:id", registry.get(SurveyByIdHandler))
             handler("locations", registry.get(LocationHandlers))
             handler("locations/byType/:locationType", registry.get(LocationByTypeHandler))

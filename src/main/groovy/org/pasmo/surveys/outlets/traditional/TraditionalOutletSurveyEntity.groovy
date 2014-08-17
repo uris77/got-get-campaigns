@@ -3,7 +3,7 @@ package org.pasmo.surveys.outlets.traditional
 import groovy.transform.Immutable
 
 @Immutable
-class OutletSurveyEntity {
+class TraditionalOutletSurveyEntity {
 
     String id
     Boolean condomsAvailable
