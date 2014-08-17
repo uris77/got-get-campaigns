@@ -31,7 +31,6 @@ PasmoApp.Surveys = {
 				});
 
 			$scope.submit = function() {
-				
 				var params = {
 					condoms: $scope.condoms_available,
 					lube: $scope.lube_available,
@@ -48,12 +47,16 @@ PasmoApp.Surveys = {
 						$state.transitionTo("surveys.show", {id: $stateParams.id});
 					});
 			};
+
+			$scope.cancel = function() {
+				$state.transitionTo("surveys.show", {id: $stateParams.id});
+			};
 		},
 		routes: function($stateProvider) {
 			$stateProvider
 				.state("surveys.traditionalOutlet", {
 					url: "/:id/traditional_outlet/create",
-        			templateUrl: "/surveys/forms/traditional_outlet.html",
+        			templateUrl: "/surveys/traditional_outlets/create_form.html",
         			controller: "TraditionalOutletCreateController"
 				});
 		}
