@@ -61,6 +61,7 @@ class TraditionalOutletSurveyCrud {
                 lubesAvailable: doc.get("lubes_available").asBoolean(),
                 gigi: doc.get("gigi").asBoolean(),
                 locationName: doc.get("location").name,
+                locationDistrict: doc.get("location").district,
                 survey: [month: survey.month.toString() ,year: survey.year.toString()]
         )
     }

@@ -10,6 +10,7 @@ class TraditionalOutletSurveyEntity {
     Boolean lubesAvailable
     Boolean gigi
     String locationName
+    String locationDistrict
     Map<String, String> survey
 
 }

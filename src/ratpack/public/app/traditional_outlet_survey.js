@@ -8,6 +8,9 @@ PasmoApp.Surveys = {
 				},
 				createTraditonalOutlet: function(params, survey_id) {
 					return $http.post("/api/surveys/" + survey_id + "/traditional_outlets", params);
+				},
+				fetchTraditionalOutletsSurvey: function(survey_id) {
+					return $http.get("/api/surveys/" + survey_id + "/traditional_outlets");
 				}
 			};
 			
@@ -58,6 +61,22 @@ PasmoApp.Surveys = {
 					url: "/:id/traditional_outlet/create",
         			templateUrl: "/surveys/traditional_outlets/create_form.html",
         			controller: "TraditionalOutletCreateController"
+				})
+				.state("surveys.listTraditionalOutlets", {
+					url: "/:id/traditional_outlet/list",
+					templateUrl: "/surveys/traditional_outlets/list.html",
+					controller: "TraditionalOutletListController"
+				});
+		},
+
+		ListController: function($scope, $state, $stateParams, OutletGatewayService) {
+			OutletGatewayService.fetchTraditionalOutletsSurvey($stateParams.id)
+				.success(function(data) {
+					$scope.surveys = data;
+					console.log("Surveys: ", $scope.surveys);
+				})
+				.error(function(data) {
+					console.error("ERROR: ", data);
 				});
 		}
 	}
@@ -69,5 +88,6 @@ angular
 	.module("TraditionaOutletSurvey", ["ui.router"])
 	.config(PasmoApp.Surveys.TraditionalOutlet.routes)
 	.factory("OutletGatewayService", PasmoApp.Surveys.TraditionalOutlet.OutletGatewayService)
-	.controller("TraditionalOutletCreateController", PasmoApp.Surveys.TraditionalOutlet.CreateController);
+	.controller("TraditionalOutletCreateController", PasmoApp.Surveys.TraditionalOutlet.CreateController)
+	.controller("TraditionalOutletListController", PasmoApp.Surveys.TraditionalOutlet.ListController);
 	

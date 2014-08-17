@@ -16,7 +16,21 @@
 						<td>{{ location.name }}</td>
 						<td>{{ location.total }}</td>
 						<td>{{ location.surveyed }}</td>
-						<td>View</td>
+						<td ng-if="location.name == 'Traditional'">
+							<a ui-sref="surveys.listTraditionalOutlets({id: survey.id})">
+								View
+							</a>
+						</td>
+						<td ng-if="location.name == 'Non-Traditional'">
+							<a ui-sref="surveys.listTraditionalOutlets({id: survey.id})">
+								View
+							</a>
+						</td>
+						<td ng-if="location.name == 'Hotspot'">
+							<a ui-sref="surveys.listTraditionalOutlets({id: survey.id})">
+								View
+							</a>
+						</td>
 						<td ng-if="location.name == 'Traditional'">
 							<a ui-sref="surveys.traditionalOutlet({id: survey.id })">
 								Create
