@@ -16,9 +16,6 @@ PasmoApp.Surveys = {
 			
 		},
 		CreateController: function($scope, $state, $stateParams, OutletGatewayService) {
-			$scope.condoms_available = false;
-			$scope.lube_available = false;
-			$scope.gigi = false;
 			OutletGatewayService
 				.fetchTraditionalOutlets()
 				.success(function(data) {
@@ -35,16 +32,16 @@ PasmoApp.Surveys = {
 
 			$scope.submit = function() {
 				var params = {
-					condoms: $scope.condoms_available,
-					lube: $scope.lube_available,
-					gigi: $scope.gigi,
+					condoms_available: _.isBoolean($scope.condoms_available) ? $scope.condoms_available : false,
+					lubes_available: _.isBoolean($scope.lube_available) ? $scope.lube_available : false,
+					gigi: _.isBoolean($scope.gigi) ? $scope.gigi : false,
 					location: {
 						id: $scope.location.id,
 						name: $scope.location.name,
 						district: $scope.location.district,
 						loc: $scope.location.loc
 					}
-				}
+				};
 				OutletGatewayService.createTraditonalOutlet(params, $stateParams.id)
 					.success(function(data) {
 						$state.transitionTo("surveys.show", {id: $stateParams.id});
@@ -53,6 +50,10 @@ PasmoApp.Surveys = {
 
 			$scope.cancel = function() {
 				$state.transitionTo("surveys.show", {id: $stateParams.id});
+			};
+
+			$scope.gigiObs = function() {
+				console.log("changed gigi: ", $scope.gigi);
 			};
 		},
 		routes: function($stateProvider) {
@@ -70,6 +71,7 @@ PasmoApp.Surveys = {
 		},
 
 		ListController: function($scope, $state, $stateParams, OutletGatewayService) {
+			$scope.id = $stateParams.id;
 			OutletGatewayService.fetchTraditionalOutletsSurvey($stateParams.id)
 				.success(function(data) {
 					$scope.surveys = data;

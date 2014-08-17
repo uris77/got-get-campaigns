@@ -1,6 +1,9 @@
 <div class="panel panel-primary" ui-view>
 	<div class="panel-heading">
-		Traditional Outlets Surveys
+		Traditional Outlets Surveys | 
+		<a ui-sref="surveys.traditionalOutlet({id: id })" class="btn btn-primary btn-xs">
+			<span class="glyphicon glyphicon-plus"></span>	
+		</a>
 	</div>
 	<div class="panel-body" ng-if="surveys">
 		<table class="table table-striped table-bordered">
