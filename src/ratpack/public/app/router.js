@@ -1,16 +1,16 @@
 PasmoApp.locations = {
     root: {
         url: 'locations',
-        templateUrl: "locations/index.html"
+        templateUrl: "/locations/index.html"
     },
 	list: {
 		url: '/list',
-		templateUrl: "locations/list.html",
+		templateUrl: "/locations/list.html",
 		controller: 'LocationListController'
 	},
     create: {
         url: '/create',
-        templateUrl: "locations/create.html",
+        templateUrl: "/locations/create.html",
         controller: 'LocationCreateController'
     }
 };

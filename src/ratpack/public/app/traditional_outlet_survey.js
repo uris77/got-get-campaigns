@@ -15,6 +15,7 @@ PasmoApp.Surveys = {
 		CreateController: function($scope, $state, $stateParams, OutletGatewayService) {
 			$scope.condoms_available = false;
 			$scope.lube_available = false;
+			$scope.gigi = false;
 			OutletGatewayService
 				.fetchTraditionalOutlets()
 				.success(function(data) {
