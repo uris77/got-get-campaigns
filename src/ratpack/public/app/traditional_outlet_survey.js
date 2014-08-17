@@ -44,16 +44,12 @@ PasmoApp.Surveys = {
 				};
 				OutletGatewayService.createTraditonalOutlet(params, $stateParams.id)
 					.success(function(data) {
-						$state.transitionTo("surveys.show", {id: $stateParams.id});
+						$state.transitionTo("surveys.listTraditionalOutlets", {id: $stateParams.id});
 					});
 			};
 
 			$scope.cancel = function() {
-				$state.transitionTo("surveys.show", {id: $stateParams.id});
-			};
-
-			$scope.gigiObs = function() {
-				console.log("changed gigi: ", $scope.gigi);
+				$state.transitionTo("surveys.listTraditionalOutlets", {id: $stateParams.id});
 			};
 		},
 		routes: function($stateProvider) {

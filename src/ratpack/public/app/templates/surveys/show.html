@@ -9,7 +9,6 @@
 				<th>Total Locations</th>
 				<th>Locations Surveyed</th>
 				<th></th>
-				<th></th>
 			</thead>
 			<tbody>
 				<tr ng-repeat="location in locations">
@@ -30,22 +29,7 @@
 							<a ui-sref="surveys.listTraditionalOutlets({id: survey.id})">
 								View
 							</a>
-						</td>
-						<td ng-if="location.name == 'Traditional'">
-							<a ui-sref="surveys.traditionalOutlet({id: survey.id })">
-								Create
-							</a>
-						</td>
-						<td ng-if="location.name == 'Non-Traditional'">
-							<a href="#">
-								Create
-							</a>
-						</td>
-						<td ng-if="location.name == 'Hotspot'">
-							<a href="#">
-								Create
-							</a>
-						</td>
+						</td>						
 				</tr>
 			</tbody>
 		</table>
