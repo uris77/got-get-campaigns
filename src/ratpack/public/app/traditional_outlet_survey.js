@@ -6,8 +6,8 @@ PasmoApp.Surveys = {
 				fetchTraditionalOutlets: function() {
 					return $http.get("/api/locations/byType/traditional");
 				},
-				createTraditonalOutlet: function(params) {
-					return $http.post("/api/surveys/traditional_outlets", params);
+				createTraditonalOutlet: function(params, survey_id) {
+					return $http.post("/api/surveys/" + survey_id + "/traditional_outlets", params);
 				}
 			};
 			
@@ -41,10 +41,9 @@ PasmoApp.Surveys = {
 						name: $scope.location.name,
 						district: $scope.location.district,
 						loc: $scope.location.loc
-					},
-					survey_id: $stateParams.id
+					}
 				}
-				OutletGatewayService.createTraditonalOutlet(params)
+				OutletGatewayService.createTraditonalOutlet(params, $stateParams.id)
 					.success(function(data) {
 						$state.transitionTo("surveys.show", {id: $stateParams.id});
 					});

@@ -22,9 +22,18 @@ class TraditionalOutletSurveyHandler extends GroovyHandler {
                 post {
                     blocking {
                         def params = parse Map
+                        params.surveyId = pathTokens.surveyId
                         surveyOutletCrudService.create(params)
                     }  then { TraditionalOutletSurveyEntity outletSurveyEntity ->
                         render json(outletSurveyEntity)
+                    }
+                }
+
+                get {
+                    blocking {
+                        surveyOutletCrudService.listAll(pathTokens.surveyId)
+                    } then { List<TraditionalOutletSurveyEntity> surveys ->
+                        render json(surveys)
                     }
                 }
             }
