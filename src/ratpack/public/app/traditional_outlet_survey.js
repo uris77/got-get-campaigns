@@ -36,7 +36,12 @@ PasmoApp.Surveys = {
 					condoms: $scope.condoms_available,
 					lube: $scope.lube_available,
 					gigi: $scope.gigi,
-					location: $scope.location,
+					location: {
+						id: $scope.location.id,
+						name: $scope.location.name,
+						district: $scope.location.district,
+						loc: $scope.location.loc
+					},
 					survey_id: $stateParams.id
 				}
 				OutletGatewayService.createTraditonalOutlet(params)
