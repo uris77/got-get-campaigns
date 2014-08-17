@@ -10,6 +10,8 @@ import org.pasmo.persistence.MongoDBClientModule
 import org.pasmo.repositories.UserRepository
 import org.pasmo.repositories.UserRepositoryModule
 import org.pasmo.repositories.entities.UserEntity
+import org.pasmo.surveys.outlets.nontraditional.NonTraditionalOutletSurveyHandler
+import org.pasmo.surveys.outlets.nontraditional.NonTraditionalOutletSurveyModule
 import org.pasmo.users.UsersByIdHandler
 import org.pasmo.users.UsersHandler
 import org.pasmo.surveys.SurveyByIdHandler
@@ -47,6 +49,7 @@ ratpack {
         add new SurveyCrudModule()
         add new LocationCrudModule()
         add new TraditionalOutletSurveyModule()
+        add new NonTraditionalOutletSurveyModule()
     }
 
     handlers {
@@ -113,6 +116,7 @@ ratpack {
             handler("users/:id", registry.get(UsersByIdHandler))
             handler("surveys", registry.get(SurveyHandlers))
             handler("surveys/:surveyId/traditional_outlets", registry.get(TraditionalOutletSurveyHandler))
+            handler("surveys/:surveyId/nontraditional_outlets", registry.get(NonTraditionalOutletSurveyHandler))
             handler("surveys/:id", registry.get(SurveyByIdHandler))
             handler("locations", registry.get(LocationHandlers))
             handler("locations/byType/:locationType", registry.get(LocationByTypeHandler))
