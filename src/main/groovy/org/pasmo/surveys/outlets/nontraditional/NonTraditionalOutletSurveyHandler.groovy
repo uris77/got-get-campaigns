@@ -27,6 +27,14 @@ class NonTraditionalOutletSurveyHandler extends GroovyHandler {
                         render json(survey)
                     }
                 }
+
+                get {
+                    blocking {
+                        surveyCrud.listAll(pathTokens.surveyId)
+                    } then { List<NonTraditionalOutletSurveyEntity> surveys ->
+                        render json(surveys)
+                    }
+                }
             }
         }
     }

@@ -2,6 +2,7 @@ package org.pasmo.surveys.outlets.nontraditional
 
 import com.mongodb.BasicDBObject
 import com.mongodb.DBCollection
+import com.mongodb.DBCursor
 import com.mongodb.DBObject
 import org.bson.types.ObjectId
 import org.pasmo.persistence.MongoDBClient
@@ -40,11 +41,26 @@ class NonTraditionalOutletSurveyCrud {
         createNonTraditionalOutletSurveyEntity(doc, survey)
     }
 
+    List<NonTraditionalOutletSurveyEntity> listAll(String surveyId) {
+        List<NonTraditionalOutletSurveyEntity> surveys = []
+        SurveyEntity survey = surveyGateway.findById(surveyId)
+        DBCursor cursor = mongoCollection.find(new BasicDBObject("survey_id", new ObjectId(surveyId)))
+        try {
+            while(cursor.hasNext()) {
+                DBObject obj = cursor.next()
+                surveys << createNonTraditionalOutletSurveyEntity(obj, survey)
+            }
+        } finally {
+            cursor.close()
+        }
+        surveys
+    }
+
     private createNonTraditionalOutletSurveyEntity(DBObject doc, SurveyEntity survey) {
         new NonTraditionalOutletSurveyEntity(
                 id: doc.get("_id").toString(),
                 outletType: doc.get("outlet_type"),
-                targetPopulations: doc.get("targetPopulations"),
+                targetPopulations: doc.get("target_populations"),
                 outreach: doc.get("outreach"),
                 condomsAvailable: doc.get("condoms_available"),
                 lubesAvailable: doc.get("lubes_available"),
@@ -52,7 +68,9 @@ class NonTraditionalOutletSurveyCrud {
                 survey: [
                         year: survey.year.toString(),
                         month: survey.month
-                ]
+                ],
+                locationName: doc.get("location").name,
+                district: doc.get("location").district
         )
     }
 

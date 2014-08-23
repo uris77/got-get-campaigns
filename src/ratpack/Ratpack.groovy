@@ -116,7 +116,7 @@ ratpack {
             handler("users/:id", registry.get(UsersByIdHandler))
             handler("surveys", registry.get(SurveyHandlers))
             handler("surveys/:surveyId/traditional_outlets", registry.get(TraditionalOutletSurveyHandler))
-            handler("surveys/:surveyId/nontraditional_outlets", registry.get(NonTraditionalOutletSurveyHandler))
+            handler("surveys/:surveyId/non_traditional_outlets", registry.get(NonTraditionalOutletSurveyHandler))
             handler("surveys/:id", registry.get(SurveyByIdHandler))
             handler("locations", registry.get(LocationHandlers))
             handler("locations/byType/:locationType", registry.get(LocationByTypeHandler))

@@ -22,6 +22,9 @@ class LocationMongoGateway extends AbstractMongoRepository implements LocationRe
     }
 
     List<LocationEntity> findAllByType(String locationType) {
+        if(locationType == "Non_traditional") {
+            locationType = "Non-Traditional"
+        }
         mongoCollection.find(QueryBuilder.where("locationType").equals(locationType)).collect{ Document doc ->
             new LocationEntity(doc)
         }

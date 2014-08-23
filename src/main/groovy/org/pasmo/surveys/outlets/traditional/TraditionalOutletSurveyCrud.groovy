@@ -40,18 +40,18 @@ class TraditionalOutletSurveyCrud {
     }
 
     List<TraditionalOutletSurveyEntity> listAll(String surveyId) {
-        List<TraditionalOutletSurveyEntity> tradtionalOutletSurveys = []
+        List<TraditionalOutletSurveyEntity> traditionalOutletSurveys = []
         SurveyEntity survey = surveyGateway.findById(surveyId.toString())
         DBCursor cursor = mongoCollection.find(new BasicDBObject("survey_id", new ObjectId(surveyId)))
         try{
             while(cursor.hasNext()) {
                 DBObject obj = cursor.next()
-                tradtionalOutletSurveys << createTraditionalOutletSurveyEntity(obj, survey)
+                traditionalOutletSurveys << createTraditionalOutletSurveyEntity(obj, survey)
             }
         } finally {
             cursor.close()
         }
-        tradtionalOutletSurveys
+        traditionalOutletSurveys
     }
 
     private TraditionalOutletSurveyEntity createTraditionalOutletSurveyEntity(DBObject doc, SurveyEntity survey) {
