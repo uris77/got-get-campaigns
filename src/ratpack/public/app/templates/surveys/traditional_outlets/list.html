@@ -1,6 +1,9 @@
 <div class="panel panel-primary" ui-view>
 	<div class="panel-heading">
-		Traditional Outlets Surveys | 
+		<a ui-sref="surveys.show({ id: id })" class="btn btn-primary btn-xs">
+			<span class="glyphicon glyphicon-arrow-left"></span>
+		</a>
+		| Traditional Outlets Surveys | 
 		<a ui-sref="surveys.traditionalOutlet({id: id })" class="btn btn-primary btn-xs">
 			<span class="glyphicon glyphicon-plus"></span>	
 		</a>

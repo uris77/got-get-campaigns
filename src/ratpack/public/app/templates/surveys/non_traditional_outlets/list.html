@@ -1,6 +1,9 @@
 <div class="panel panel-primary" ui-view>
 	<div class="panel-heading">
-		Non - Traditional Outlets Surveys | 
+		<a ui-sref="surveys.show({ id: surveyId })" class="btn btn-primary btn-xs">
+			<span class="glyphicon glyphicon-arrow-left"></span>
+		</a>
+		| Non - Traditional Outlets Surveys | 
 		<a ui-sref="createNonTraditionalOutlets({id: surveyId })" class="btn btn-primary btn-xs">
 			<span class="glyphicon glyphicon-plus"></span>	
 		</a>
