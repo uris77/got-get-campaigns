@@ -50,7 +50,6 @@
 
 		$scope.submit = function() {
 			$scope.errors = [];
-			console.log("SUBMIT");
 			if(!$scope.location) {
 				$scope.errors = ["Please chose a location!"];
 			}
@@ -74,7 +73,6 @@
 						loc: $scope.location.loc
 					}
 				};
-				console.log("PARAMS: ", params);
 				GatewayService.createSurvey($stateParams.id, params)
 					.success( function(data){
 						console.log("Success: ", data);
