@@ -62,7 +62,7 @@
     		});
 	}
 
-	ng.module("surveys.create", ["ui.router"])
+	ng.module("surveys.create", [])
 		.config(routes)
 		.factory("CreateSurveyService", CreateSurveyService)
 		.controller("SurveysCreateController", SurveysCreateController);

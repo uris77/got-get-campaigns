@@ -61,7 +61,7 @@
 	}
 
 
-	ng.module("surveys.list", ["ui.router"])
+	ng.module("surveys.list", [])
 		.config(routes)
 		.factory("SurveyRepositoryService", SurveyRepositoryService)
 		.controller("SurveysListController", SurveysListController)
