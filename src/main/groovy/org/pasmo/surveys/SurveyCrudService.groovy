@@ -35,7 +35,7 @@ class SurveyCrudService  {
                 }
             }
             mongoCollection.insert(doc)
-            surveyEntity = new SurveyEntity(surveyGateway.findByMonthAndYear(params.month, params.year))
+            surveyEntity = surveyGateway.findByMonthAndYear(params.month, params.year)
         }
         surveyEntity
     }

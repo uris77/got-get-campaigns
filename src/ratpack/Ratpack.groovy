@@ -44,7 +44,7 @@ ratpack {
         add new Pac4jModule<>(google2Client, new AuthPathAuthorizer())
 
         add new DatabaseClientModule()
-        add new SurveyGatewayModule(new DatabaseClient())
+        add new SurveyGatewayModule()
         add new UserRepositoryModule()
         add new SurveyCrudModule()
         add new LocationCrudModule()
