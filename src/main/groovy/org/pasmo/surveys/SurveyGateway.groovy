@@ -12,9 +12,11 @@ import javax.inject.Inject
 class SurveyGateway {
     private final String COLLECTION_NAME = "pasmo_surveys"
     private DBCollection mongoCollection
+    private MongoDBClient mongoDBClient
 
     @Inject
     SurveyGateway(MongoDBClient mongoDBClient) {
+        this.mongoDBClient = mongoDBClient
         mongoCollection = mongoDBClient.getCollection(COLLECTION_NAME)
     }
 
@@ -55,6 +57,24 @@ class SurveyGateway {
                 month: obj.get("month"),
                 year: obj.get("year")
         )
+    }
+
+    long countBySurveyAndLocationType(SurveyEntity survey, String locationType) {
+        DBObject doc = new BasicDBObject()
+        doc.append("survey_id", new ObjectId(survey.id))
+        long count = 0
+        switch(locationType) {
+            case "Traditional":
+                count = mongoDBClient.getCollection("traditional_outlet_surveys").count(doc)
+                break
+            case "Non-Traditional":
+                count = mongoDBClient.getCollection("nontraditional_outlet_surveys").count(doc)
+                break
+            case "Hotspot":
+                count = mongoDBClient.getCollection("hotspot_outlet_surveys").count(doc)
+                break
+        }
+        count
     }
 
 

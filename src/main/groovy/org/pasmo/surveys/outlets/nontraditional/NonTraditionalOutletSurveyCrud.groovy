@@ -56,12 +56,6 @@ class NonTraditionalOutletSurveyCrud {
         surveys
     }
 
-    long countBySurvey(SurveyEntity survey) {
-        DBObject doc = new BasicDBObject()
-        doc.append("survey_id", new ObjectId(survey.id))
-        mongoCollection.count(doc)
-    }
-
     private createNonTraditionalOutletSurveyEntity(DBObject doc, SurveyEntity survey) {
         new NonTraditionalOutletSurveyEntity(
                 id: doc.get("_id").toString(),
