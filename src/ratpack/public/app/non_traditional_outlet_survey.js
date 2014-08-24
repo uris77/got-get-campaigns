@@ -75,10 +75,11 @@
 				};
 				GatewayService.createSurvey($stateParams.id, params)
 					.success( function(data){
-						console.log("Success: ", data);
+						$state.transitionTo("listNonTraditionalOutlets", {id: $stateParams.id});
 					})
 					.error( function(error) {
 						console.error("ERROR: ", error);
+						alert("An error occurred!");
 					});
 			}
 		};
