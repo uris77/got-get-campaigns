@@ -4,7 +4,7 @@
 			Create New Survey
 		</div>
 		<div class="panel-body">
-			<form role="form" class="form-horizontal" name="create_survey">
+			<form role="form" class="form-horizontal" name="create_survey" ng-submit="submit()">
 				<div class="form-group">
 					<div class="alert alert-danger" role="alert" ng-show="errors">
 						<li ng-repeat="error in errors">
@@ -26,7 +26,7 @@
 				</div>
 				<div class="form-group">
 					<div class="col-sm-5">
-						<button type="submit" class="btn btn-primary" ng-click="submit()">
+						<button type="submit" class="btn btn-primary">
 							Save
 						</button>
 					</div>
