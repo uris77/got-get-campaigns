@@ -10,6 +10,8 @@ import org.pasmo.persistence.MongoDBClientModule
 import org.pasmo.repositories.UserRepository
 import org.pasmo.repositories.UserRepositoryModule
 import org.pasmo.repositories.entities.UserEntity
+import org.pasmo.surveys.outlets.hotspot.HotspotSurveyHandler
+import org.pasmo.surveys.outlets.hotspot.HotspotSurveyModule
 import org.pasmo.surveys.outlets.nontraditional.NonTraditionalOutletSurveyHandler
 import org.pasmo.surveys.outlets.nontraditional.NonTraditionalOutletSurveyModule
 import org.pasmo.users.UsersByIdHandler
@@ -50,6 +52,7 @@ ratpack {
         add new LocationCrudModule()
         add new TraditionalOutletSurveyModule()
         add new NonTraditionalOutletSurveyModule()
+        add new HotspotSurveyModule()
     }
 
     handlers {
@@ -120,10 +123,8 @@ ratpack {
             handler("surveys/:id", registry.get(SurveyByIdHandler))
             handler("locations", registry.get(LocationHandlers))
             handler("locations/byType/:locationType", registry.get(LocationByTypeHandler))
+            handler("surveys/:surveyId/hotspots", registry.get(HotspotSurveyHandler))
         }
-
-
-
 
         assets "public"
         assets "public/app/templates"
