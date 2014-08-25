@@ -3,11 +3,14 @@ package org.pasmo.surveys.outlets.hotspot
 import ratpack.groovy.handling.GroovyContext
 import ratpack.groovy.handling.GroovyHandler
 
+import javax.inject.Inject
+
 import static ratpack.jackson.Jackson.json
 
 class HotspotSurveyHandler extends GroovyHandler {
     private final HotspotSurveyCrud hotspotSurveyCrud
 
+    @Inject
     HotspotSurveyHandler(HotspotSurveyCrud hotspotSurveyCrud) {
         this.hotspotSurveyCrud = hotspotSurveyCrud
     }

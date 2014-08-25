@@ -3,7 +3,7 @@
 	function routes ($stateProvider) {
 		$stateProvider
 			.state("listNonTraditionalOutlets", {
-				url: "/survyes/:id/non_traditional_outlet/list",
+				url: "/surveys/:id/non_traditional_outlet/list",
 				templateUrl: "/surveys/non_traditional_outlets/list.html",
 				controller: "ListController"
 			})

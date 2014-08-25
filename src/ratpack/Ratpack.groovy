@@ -1,4 +1,3 @@
-import org.pasmo.DatabaseClient
 import org.pasmo.DatabaseClientModule
 import org.pasmo.auth.AuthPathAuthorizer
 import org.pasmo.auth.CurrentUser
