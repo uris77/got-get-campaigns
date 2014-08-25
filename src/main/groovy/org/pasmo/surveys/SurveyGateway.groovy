@@ -71,7 +71,7 @@ class SurveyGateway {
                 count = mongoDBClient.getCollection("nontraditional_outlet_surveys").count(doc)
                 break
             case "Hotspot":
-                count = mongoDBClient.getCollection("hotspot_outlet_surveys").count(doc)
+                count = mongoDBClient.getCollection("hotspot_surveys").count(doc)
                 break
         }
         count
