@@ -26,12 +26,12 @@ class HotspotSurveyCrud {
         BasicDBObject obj = new BasicDBObject()
         params.each{ key, value ->
             if(key == "surveyId") {
-                doc.append("survey_id", new ObjectId(value))
+                obj.append("survey_id", new ObjectId(value))
             } else if(key == "location") {
                 value.id = new ObjectId(value.id)
-                doc.append(key, value)
+                obj.append(key, value)
             } else {
-                doc.append(key, value)
+                obj.append(key, value)
             }
         }
         SurveyEntity survey = surveyGateway.findById(obj.survey_id.toString())
