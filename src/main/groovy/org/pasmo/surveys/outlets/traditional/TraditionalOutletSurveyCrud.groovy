@@ -39,6 +39,16 @@ class TraditionalOutletSurveyCrud {
         createTraditionalOutletSurveyEntity(doc, survey)
     }
 
+    TraditionalOutletSurveyEntity update(Map params, String outletSurveyId, String surveyId) {
+        BasicDBObject doc = new BasicDBObject()
+        BasicDBObject updateDoc = new BasicDBObject("gigi", params.gigi)
+        updateDoc.append("condoms_available", params.condomsAvailable)
+        updateDoc.append("lubes_available", params.lubesAvailable)
+        doc.append('$set', updateDoc)
+        mongoCollection.update(new BasicDBObject("_id", new ObjectId(outletSurveyId)), doc)
+        findById(outletSurveyId, surveyId)
+    }
+
     List<TraditionalOutletSurveyEntity> listAll(String surveyId) {
         List<TraditionalOutletSurveyEntity> traditionalOutletSurveys = []
         SurveyEntity survey = surveyGateway.findById(surveyId.toString())
@@ -54,12 +64,19 @@ class TraditionalOutletSurveyCrud {
         traditionalOutletSurveys
     }
 
+    TraditionalOutletSurveyEntity findById(String traditionalOutletSurveyId, String surveyId) {
+        DBObject doc = mongoCollection.findOne(new BasicDBObject("_id", new ObjectId(traditionalOutletSurveyId)))
+        SurveyEntity survey = surveyGateway.findById(surveyId)
+        createTraditionalOutletSurveyEntity(doc, survey)
+    }
+
     private TraditionalOutletSurveyEntity createTraditionalOutletSurveyEntity(DBObject doc, SurveyEntity survey) {
         new TraditionalOutletSurveyEntity(
                 id: doc.get("_id").toString(),
                 condomsAvailable: doc.get("condoms_available").asBoolean(),
                 lubesAvailable: doc.get("lubes_available").asBoolean(),
                 gigi: doc.get("gigi").asBoolean(),
+                locationId: doc.get("location").id.toString(),
                 locationName: doc.get("location").name,
                 locationDistrict: doc.get("location").district,
                 survey: [month: survey.month.toString() ,year: survey.year.toString()]

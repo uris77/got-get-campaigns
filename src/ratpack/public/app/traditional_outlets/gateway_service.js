@@ -10,6 +10,12 @@
             },
             fetchTraditionalOutletsSurvey: function(survey_id) {
                 return $http.get("/api/surveys/" + survey_id + "/traditional_outlets");
+            },
+            fetchSurvey: function(survey_id, outlet_survey_id) {
+                return $http.get("/api/surveys/" + survey_id + "/traditional_outlets/" + outlet_survey_id);
+            },
+            updateSurvey: function(params, survey_id, outlet_survey_id) {
+                return $http.put("/api/surveys/" + survey_id + "/traditional_outlets/" + outlet_survey_id, params);
             }
         };
         

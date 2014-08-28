@@ -13,6 +13,7 @@ import org.pasmo.surveys.outlets.hotspot.HotspotSurveyHandler
 import org.pasmo.surveys.outlets.hotspot.HotspotSurveyModule
 import org.pasmo.surveys.outlets.nontraditional.NonTraditionalOutletSurveyHandler
 import org.pasmo.surveys.outlets.nontraditional.NonTraditionalOutletSurveyModule
+import org.pasmo.surveys.outlets.traditional.TraditionalOutletSurveyByIdHandler
 import org.pasmo.users.UsersByIdHandler
 import org.pasmo.users.UsersHandler
 import org.pasmo.surveys.SurveyByIdHandler
@@ -118,6 +119,7 @@ ratpack {
             handler("users/:id", registry.get(UsersByIdHandler))
             handler("surveys", registry.get(SurveyHandlers))
             handler("surveys/:surveyId/traditional_outlets", registry.get(TraditionalOutletSurveyHandler))
+            handler("surveys/:surveyId/traditional_outlets/:traditionalOutletSurveyId", registry.get(TraditionalOutletSurveyByIdHandler))
             handler("surveys/:surveyId/non_traditional_outlets", registry.get(NonTraditionalOutletSurveyHandler))
             handler("surveys/:id", registry.get(SurveyByIdHandler))
             handler("locations", registry.get(LocationHandlers))

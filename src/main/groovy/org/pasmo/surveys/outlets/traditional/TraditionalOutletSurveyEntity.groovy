@@ -9,6 +9,7 @@ class TraditionalOutletSurveyEntity {
     Boolean condomsAvailable
     Boolean lubesAvailable
     Boolean gigi
+    String locationId
     String locationName
     String locationDistrict
     Map<String, String> survey

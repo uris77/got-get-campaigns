@@ -10,12 +10,18 @@
 				url: "/:id/traditional_outlet/list",
 				templateUrl: "/surveys/traditional_outlets/list.html",
 				controller: "TraditionalOutletSurveyListController"
+			}).
+			state("surveys.editTraditionalOutlet", {
+				url: "/surveys/:survey_id/traditional_outlet/:traditional_outlet_survey_id",
+				templateUrl: "/surveys/traditional_outlets/edit.html",
+				controller: "TraditionalOutletSurveyEditController"
 			});
 	}
 
 
 	ng.module("TraditionaOutletSurvey", 
-		["TraditionalOutletSurvey.gatewayService", "TraditionalOutletSurvey.list", "TraditionalOutletSurvey.create"])
+		["TraditionalOutletSurvey.gatewayService", "TraditionalOutletSurvey.list", "TraditionalOutletSurvey.create",
+		"TraditionalOutletSurvey.edit"])
 		.config(routes);
 	
 }(angular));
