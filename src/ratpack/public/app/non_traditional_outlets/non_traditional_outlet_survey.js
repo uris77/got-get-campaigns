@@ -5,7 +5,7 @@
 			.state("listNonTraditionalOutlets", {
 				url: "/surveys/:id/non_traditional_outlet/list",
 				templateUrl: "/surveys/non_traditional_outlets/list.html",
-				controller: "ListController"
+				controller: "NonTraditionalOutletSurveyListController"
 			})
 			.state("createNonTraditionalOutlets", {
 				url: "/surveys/:id/non_traditional_outlet/create",
@@ -15,7 +15,7 @@
 	}
 
 	angular
-	.module("NonTraditionaOutletSurvey",
+	.module("NonTraditionalOutletSurvey",
 		["NonTraditionalOutletSurvey.gatewayService", "NonTraditionalOutletSurvey.list", "NonTraditionalOutletSurvey.create"])
 	.config(routes);
 	

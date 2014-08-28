@@ -1,11 +1,11 @@
 ( function (ng) {
 
-    function CreateController ($scope, $state, $stateParams, GatewayService) {
+    function CreateController ($scope, $state, $stateParams, NonTraditionalSurveyGatewayService) {
         $scope.outlet_types = [
             {name: "Restaurant"}, {name: "Pharmacy"}
         ];
 
-        GatewayService.fetchOutlets()
+        NonTraditionalSurveyGatewayService.fetchOutlets()
             .success(function(data) {
                 $scope.locations = data;
                 if($scope.locations.length == 0) {
@@ -45,7 +45,7 @@
                         loc: $scope.location.loc
                     }
                 };
-                GatewayService.createSurvey($stateParams.id, params)
+                NonTraditionalSurveyGatewayService.createSurvey($stateParams.id, params)
                     .success( function(data){
                         $state.transitionTo("listNonTraditionalOutlets", {id: $stateParams.id});
                     })

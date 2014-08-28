@@ -1,9 +1,10 @@
 ( function (ng) {
 
-    function ListController ($scope, $state, $stateParams, GatewayService) {
+    function ListController ($scope, $state, $stateParams, NonTraditionalSurveyGatewayService) {
         $scope.surveyId = $stateParams.id
-        GatewayService.fetchSurveys($stateParams.id)
+        NonTraditionalSurveyGatewayService.fetchSurveys($stateParams.id)
             .success(function(data){
+                console.log("Fetched data: ", data);
                 $scope.surveys = data;
             })
             .error(function(data) {
@@ -12,6 +13,6 @@
     }
 
     ng.module("NonTraditionalOutletSurvey.list", [])
-        .controller("ListController", ListController);
+        .controller("NonTraditionalOutletSurveyListController", ListController);
         
 }(angular));

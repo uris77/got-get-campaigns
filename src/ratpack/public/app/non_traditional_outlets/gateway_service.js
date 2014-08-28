@@ -16,6 +16,6 @@
     }
 
     ng.module("NonTraditionalOutletSurvey.gatewayService", [])
-        .factory("GatewayService", GatewayService);
+        .factory("NonTraditionalSurveyGatewayService", GatewayService);
 
 }(angular));

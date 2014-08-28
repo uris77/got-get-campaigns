@@ -44,10 +44,12 @@ class NonTraditionalOutletSurveyCrud {
     List<NonTraditionalOutletSurveyEntity> listAll(String surveyId) {
         List<NonTraditionalOutletSurveyEntity> surveys = []
         SurveyEntity survey = surveyGateway.findById(surveyId)
+        println "Survey: ${survey}"
         DBCursor cursor = mongoCollection.find(new BasicDBObject("survey_id", new ObjectId(surveyId)))
         try {
             while(cursor.hasNext()) {
                 DBObject obj = cursor.next()
+                println "Got item: ${obj}"
                 surveys << createNonTraditionalOutletSurveyEntity(obj, survey)
             }
         } finally {
