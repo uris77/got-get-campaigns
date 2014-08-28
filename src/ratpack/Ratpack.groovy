@@ -9,18 +9,14 @@ import org.pasmo.persistence.MongoDBClientModule
 import org.pasmo.repositories.UserRepository
 import org.pasmo.repositories.UserRepositoryModule
 import org.pasmo.repositories.entities.UserEntity
+import org.pasmo.surveys.SurveyChainHandler
 import org.pasmo.surveys.outlets.hotspot.HotspotSurveyHandler
 import org.pasmo.surveys.outlets.hotspot.HotspotSurveyModule
-import org.pasmo.surveys.outlets.nontraditional.NonTraditionalOutletSurveyHandler
 import org.pasmo.surveys.outlets.nontraditional.NonTraditionalOutletSurveyModule
-import org.pasmo.surveys.outlets.traditional.TraditionalOutletSurveyByIdHandler
 import org.pasmo.users.UsersByIdHandler
 import org.pasmo.users.UsersHandler
-import org.pasmo.surveys.SurveyByIdHandler
 import org.pasmo.surveys.SurveyCrudModule
 import org.pasmo.surveys.SurveyGatewayModule
-import org.pasmo.surveys.SurveyHandlers
-import org.pasmo.surveys.outlets.traditional.TraditionalOutletSurveyHandler
 import org.pasmo.surveys.outlets.traditional.TraditionalOutletSurveyModule
 import ratpack.jackson.JacksonModule
 import ratpack.pac4j.Pac4jModule
@@ -117,11 +113,9 @@ ratpack {
 
             handler("users", registry.get(UsersHandler))
             handler("users/:id", registry.get(UsersByIdHandler))
-            handler("surveys", registry.get(SurveyHandlers))
-            handler("surveys/:surveyId/traditional_outlets", registry.get(TraditionalOutletSurveyHandler))
-            handler("surveys/:surveyId/traditional_outlets/:traditionalOutletSurveyId", registry.get(TraditionalOutletSurveyByIdHandler))
-            handler("surveys/:surveyId/non_traditional_outlets", registry.get(NonTraditionalOutletSurveyHandler))
-            handler("surveys/:id", registry.get(SurveyByIdHandler))
+            prefix("surveys") {
+                handler chain(new SurveyChainHandler())
+            }
             handler("locations", registry.get(LocationHandlers))
             handler("locations/byType/:locationType", registry.get(LocationByTypeHandler))
             handler("surveys/:surveyId/hotspots", registry.get(HotspotSurveyHandler))

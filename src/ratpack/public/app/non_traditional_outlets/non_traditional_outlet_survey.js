@@ -16,7 +16,8 @@
 
 	angular
 	.module("NonTraditionalOutletSurvey",
-		["NonTraditionalOutletSurvey.gatewayService", "NonTraditionalOutletSurvey.list", "NonTraditionalOutletSurvey.create"])
+		["NonTraditionalOutletSurvey.gatewayService", "NonTraditionalOutletSurvey.list",
+		"NonTraditionalOutletSurvey.create", "NonTraditionalOutletSurvey.edit"])
 	.config(routes);
 	
 }(angular))

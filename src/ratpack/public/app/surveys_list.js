@@ -29,6 +29,8 @@
 		SurveyRepositoryService.fetch($stateParams.id)
 			.success( function(data) {
 				$scope.survey = data.survey;
+								console.log("SHOW: ", data);
+
 				$scope.locations = data.locations;
 			})
 			.error( function(data) {
