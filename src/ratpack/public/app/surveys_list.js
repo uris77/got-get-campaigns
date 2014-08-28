@@ -26,12 +26,6 @@
 	}
 
 	function SurveyShowController ($scope, $stateParams, SurveyRepositoryService) {
-		// $scope.locations = [
-		// 	{name: "Traditional", total: "21", surveyed: "0"},
-		// 	{name: "Non-Traditional", total: "10", surveyed: "0"},
-		// 	{name: "Hotspot", total: "11", surveyed: "0"}
-		// ];
-
 		SurveyRepositoryService.fetch($stateParams.id)
 			.success( function(data) {
 				$scope.survey = data.survey;
