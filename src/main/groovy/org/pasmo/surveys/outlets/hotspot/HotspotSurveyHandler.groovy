@@ -1,13 +1,12 @@
 package org.pasmo.surveys.outlets.hotspot
 
-import ratpack.groovy.handling.GroovyContext
-import ratpack.groovy.handling.GroovyHandler
+import ratpack.groovy.handling.GroovyChainAction
 
 import javax.inject.Inject
 
 import static ratpack.jackson.Jackson.json
 
-class HotspotSurveyHandler extends GroovyHandler {
+class HotspotSurveyHandler extends GroovyChainAction {
     private final HotspotSurveyCrud hotspotSurveyCrud
 
     @Inject
@@ -16,23 +15,26 @@ class HotspotSurveyHandler extends GroovyHandler {
     }
 
     @Override
-    protected void handle(GroovyContext context) {
-        context.byMethod {
-            post {
-                blocking {
-                    def params = parse Map
-                    params.surveyId =  pathTokens.surveyId
-                    hotspotSurveyCrud.create(params)
-                } then { HotspotEntity hotspot ->
-                    render json(hotspot)
-                }
-            }
+    protected void execute() throws Exception {
 
-            get {
-                blocking {
-                    hotspotSurveyCrud.listAll(pathTokens.surveyId)
-                } then { List<HotspotEntity> hotspots ->
-                    render json(hotspots)
+        handler {
+            byMethod {
+                post {
+                    blocking {
+                        def params = parse Map
+                        params.surveyId =  pathTokens.surveyId
+                        hotspotSurveyCrud.create(params)
+                    } then { HotspotEntity hotspot ->
+                        render json(hotspot)
+                    }
+                }
+
+                get {
+                    blocking {
+                        hotspotSurveyCrud.listAll(pathTokens.surveyId)
+                    } then { List<HotspotEntity> hotspots ->
+                        render json(hotspots)
+                    }
                 }
             }
         }

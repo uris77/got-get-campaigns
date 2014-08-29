@@ -10,7 +10,6 @@ import org.pasmo.repositories.UserRepository
 import org.pasmo.repositories.UserRepositoryModule
 import org.pasmo.repositories.entities.UserEntity
 import org.pasmo.surveys.SurveyChainHandler
-import org.pasmo.surveys.outlets.hotspot.HotspotSurveyHandler
 import org.pasmo.surveys.outlets.hotspot.HotspotSurveyModule
 import org.pasmo.surveys.outlets.nontraditional.NonTraditionalOutletSurveyCrud
 import org.pasmo.surveys.outlets.nontraditional.NonTraditionalOutletSurveyModule
@@ -119,7 +118,7 @@ ratpack {
             }
             handler("locations", registry.get(LocationHandlers))
             handler("locations/byType/:locationType", registry.get(LocationByTypeHandler))
-            handler("surveys/:surveyId/hotspots", registry.get(HotspotSurveyHandler))
+
         }
 
         assets "public"
