@@ -12,6 +12,7 @@ import org.pasmo.repositories.entities.UserEntity
 import org.pasmo.surveys.SurveyChainHandler
 import org.pasmo.surveys.outlets.hotspot.HotspotSurveyHandler
 import org.pasmo.surveys.outlets.hotspot.HotspotSurveyModule
+import org.pasmo.surveys.outlets.nontraditional.NonTraditionalOutletSurveyCrud
 import org.pasmo.surveys.outlets.nontraditional.NonTraditionalOutletSurveyModule
 import org.pasmo.users.UsersByIdHandler
 import org.pasmo.users.UsersHandler
@@ -94,7 +95,7 @@ ratpack {
             }
         }
 
-        prefix("api") {
+        prefix("api") { NonTraditionalOutletSurveyCrud nonTraditionalOutletSurveyCrud ->
             handler {SessionStorage  sessionStorage ->
                 CurrentUser currentUser = new CurrentUser()
                 currentUser.setSessionStorage(sessionStorage)
@@ -114,7 +115,7 @@ ratpack {
             handler("users", registry.get(UsersHandler))
             handler("users/:id", registry.get(UsersByIdHandler))
             prefix("surveys") {
-                handler chain(new SurveyChainHandler())
+                handler chain(new SurveyChainHandler(nonTraditionalOutletSurveyCrud))
             }
             handler("locations", registry.get(LocationHandlers))
             handler("locations/byType/:locationType", registry.get(LocationByTypeHandler))

@@ -58,6 +58,6 @@
     }
 
     ng.module("NonTraditionalOutletSurvey.create", [])
-        .controller("CreateController", CreateController);
+        .controller("NonTraditionalOutletSurveyCreateController", CreateController);
 
 }(angular));

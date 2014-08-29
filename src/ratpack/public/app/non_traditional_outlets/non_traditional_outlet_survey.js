@@ -10,7 +10,7 @@
 			.state("createNonTraditionalOutlets", {
 				url: "/surveys/:id/non_traditional_outlet/create",
 				templateUrl: "/surveys/non_traditional_outlets/create_form.html",
-				controller: "CreateController"
+				controller: "NonTraditionalOutletSurveyCreateController"
 			});
 	}
 

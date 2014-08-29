@@ -1,22 +1,36 @@
 package org.pasmo.surveys.outlets.nontraditional
 
-import ratpack.groovy.handling.GroovyContext
-import ratpack.groovy.handling.GroovyHandler
-import static ratpack.jackson.Jackson.json
+import ratpack.groovy.handling.GroovyChainAction
 
 import javax.inject.Inject
 
-class NonTraditionalOutletSurveyHandler extends GroovyHandler {
+import static ratpack.jackson.Jackson.json
+
+class NonTraditionalOutletSurveyChainHandler extends GroovyChainAction{
     private final NonTraditionalOutletSurveyCrud surveyCrud
 
     @Inject
-    NonTraditionalOutletSurveyHandler(NonTraditionalOutletSurveyCrud nonTraditionalOutletSurveyCrud) {
-        surveyCrud = nonTraditionalOutletSurveyCrud
+    NonTraditionalOutletSurveyChainHandler(NonTraditionalOutletSurveyCrud surveyCrud) {
+        this.surveyCrud = surveyCrud
     }
 
+
     @Override
-    protected void handle(GroovyContext context) {
-        context.with {
+    protected void execute() throws Exception {
+
+        handler(":outletSurveyId") {
+            byMethod {
+                get {
+                    blocking {
+                        surveyCrud.findById(pathTokens.traditionalOutletSurveyId, pathTokens.surveyId)
+                    } then { NonTraditionalOutletSurveyEntity outlet ->
+                        render json(outlet)
+                    }
+                }
+            }
+        }
+
+        handler {
             byMethod {
                 post {
                     blocking {
@@ -37,5 +51,6 @@ class NonTraditionalOutletSurveyHandler extends GroovyHandler {
                 }
             }
         }
+
     }
 }

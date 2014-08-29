@@ -56,6 +56,11 @@ class NonTraditionalOutletSurveyCrud {
         surveys
     }
 
+    NonTraditionalOutletSurveyEntity findById(String id) {
+        BasicDBObject doc = mongoCollection.findOne(new BasicDBObject("_id", new ObjectId(id)))
+        createNonTraditionalOutletSurveyEntity(doc)
+    }
+
     private createNonTraditionalOutletSurveyEntity(DBObject doc, SurveyEntity survey) {
         new NonTraditionalOutletSurveyEntity(
                 id: doc.get("_id").toString(),
@@ -72,6 +77,11 @@ class NonTraditionalOutletSurveyCrud {
                 locationName: doc.get("location").name,
                 district: doc.get("location").district
         )
+    }
+
+    private createNonTraditionalOutletSurveyEntity(DBObject doc) {
+        SurveyEntity survey = surveyGateway.findById(doc.get("survey_id"))
+        createNonTraditionalOutletSurveyEntity(doc, survey)
     }
 
 }

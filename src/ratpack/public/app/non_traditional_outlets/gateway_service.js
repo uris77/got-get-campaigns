@@ -11,7 +11,11 @@
 
             createSurvey: function(survey_id, params) {
                 return $http.post("/api/surveys/" + survey_id + "/non_traditional_outlets", params)
-;           }
+;           },
+
+            fetchSurvey: function(survey_id, outlet_survey_id) {
+                return $http.get("/api/surveys/" + survey_id + "/non_traditional_outlets/" + outlet_survey_id);
+            }
         };
     }
 
