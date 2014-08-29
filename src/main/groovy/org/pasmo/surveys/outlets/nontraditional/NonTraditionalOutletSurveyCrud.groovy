@@ -38,7 +38,7 @@ class NonTraditionalOutletSurveyCrud {
         }
         mongoCollection.insert(doc)
         SurveyEntity survey = surveyGateway.findById(doc.survey_id.toString())
-        createNonTraditionalOutletSurveyEntity(doc, survey)
+        NonTraditionalOutletSurveyEntity.create(doc, survey)
     }
 
     NonTraditionalOutletSurveyEntity update(Map params, String outletSurveyId) {
@@ -61,7 +61,7 @@ class NonTraditionalOutletSurveyCrud {
         try {
             while(cursor.hasNext()) {
                 DBObject obj = cursor.next()
-                surveys << createNonTraditionalOutletSurveyEntity(obj, survey)
+                surveys << NonTraditionalOutletSurveyEntity.create(obj, survey)
             }
         } finally {
             cursor.close()
@@ -74,25 +74,7 @@ class NonTraditionalOutletSurveyCrud {
         createNonTraditionalOutletSurveyEntity(doc)
     }
 
-    private createNonTraditionalOutletSurveyEntity(DBObject doc, SurveyEntity survey) {
-        new NonTraditionalOutletSurveyEntity(
-                id: doc.get("_id").toString(),
-                outletType: doc.get("outlet_type"),
-                targetPopulations: doc.get("target_populations"),
-                outreach: doc.get("outreach"),
-                condomsAvailable: doc.get("condoms_available"),
-                lubesAvailable: doc.get("lubes_available"),
-                gigi: doc.get("gigi"),
-                survey: [
-                        year: survey.year.toString(),
-                        month: survey.month
-                ],
-                locationName: doc.get("location").name,
-                district: doc.get("location").district
-        )
-    }
-
-    private createNonTraditionalOutletSurveyEntity(DBObject doc) {
+    private NonTraditionalOutletSurveyEntity createNonTraditionalOutletSurveyEntity(DBObject doc) {
         SurveyEntity survey = surveyGateway.findById(doc.get("survey_id").toString())
         createNonTraditionalOutletSurveyEntity(doc, survey)
     }

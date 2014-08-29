@@ -1,6 +1,8 @@
 package org.pasmo.surveys.outlets.nontraditional
 
+import com.mongodb.DBObject
 import groovy.transform.Immutable
+import org.pasmo.surveys.SurveyEntity
 
 @Immutable
 class NonTraditionalOutletSurveyEntity {
@@ -14,4 +16,22 @@ class NonTraditionalOutletSurveyEntity {
     String locationName
     String district
     Map<String, String> survey
+
+    static NonTraditionalOutletSurveyEntity create(DBObject doc, SurveyEntity survey) {
+        new NonTraditionalOutletSurveyEntity(
+                id: doc.get("_id").toString(),
+                outletType: doc.get("outlet_type"),
+                targetPopulations: doc.get("target_populations"),
+                outreach: doc.get("outreach"),
+                condomsAvailable: doc.get("condoms_available"),
+                lubesAvailable: doc.get("lubes_available"),
+                gigi: doc.get("gigi"),
+                survey: [
+                        year: survey.year.toString(),
+                        month: survey.month
+                ],
+                locationName: doc.get("location").name,
+                district: doc.get("location").district
+        )
+    }
 }
