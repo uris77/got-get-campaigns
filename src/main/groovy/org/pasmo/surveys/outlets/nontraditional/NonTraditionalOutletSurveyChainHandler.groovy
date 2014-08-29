@@ -22,9 +22,17 @@ class NonTraditionalOutletSurveyChainHandler extends GroovyChainAction{
             byMethod {
                 get {
                     blocking {
-                        surveyCrud.findById(pathTokens.traditionalOutletSurveyId, pathTokens.surveyId)
+                        surveyCrud.findById(pathTokens.outletSurveyId)
                     } then { NonTraditionalOutletSurveyEntity outlet ->
                         render json(outlet)
+                    }
+                }
+
+                put {
+                    blocking {
+                        surveyCrud.update(parse(Map), pathTokens.outletSurveyId)
+                    } then { NonTraditionalOutletSurveyEntity outletSurvey ->
+                        render json(outletSurvey)
                     }
                 }
             }

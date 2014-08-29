@@ -16,6 +16,7 @@
 				<th>Condoms Available</th>
 				<th>Lubes Available</th>
 				<th>Gigi</th>
+				<th/>
 			</thead>
 			<tbody>
 				<tr ng-repeat="survey in surveys">
@@ -36,6 +37,9 @@
 					<td>
 						<span ng-if="survey.gigi == true" class="glyphicon glyphicon-ok"></span>
 						<span ng-if="survey.gigi == false" class="glyphicon glyphicon-remove"></span>
+					</td>
+					<td>
+						<a ui-sref="editNonTraditionalOutlets({survey_id: surveyId, outlet_survey_id: survey.id})" class="btn btn-default">Edit</a>
 					</td>
 				</tr>
 			</tbody>

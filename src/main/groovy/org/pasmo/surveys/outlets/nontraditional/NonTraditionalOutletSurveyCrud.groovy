@@ -41,6 +41,19 @@ class NonTraditionalOutletSurveyCrud {
         createNonTraditionalOutletSurveyEntity(doc, survey)
     }
 
+    NonTraditionalOutletSurveyEntity update(Map params, String outletSurveyId) {
+        BasicDBObject doc = new BasicDBObject()
+        BasicDBObject updateDoc = new BasicDBObject()
+        updateDoc.append("condoms_available", params.condomsAvailable)
+        updateDoc.append("lubes_available", params.lubesAvailable)
+        updateDoc.append("gigi", params.gigi)
+        updateDoc.append("outreach", params.outreach)
+        updateDoc.append("target_populations", params.targetPopulations)
+        doc.append('$set', updateDoc)
+        mongoCollection.update(new BasicDBObject("_id", new ObjectId(outletSurveyId)), doc)
+        findById(outletSurveyId)
+    }
+
     List<NonTraditionalOutletSurveyEntity> listAll(String surveyId) {
         List<NonTraditionalOutletSurveyEntity> surveys = []
         SurveyEntity survey = surveyGateway.findById(surveyId)
@@ -80,7 +93,7 @@ class NonTraditionalOutletSurveyCrud {
     }
 
     private createNonTraditionalOutletSurveyEntity(DBObject doc) {
-        SurveyEntity survey = surveyGateway.findById(doc.get("survey_id"))
+        SurveyEntity survey = surveyGateway.findById(doc.get("survey_id").toString())
         createNonTraditionalOutletSurveyEntity(doc, survey)
     }
 
