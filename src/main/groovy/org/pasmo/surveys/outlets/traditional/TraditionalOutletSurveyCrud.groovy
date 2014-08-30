@@ -46,7 +46,7 @@ class TraditionalOutletSurveyCrud {
         updateDoc.append("lubes_available", params.lubesAvailable)
         doc.append('$set', updateDoc)
         mongoCollection.update(new BasicDBObject("_id", new ObjectId(outletSurveyId)), doc)
-        findById(outletSurveyId, surveyId)
+        findById(outletSurveyId)
     }
 
     List<TraditionalOutletSurveyEntity> listAll(String surveyId) {
@@ -64,9 +64,13 @@ class TraditionalOutletSurveyCrud {
         traditionalOutletSurveys
     }
 
-    TraditionalOutletSurveyEntity findById(String traditionalOutletSurveyId, String surveyId) {
-        DBObject doc = mongoCollection.findOne(new BasicDBObject("_id", new ObjectId(traditionalOutletSurveyId)))
-        SurveyEntity survey = surveyGateway.findById(surveyId)
+    TraditionalOutletSurveyEntity findById(String outletSurveyId) {
+        DBObject doc = mongoCollection.findOne(new BasicDBObject("_id", new ObjectId(outletSurveyId)))
+        createTraditionalOutletSurveyEntity(doc)
+    }
+
+    private TraditionalOutletSurveyEntity createTraditionalOutletSurveyEntity(DBObject doc) {
+        SurveyEntity survey = surveyGateway.findById(doc.get("survey_id").toString())
         createTraditionalOutletSurveyEntity(doc, survey)
     }
 
