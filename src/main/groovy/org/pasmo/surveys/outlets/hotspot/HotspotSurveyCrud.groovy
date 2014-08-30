@@ -3,7 +3,6 @@ package org.pasmo.surveys.outlets.hotspot
 import com.mongodb.BasicDBObject
 import com.mongodb.DBCollection
 import com.mongodb.DBCursor
-import com.mongodb.DBObject
 import org.bson.types.ObjectId
 import org.pasmo.persistence.MongoDBClient
 import org.pasmo.surveys.SurveyEntity
@@ -36,7 +35,7 @@ class HotspotSurveyCrud {
         }
         SurveyEntity survey = surveyGateway.findById(obj.survey_id.toString())
         mongoCollection.insert(obj)
-        createHotspotEntity(obj, survey)
+        HotspotEntity.create(obj, survey)
     }
 
     List<HotspotEntity> listAll(String surveyId) {
@@ -45,7 +44,7 @@ class HotspotSurveyCrud {
         DBCursor cursor = mongoCollection.find(new BasicDBObject("survey_id", new ObjectId(surveyId)))
         try {
             while(cursor.hasNext()) {
-                hotspots << createHotspotEntity(cursor.next(), survey)
+                hotspots << HotspotEntity.create(cursor.next(), survey)
             }
         } finally {
             cursor.close()
@@ -53,20 +52,21 @@ class HotspotSurveyCrud {
         hotspots
     }
 
-    private createHotspotEntity(DBObject doc, SurveyEntity survey) {
-        new HotspotEntity(
-                id: doc.get("_id").toString(),
-                targetPopulations: doc.get("target_populations"),
-                outreach: doc.get("outreach"),
-                condomsAvailable: doc.get("condoms_available"),
-                lubesAvailable: doc.get("lubes_available"),
-                gigi: doc.get("gigi"),
-                survey: [
-                        year: survey.year.toString(),
-                        month: survey.month
-                ],
-                locationName: doc.get("location").name,
-                district: doc.get("location").district
-        )
+    HotspotEntity update(Map params, String surveyId) {
+        BasicDBObject doc = new BasicDBObject()
+        BasicDBObject updateDoc = new BasicDBObject("gigi", params.gigi)
+        updateDoc.append("condoms_available", params.condomsAvailable)
+        updateDoc.append("lubes_available", params.lubesAvailable)
+        updateDoc.append("target_populations", params.targetPopulations)
+        updateDoc.append("outreach", params.outreach)
+        doc.append('$set', updateDoc)
+        mongoCollection.update(new BasicDBObject("_id", new ObjectId(surveyId)), doc)
+        findById(surveyId)
+    }
+
+    HotspotEntity findById(String outletSruveyId) {
+        BasicDBObject doc = mongoCollection.findOne(new BasicDBObject("_id", new ObjectId(outletSruveyId)))
+        SurveyEntity survey = surveyGateway.findById(doc.get("survey_id").toString())
+        HotspotEntity.create(doc, survey)
     }
 }

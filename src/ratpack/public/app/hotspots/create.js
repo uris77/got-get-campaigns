@@ -13,7 +13,7 @@
             });
 
         $scope.cancel = function() {
-            $state.transitionTo("hotspotsList", {id: $stateParams.id})
+            $state.transitionTo("hotspotsList", {id: $stateParams.id});
         };
 
         $scope.submit = function() {

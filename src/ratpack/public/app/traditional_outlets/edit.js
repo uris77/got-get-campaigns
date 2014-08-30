@@ -1,6 +1,7 @@
 ( function(ng) {
 
     function EditController($scope, $state, $stateParams, TraditionalOutletGatewayService) {
+        $scope.surveyId = $stateParams.survey_id;
         TraditionalOutletGatewayService.fetchSurvey($stateParams.survey_id, $stateParams.traditional_outlet_survey_id)
             .success(function(data) {
                 $scope.survey = data;

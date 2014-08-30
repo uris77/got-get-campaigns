@@ -17,6 +17,23 @@ class HotspotSurveyHandler extends GroovyChainAction {
     @Override
     protected void execute() throws Exception {
 
+        handler(":hotspotSurveyId") {
+            byMethod {
+                get {
+                    HotspotEntity hotspot = hotspotSurveyCrud.findById(pathTokens.hotspotSurveyId)
+                    render json(hotspot)
+                }
+
+                put {
+                    blocking {
+                        hotspotSurveyCrud.update(parse(Map), pathTokens.hotspotSurveyId)
+                    } then { HotspotEntity hotspot ->
+                        render json(hotspot)
+                    }
+                }
+            }
+        }
+
         handler {
             byMethod {
                 post {
