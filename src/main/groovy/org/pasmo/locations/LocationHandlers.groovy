@@ -30,6 +30,19 @@ class LocationHandlers extends GroovyChainAction {
             }
         }
 
+        handler(":locationId") {
+            byMethod {
+                get {
+                    blocking {
+                        locationGateway.findSurveys(pathTokens.locationId)
+                    } then { List<LocationSurvey> surveys ->
+                        LocationEntity location = locationGateway.findById(pathTokens.locationId)
+                        render Jackson.json([location: location, surveys: surveys])
+                    }
+                }
+            }
+        }
+
         handler {
             byMethod {
                 post {

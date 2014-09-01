@@ -17,6 +17,11 @@ class LocationMongoGateway implements LocationGateway {
     private MongoDBClient mongoDBClient
     private final SurveyGateway surveyGateway
 
+    @Override
+    LocationEntity findById(String locationId) {
+        LocationEntity.create mongoCollection.findOne(new BasicDBObject("_id", new ObjectId(locationId)))
+    }
+
     @Inject
     LocationMongoGateway(MongoDBClient mongoDBClient, SurveyGateway surveyGateway) {
         this.mongoDBClient = mongoDBClient
@@ -27,14 +32,13 @@ class LocationMongoGateway implements LocationGateway {
     @Override
     List<LocationSurvey> findSurveys(String locationId) {
         List<LocationSurvey> surveys = []
-        BasicDBObject locationDoc = mongoCollection.findOne(new BasicDBObject("_id", new ObjectId(locationId)))
+        DBObject locationDoc = mongoCollection.findOne(new BasicDBObject("_id", new ObjectId(locationId)))
         DBCollection surveyCollection = getSurveyCollection(locationDoc.get("locationType").toString())
         DBCursor cursor = surveyCollection.find(new BasicDBObject("location.id", new ObjectId(locationId)))
         try {
             while(cursor.hasNext()) {
                 BasicDBObject doc = cursor.next()
-                SurveyEntity survey = surveyGateway.findById(doc.get("survey_id").toString())
-                surveys << LocationSurvey.create(doc, survey)
+                surveys << LocationSurvey.create(doc)
             }
         }finally {
             cursor.close()

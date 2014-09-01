@@ -13,6 +13,7 @@
 				<th>District</th>
 				<th>Longitude</th>
 				<th>Latitude</th>
+				<th />
 			</thead>
 			<tbody>
 				<tr ng-repeat="location in locations">
@@ -21,6 +22,9 @@
 						<td>{{ location.district }}</td>
 						<td>{{ location.loc.lon }}</td>
 						<td>{{ location.loc.lat }}</td>
+						<td>
+							<a ui-sref="locations.details({ locationId: location.id })">Details</a>
+						</td>
 				</tr>
 			</tbody>
 		</table>
