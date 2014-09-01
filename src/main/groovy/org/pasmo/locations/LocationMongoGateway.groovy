@@ -28,7 +28,7 @@ class LocationMongoGateway implements LocationGateway {
     List<LocationSurvey> findSurveys(String locationId) {
         List<LocationSurvey> surveys = []
         BasicDBObject locationDoc = mongoCollection.findOne(new BasicDBObject("_id", new ObjectId(locationId)))
-        DBCollection surveyCollection = getSurveyCollection(locationDoc.get("locationType"))
+        DBCollection surveyCollection = getSurveyCollection(locationDoc.get("locationType").toString())
         DBCursor cursor = surveyCollection.find(new BasicDBObject("location.id", new ObjectId(locationId)))
         try {
             while(cursor.hasNext()) {
