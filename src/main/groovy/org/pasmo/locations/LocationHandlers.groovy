@@ -1,32 +1,53 @@
 package org.pasmo.locations
 
 import com.fasterxml.jackson.databind.node.ObjectNode
-import com.google.inject.Inject
-import ratpack.groovy.handling.GroovyContext
-import ratpack.groovy.handling.GroovyHandler
+import ratpack.groovy.handling.GroovyChainAction
 import ratpack.jackson.Jackson
 
-class LocationHandlers extends GroovyHandler {
+import javax.inject.Inject
+
+class LocationHandlers extends GroovyChainAction {
     private final LocationCrudService locationCrudService
+    private final LocationGateway locationGateway
 
     @Inject
-    LocationHandlers(LocationCrudService locationCrudService) {
+    LocationHandlers(LocationCrudService locationCrudService, LocationGateway locationGateway) {
         this.locationCrudService = locationCrudService
+        this.locationGateway = locationGateway
     }
 
     @Override
-    protected void handle(GroovyContext context) {
-        context.with {
+    protected void execute() throws Exception {
+        handler("byType/:locationType") {
+            byMethod {
+                get {
+                    blocking {
+                        locationGateway.findAllByType(pathTokens.locationType.capitalize())
+                    } then { List<LocationEntity> locations ->
+                        render Jackson.json(locations.collect{ LocationEntity location -> location.toMap() })
+                    }
+
+                }
+            }
+        }
+
+        handler {
             byMethod {
                 post {
-                    ObjectNode node = parse Jackson.jsonNode()
-                    LocationEntity location = locationCrudService.create(node.toString())
-                    render Jackson.json(location.toMap())
+                    blocking {
+                        ObjectNode node = parse Jackson.jsonNode()
+                        locationCrudService.create(node.toString())
+                    } then { LocationEntity location ->
+                        render Jackson.json(location.toMap())
+                    }
                 }
 
                 get {
-                    List<LocationEntity> locations = locationCrudService.findAll()
-                    render Jackson.json(locations.collect{ LocationEntity location -> location.toMap()})
+                    blocking {
+                        locationCrudService.findAll()
+                    } then { List<LocationEntity> locations ->
+                        render Jackson.json(locations.collect{ LocationEntity location -> location.toMap()})
+                    }
                 }
             }
         }

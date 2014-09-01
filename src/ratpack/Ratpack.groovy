@@ -2,7 +2,6 @@ import org.pasmo.DatabaseClientModule
 import org.pasmo.auth.AuthPathAuthorizer
 import org.pasmo.auth.CurrentUser
 import org.pac4j.oauth.client.Google2Client
-import org.pasmo.locations.LocationByTypeHandler
 import org.pasmo.locations.LocationCrudModule
 import org.pasmo.locations.LocationHandlers
 import org.pasmo.persistence.MongoDBClientModule
@@ -116,8 +115,9 @@ ratpack {
             prefix("surveys") {
                 handler chain(new SurveyChainHandler(nonTraditionalOutletSurveyCrud))
             }
-            handler("locations", registry.get(LocationHandlers))
-            handler("locations/byType/:locationType", registry.get(LocationByTypeHandler))
+            prefix("locations") {
+                handler chain(registry.get(LocationHandlers))
+            }
 
         }
 
