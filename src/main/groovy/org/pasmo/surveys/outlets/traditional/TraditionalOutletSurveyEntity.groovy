@@ -18,8 +18,8 @@ class TraditionalOutletSurveyEntity {
     static TraditionalOutletSurveyEntity create(DBObject doc) {
         new TraditionalOutletSurveyEntity(
                 id: doc.get("_id").toString(),
-                condomsAvailable: doc.get("condoms_available").asBoolean(),
-                lubesAvailable: doc.get("lubes_available").asBoolean(),
+                condomsAvailable: doc.get("condomsAvailable").asBoolean(),
+                lubesAvailable: doc.get("lubesAvailable").asBoolean(),
                 gigi: doc.get("gigi").asBoolean(),
                 locationId: doc.get("location").id.toString(),
                 locationName: doc.get("location").name,

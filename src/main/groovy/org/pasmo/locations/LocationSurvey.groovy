@@ -20,15 +20,15 @@ class LocationSurvey {
     static LocationSurvey create(BasicDBObject doc) {
         LocationSurvey locationSurvey = new LocationSurvey(
                 id: doc.get("_id").toString(),
-                condomsAvailable: doc.get("condoms_available"),
-                lubesAvailable: doc.get("lubes_available"),
+                condomsAvailable: doc.get("condomsAvailable"),
+                lubesAvailable: doc.get("lubesAvailable"),
                 gigi: doc.get("gigi"),
                 locationName: doc.get("location").name,
                 district: doc.get("location").district,
                 survey: [id: doc.get("survey").id.toString(), year: doc.get("survey").year.toString(), month: doc.get("survey").month],
-                targetPopulations: doc.get("target_populations"),
+                targetPopulations: doc.get("targetPopulations"),
                 outreach: doc.get("outreach"),
-                outletType: doc.get("outlet_type")?.name
+                outletType: doc.get("outletType")?.name
         )
 
         locationSurvey

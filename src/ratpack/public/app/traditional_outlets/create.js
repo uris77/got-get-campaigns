@@ -16,8 +16,8 @@
 
         $scope.submit = function() {
             var params = {
-                condoms_available: _.isBoolean($scope.condoms_available) ? $scope.condoms_available : false,
-                lubes_available: _.isBoolean($scope.lube_available) ? $scope.lube_available : false,
+                condomsAvailable: _.isBoolean($scope.condoms_available) ? $scope.condoms_available : false,
+                lubesAvailable: _.isBoolean($scope.lube_available) ? $scope.lube_available : false,
                 gigi: _.isBoolean($scope.gigi) ? $scope.gigi : false,
                 location: {
                     id: $scope.location.id,

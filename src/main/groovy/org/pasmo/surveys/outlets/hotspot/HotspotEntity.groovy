@@ -19,10 +19,10 @@ class HotspotEntity {
     static HotspotEntity create(DBObject doc) {
         new HotspotEntity(
                 id: doc.get("_id").toString(),
-                targetPopulations: doc.get("target_populations"),
+                targetPopulations: doc.get("targetPopulations"),
                 outreach: doc.get("outreach"),
-                condomsAvailable: doc.get("condoms_available"),
-                lubesAvailable: doc.get("lubes_available"),
+                condomsAvailable: doc.get("condomsAvailable"),
+                lubesAvailable: doc.get("lubesAvailable"),
                 gigi: doc.get("gigi"),
                 survey: [
                         id: doc.get("survey").id.toString(),

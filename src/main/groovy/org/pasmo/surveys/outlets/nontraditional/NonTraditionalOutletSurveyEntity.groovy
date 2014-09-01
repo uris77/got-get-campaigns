@@ -20,11 +20,11 @@ class NonTraditionalOutletSurveyEntity {
     static NonTraditionalOutletSurveyEntity create(DBObject doc) {
         new NonTraditionalOutletSurveyEntity(
                 id: doc.get("_id").toString(),
-                outletType: doc.get("outlet_type"),
-                targetPopulations: doc.get("target_populations"),
+                outletType: doc.get("outletType"),
+                targetPopulations: doc.get("targetPopulations"),
                 outreach: doc.get("outreach"),
-                condomsAvailable: doc.get("condoms_available"),
-                lubesAvailable: doc.get("lubes_available"),
+                condomsAvailable: doc.get("condomsAvailable"),
+                lubesAvailable: doc.get("lubesAvailable"),
                 gigi: doc.get("gigi"),
                 survey: [
                         id: doc.get("survey").id.toString(),

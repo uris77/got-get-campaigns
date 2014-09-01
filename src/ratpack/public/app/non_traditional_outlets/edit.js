@@ -6,7 +6,7 @@
         NonTraditionalSurveyGatewayService.fetchSurvey($scope.survey_id, $scope.outlet_survey_id)
             .success(function(data) {
                 $scope.survey = data;
-                $scope.survey.outletType = JSON.parse(data.outletType);
+                $scope.survey.outletType = JSON.parse(data.outletType).name;
             })
             .error(function(error) {
                 console.error("Error fetching survey data: ", error);

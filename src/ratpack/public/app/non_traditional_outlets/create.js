@@ -33,10 +33,10 @@
             if($scope.errors.length == 0) {
                 var params = {
                     outreach: $scope.outreach,
-                    outlet_type: $scope.outlet_type,
-                    target_populations: $scope.target_populations,
-                    condoms_available: _.isBoolean($scope.condoms_available) ? $scope.condoms_available : false,
-                    lubes_available: _.isBoolean($scope.lube_available) ? $scope.lube_available : false,
+                    outletType: $scope.outlet_type,
+                    targetPopulations: $scope.target_populations,
+                    condomsAvailable: _.isBoolean($scope.condoms_available) ? $scope.condoms_available : false,
+                    lubesAvailable: _.isBoolean($scope.lube_available) ? $scope.lube_available : false,
                     gigi: _.isBoolean($scope.gigi) ? $scope.gigi : false,
                     location: {
                         id: $scope.location.id,

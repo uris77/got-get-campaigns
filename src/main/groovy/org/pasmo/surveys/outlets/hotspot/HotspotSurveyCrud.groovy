@@ -54,9 +54,9 @@ class HotspotSurveyCrud {
     HotspotEntity update(Map params, String surveyId) {
         BasicDBObject doc = new BasicDBObject()
         BasicDBObject updateDoc = new BasicDBObject("gigi", params.gigi)
-        updateDoc.append("condoms_available", params.condomsAvailable)
-        updateDoc.append("lubes_available", params.lubesAvailable)
-        updateDoc.append("target_populations", params.targetPopulations)
+        updateDoc.append("condomsAvailable", params.condomsAvailable)
+        updateDoc.append("lubesAvailable", params.lubesAvailable)
+        updateDoc.append("targetAopulations", params.targetPopulations)
         updateDoc.append("outreach", params.outreach)
         doc.append('$set', updateDoc)
         mongoCollection.update(new BasicDBObject("_id", new ObjectId(surveyId)), doc)

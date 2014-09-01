@@ -42,8 +42,8 @@ class TraditionalOutletSurveyCrud {
     TraditionalOutletSurveyEntity update(Map params, String outletSurveyId) {
         BasicDBObject doc = new BasicDBObject()
         BasicDBObject updateDoc = new BasicDBObject("gigi", params.gigi)
-        updateDoc.append("condoms_available", params.condomsAvailable)
-        updateDoc.append("lubes_available", params.lubesAvailable)
+        updateDoc.append("condomsAvailable", params.condomsAvailable)
+        updateDoc.append("lubesAvailable", params.lubesAvailable)
         doc.append('$set', updateDoc)
         mongoCollection.update(new BasicDBObject("_id", new ObjectId(outletSurveyId)), doc)
         findById(outletSurveyId)
