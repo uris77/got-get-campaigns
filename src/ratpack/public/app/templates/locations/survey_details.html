@@ -1,0 +1,14 @@
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <button class="btn btn-primary btn-xs" ng-click="showLess()">
+            <span class="glyphicon glyphicon-arrow-left"></span>
+        </button>
+        | Survey Details | {{ survey.survey.year }} {{ survey.survey.month }}         
+    </div>
+    <div class="panel-body"> 
+        <form role="form" class="form-horizontal">           
+            <div ng-if="location.locationType == 'Hotspot'" ng-include="'/surveys/hotspots/survey_details.html'"></div>
+            <div ng-if="location.locationType == 'Non-Traditional'" ng-include="'/surveys/non_traditional_outlets/survey_details.html'"></div>
+        </form>
+    </div>
+</div>

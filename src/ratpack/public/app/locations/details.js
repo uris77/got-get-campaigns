@@ -10,6 +10,7 @@
     }
 
     function LocationDetailsController($scope, $stateParams, LocationSurveysGateway) {
+        $scope.summary = true;
         $scope.locationId = $stateParams.locationId;
         LocationSurveysGateway.fetchDetails($scope.locationId)
             .success( function(data) {
@@ -20,6 +21,15 @@
                 alert("An error occurred fetching the data from the server!");
                 console.error("ERROR fetching data: ", error);
             });
+
+        $scope.showMore = function(survey) {
+            $scope.summary = false;
+            $scope.survey = survey;
+        };
+
+        $scope.showLess = function() {
+            $scope.summary = true;
+        };
     }
 
     ng.module("locations.details", [])

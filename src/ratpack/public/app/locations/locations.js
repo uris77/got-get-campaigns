@@ -16,9 +16,9 @@
                 templateUrl: "/locations/create.html",
                 controller: 'LocationCreateController'
             })
-            .state("locations.details", {
-                url: "/:locationId/details",
-                templateUrl: "/locations/details.html",
+            .state("locations.summary", {
+                url: "/:locationId/summary",
+                templateUrl: "/locations/surveys_summary.html",
                 controller: "LocationDetailsController"
             });
     }

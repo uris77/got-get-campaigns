@@ -7,109 +7,13 @@
     </div>
     <div class="panel-body">
         <form role="form" class="form-horizontal" ng-submit="submit()">
+            <div ng-include="'/surveys/non_traditional_outlets/survey_details.html'"></div>
             <div class="form-group">
-                <label for="location" class="col-sm-3 control-label">Location</label>
-                <div class="col-sm-5">
-                   {{ survey.locationName }}
+                <div class="col-sm-5 control-label">
+                    <button class="btn btn-danger btn-lg" ng-click="cancel()">Back</button>
+                    <button type="submit" class="btn btn-primary btn-lg">Save</button>
                 </div>
             </div>
-
-            <div class="form-group">
-                <label for="outlet_type" class="col-sm-3 control-label">Outlet Type</label>
-                <div class="col-sm-5">
-                    {{ survey.outletType.name }}
-                    
-                </div>
-            </div>
-
-            <fieldset class="basic-border">
-                <legend class="basic-border"> Target Population </legend>
-                <div class="form-group">
-                    <label for="msm" class="col-sm-3 control-label">MSM</label>
-                    <div class="col-sm-5">
-                            <input type="checkbox" ng-model="survey.targetPopulations.msm"></input>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="fsw" class="col-sm-3 control-label">FSW</label>
-                    <div class="col-sm-5">
-                            <input type="checkbox" ng-model="survey.targetPopulations.fsw"></input>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="fsw" class="col-sm-3 control-label">MAR</label>
-                    <div class="col-sm-5">
-                            <input type="checkbox" ng-model="survey.targetPopulations.mar"></input>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="fsw" class="col-sm-3 control-label">Garifuna</label>
-                    <div class="col-sm-5">
-                            <input type="checkbox" ng-model="survey.targetPopulations.garifuna"></input>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="fsw" class="col-sm-3 control-label">PLHIV</label>
-                    <div class="col-sm-5">
-                            <input type="checkbox" ng-model="survey.targetPopulations.plhiv"></input>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="fsw" class="col-sm-3 control-label">General Population</label>
-                    <div class="col-sm-5">
-                            <input type="checkbox" ng-model="survey.targetPopulations.gen_pop"></input>
-                    </div>
-                </div>
-            </fieldset>
-
-            <fieldset class="basic-border">
-                <legend class="basic-border">
-                    Outreach
-                </legend>
-                <div class="form-group">
-                    <label for="outreach" class="col-sm-3 control-label">VCT</label>
-                    <div class="col-sm-5">
-                        <input type="checkbox" ng-model="survey.outreach.vct"></input>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="outreach" class="col-sm-3 control-label">BCC</label>
-                    <div class="col-sm-5">
-                        <input type="checkbox" ng-model="survey.outreach.bcc"></input>
-                    </div>
-                </div>
-            </fieldset>
-            
-
-            <fieldset class="basic-border">
-                <legend class="basic-border">
-                    Distribution
-                </legend>
-                <div class="form-group">
-                    <label for="condoms" class="col-sm-3 control-label">Condoms Available</label>
-                    <div class="col-sm-5">
-                        <input type="checkbox" ng-model="survey.condomsAvailable"></input>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="lube" class="col-sm-3 control-label">Lube Available</label>
-                    <div class="col-sm-5">
-                        <input type="checkbox" ng-model="survey.lubesAvailable"></input>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="gigi" class="col-sm-3 control-label">GIGI</label>
-                    <div class="col-sm-5">
-                        <input type="checkbox" ng-model="survey.gigi"></input>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-sm-5 control-label">
-                        <button class="btn btn-danger btn-lg" ng-click="cancel()">Back</button>
-                        <button type="submit" class="btn btn-primary btn-lg">Save</button>
-                    </div>
-                </div>
-            </fieldset>
         </form>
     </div>
 </div>
