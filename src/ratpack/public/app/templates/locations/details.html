@@ -15,7 +15,9 @@
             <tbody>
                 <tr ng-repeat="survey in surveys">
                     <td>
-                        {{ survey.survey.year }} | {{ survey.survey.month}}
+                        <a ui-sref="surveys.show({id: survey.survey.id})">
+                            {{ survey.survey.year }} | {{ survey.survey.month}}
+                        </a>
                     </td>
                     <td>
                         {{ survey.district }}
