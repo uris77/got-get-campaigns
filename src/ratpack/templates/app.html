@@ -21,21 +21,19 @@
                     </button>
                     <a class="navbar-brand" href="#">PASMO | High Risk Zones Mappings</a>
                 </div>
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li><a ui-sref="surveys.list">Surveys</a></li>
+                        <li><a ui-sref="locations.list">Locations</a></li>
+                    </ul>
+                </div>
              </div>
         </nav>
     </header>
     <div class="spaced-row">
         <div class="col-md-12">
-            <div class="btn-group">
-                <a class="btn btn-default" ui-sref="surveys.list">
-                    Surveys
-                </a>
-                <a class="btn btn-default" ui-sref="locations.list">
-                   Locations
-                </a>
-            </div>
             <div class="content-panel" ui-view>
-                <h1>Traditional Outlets</h1>
+                <h1>PASMO High Risk Zones Mappings</h1>
             </div>
         </div>
     </div>
