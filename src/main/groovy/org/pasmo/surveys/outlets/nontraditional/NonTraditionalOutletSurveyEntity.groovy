@@ -17,7 +17,7 @@ class NonTraditionalOutletSurveyEntity {
     String district
     Map<String, String> survey
 
-    static NonTraditionalOutletSurveyEntity create(DBObject doc, SurveyEntity survey) {
+    static NonTraditionalOutletSurveyEntity create(DBObject doc) {
         new NonTraditionalOutletSurveyEntity(
                 id: doc.get("_id").toString(),
                 outletType: doc.get("outlet_type"),
@@ -27,8 +27,9 @@ class NonTraditionalOutletSurveyEntity {
                 lubesAvailable: doc.get("lubes_available"),
                 gigi: doc.get("gigi"),
                 survey: [
-                        year: survey.year.toString(),
-                        month: survey.month
+                        id: doc.get("survey").id.toString(),
+                        year: doc.get("survey").year.toString(),
+                        month: doc.get("survey").month
                 ],
                 locationName: doc.get("location").name,
                 district: doc.get("location").district

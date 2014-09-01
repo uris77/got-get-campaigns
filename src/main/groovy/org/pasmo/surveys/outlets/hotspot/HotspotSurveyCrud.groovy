@@ -25,7 +25,8 @@ class HotspotSurveyCrud {
         BasicDBObject obj = new BasicDBObject()
         params.each{ key, value ->
             if(key == "surveyId") {
-                obj.append("survey_id", new ObjectId(value))
+                SurveyEntity survey = surveyGateway.findById(value.toString())
+                obj.append("survey", [id: new ObjectId(survey.id), year: survey.year, month: survey.month])
             } else if(key == "location") {
                 value.id = new ObjectId(value.id)
                 obj.append(key, value)
@@ -33,18 +34,16 @@ class HotspotSurveyCrud {
                 obj.append(key, value)
             }
         }
-        SurveyEntity survey = surveyGateway.findById(obj.survey_id.toString())
         mongoCollection.insert(obj)
-        HotspotEntity.create(obj, survey)
+        HotspotEntity.create(obj)
     }
 
     List<HotspotEntity> listAll(String surveyId) {
         List<HotspotEntity> hotspots = []
-        SurveyEntity survey  = surveyGateway.findById(surveyId)
-        DBCursor cursor = mongoCollection.find(new BasicDBObject("survey_id", new ObjectId(surveyId)))
+        DBCursor cursor = mongoCollection.find(new BasicDBObject("survey.id", new ObjectId(surveyId)))
         try {
             while(cursor.hasNext()) {
-                hotspots << HotspotEntity.create(cursor.next(), survey)
+                hotspots << HotspotEntity.create(cursor.next())
             }
         } finally {
             cursor.close()
@@ -66,7 +65,6 @@ class HotspotSurveyCrud {
 
     HotspotEntity findById(String outletSruveyId) {
         BasicDBObject doc = mongoCollection.findOne(new BasicDBObject("_id", new ObjectId(outletSruveyId)))
-        SurveyEntity survey = surveyGateway.findById(doc.get("survey_id").toString())
-        HotspotEntity.create(doc, survey)
+        HotspotEntity.create(doc)
     }
 }

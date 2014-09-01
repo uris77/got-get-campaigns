@@ -27,7 +27,7 @@ class TraditionalOutletSurveyHandler extends GroovyChainAction {
                 put {
                     blocking {
                         def params = parse Map
-                        surveyOutletCrud.update(params, pathTokens.traditionalOutletSurveyId, pathTokens.surveyId)
+                        surveyOutletCrud.update(params, pathTokens.traditionalOutletSurveyId)
                     } then { TraditionalOutletSurveyEntity outlet ->
                         render json(outlet)
                     }

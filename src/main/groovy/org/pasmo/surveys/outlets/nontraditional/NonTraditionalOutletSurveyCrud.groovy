@@ -28,7 +28,8 @@ class NonTraditionalOutletSurveyCrud {
         BasicDBObject doc = new BasicDBObject()
         params.each{key, value ->
             if(key == "surveyId") {
-                doc.append("survey_id", new ObjectId(value))
+                SurveyEntity survey = surveyGateway.findById(value.toString())
+                doc.append("survey",[id: new ObjectId(survey.id), year: survey.year, month: survey.month])
             } else if(key == "location") {
                 value.id = new ObjectId(value.id)
                 doc.append(key, value)
@@ -37,8 +38,7 @@ class NonTraditionalOutletSurveyCrud {
             }
         }
         mongoCollection.insert(doc)
-        SurveyEntity survey = surveyGateway.findById(doc.survey_id.toString())
-        NonTraditionalOutletSurveyEntity.create(doc, survey)
+        NonTraditionalOutletSurveyEntity.create(doc)
     }
 
     NonTraditionalOutletSurveyEntity update(Map params, String outletSurveyId) {
@@ -56,12 +56,11 @@ class NonTraditionalOutletSurveyCrud {
 
     List<NonTraditionalOutletSurveyEntity> listAll(String surveyId) {
         List<NonTraditionalOutletSurveyEntity> surveys = []
-        SurveyEntity survey = surveyGateway.findById(surveyId)
-        DBCursor cursor = mongoCollection.find(new BasicDBObject("survey_id", new ObjectId(surveyId)))
+        DBCursor cursor = mongoCollection.find(new BasicDBObject("survey.id", new ObjectId(surveyId)))
         try {
             while(cursor.hasNext()) {
                 DBObject obj = cursor.next()
-                surveys << NonTraditionalOutletSurveyEntity.create(obj, survey)
+                surveys << NonTraditionalOutletSurveyEntity.create(obj)
             }
         } finally {
             cursor.close()
@@ -71,12 +70,7 @@ class NonTraditionalOutletSurveyCrud {
 
     NonTraditionalOutletSurveyEntity findById(String id) {
         BasicDBObject doc = mongoCollection.findOne(new BasicDBObject("_id", new ObjectId(id)))
-        createNonTraditionalOutletSurveyEntity(doc)
-    }
-
-    private NonTraditionalOutletSurveyEntity createNonTraditionalOutletSurveyEntity(DBObject doc) {
-        SurveyEntity survey = surveyGateway.findById(doc.get("survey_id").toString())
-        createNonTraditionalOutletSurveyEntity(doc, survey)
+        NonTraditionalOutletSurveyEntity.create(doc)
     }
 
 }

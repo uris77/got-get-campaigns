@@ -61,7 +61,7 @@ class SurveyGateway {
 
     long countBySurveyAndLocationType(SurveyEntity survey, String locationType) {
         DBObject doc = new BasicDBObject()
-        doc.append("survey_id", new ObjectId(survey.id))
+        doc.append("survey.id", new ObjectId(survey.id))
         long count = 0
         switch(locationType) {
             case "Traditional":

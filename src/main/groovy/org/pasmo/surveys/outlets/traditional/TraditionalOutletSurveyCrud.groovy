@@ -26,7 +26,8 @@ class TraditionalOutletSurveyCrud {
         BasicDBObject doc = new BasicDBObject()
         params.each{ key, value ->
             if(key == "surveyId") {
-                doc.append("survey_id", new ObjectId(value))
+                SurveyEntity survey = surveyGateway.findById(value.toString())
+                doc.append("survey", [id: new ObjectId(survey.id), year: survey.year, month: survey.month])
             } else if(key == "location") {
                 value.id = new ObjectId(value.id)
                 doc.append(key, value)
@@ -35,11 +36,10 @@ class TraditionalOutletSurveyCrud {
             }
         }
         mongoCollection.insert(doc)
-        SurveyEntity survey = surveyGateway.findById(doc.survey_id.toString())
-        createTraditionalOutletSurveyEntity(doc, survey)
+        TraditionalOutletSurveyEntity.create(doc)
     }
 
-    TraditionalOutletSurveyEntity update(Map params, String outletSurveyId, String surveyId) {
+    TraditionalOutletSurveyEntity update(Map params, String outletSurveyId) {
         BasicDBObject doc = new BasicDBObject()
         BasicDBObject updateDoc = new BasicDBObject("gigi", params.gigi)
         updateDoc.append("condoms_available", params.condomsAvailable)
@@ -51,12 +51,11 @@ class TraditionalOutletSurveyCrud {
 
     List<TraditionalOutletSurveyEntity> listAll(String surveyId) {
         List<TraditionalOutletSurveyEntity> traditionalOutletSurveys = []
-        SurveyEntity survey = surveyGateway.findById(surveyId.toString())
-        DBCursor cursor = mongoCollection.find(new BasicDBObject("survey_id", new ObjectId(surveyId)))
+        DBCursor cursor = mongoCollection.find(new BasicDBObject("survey.id", new ObjectId(surveyId)))
         try{
             while(cursor.hasNext()) {
                 DBObject obj = cursor.next()
-                traditionalOutletSurveys << createTraditionalOutletSurveyEntity(obj, survey)
+                traditionalOutletSurveys << TraditionalOutletSurveyEntity.create(obj)
             }
         } finally {
             cursor.close()
@@ -66,25 +65,8 @@ class TraditionalOutletSurveyCrud {
 
     TraditionalOutletSurveyEntity findById(String outletSurveyId) {
         DBObject doc = mongoCollection.findOne(new BasicDBObject("_id", new ObjectId(outletSurveyId)))
-        createTraditionalOutletSurveyEntity(doc)
+        TraditionalOutletSurveyEntity.create(doc)
     }
 
-    private TraditionalOutletSurveyEntity createTraditionalOutletSurveyEntity(DBObject doc) {
-        SurveyEntity survey = surveyGateway.findById(doc.get("survey_id").toString())
-        createTraditionalOutletSurveyEntity(doc, survey)
-    }
-
-    private TraditionalOutletSurveyEntity createTraditionalOutletSurveyEntity(DBObject doc, SurveyEntity survey) {
-        new TraditionalOutletSurveyEntity(
-                id: doc.get("_id").toString(),
-                condomsAvailable: doc.get("condoms_available").asBoolean(),
-                lubesAvailable: doc.get("lubes_available").asBoolean(),
-                gigi: doc.get("gigi").asBoolean(),
-                locationId: doc.get("location").id.toString(),
-                locationName: doc.get("location").name,
-                locationDistrict: doc.get("location").district,
-                survey: [month: survey.month.toString() ,year: survey.year.toString()]
-        )
-    }
 
 }

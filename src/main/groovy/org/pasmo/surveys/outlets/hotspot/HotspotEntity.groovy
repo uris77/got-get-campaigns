@@ -16,7 +16,7 @@ class HotspotEntity {
     String district
     Map<String, String> survey
 
-    static HotspotEntity create(DBObject doc, SurveyEntity survey) {
+    static HotspotEntity create(DBObject doc) {
         new HotspotEntity(
                 id: doc.get("_id").toString(),
                 targetPopulations: doc.get("target_populations"),
@@ -25,8 +25,9 @@ class HotspotEntity {
                 lubesAvailable: doc.get("lubes_available"),
                 gigi: doc.get("gigi"),
                 survey: [
-                        year: survey.year.toString(),
-                        month: survey.month
+                        id: doc.get("survey").id.toString(),
+                        year: doc.get("survey").year.toString(),
+                        month: doc.get("survey").month
                 ],
                 locationName: doc.get("location").name,
                 district: doc.get("location").district
