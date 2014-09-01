@@ -26,7 +26,6 @@ class LocationHandlers extends GroovyChainAction {
                     } then { List<LocationEntity> locations ->
                         render Jackson.json(locations.collect{ LocationEntity location -> location.toMap() })
                     }
-
                 }
             }
         }

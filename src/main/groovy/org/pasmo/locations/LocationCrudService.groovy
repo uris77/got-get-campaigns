@@ -1,48 +1,54 @@
 package org.pasmo.locations
 
-import com.allanbank.mongodb.MongoClient
-import com.allanbank.mongodb.bson.Document
-import com.allanbank.mongodb.bson.builder.BuilderFactory
-import com.allanbank.mongodb.bson.builder.DocumentBuilder
-import com.allanbank.mongodb.builder.Aggregate
-import com.allanbank.mongodb.builder.QueryBuilder
-import com.allanbank.mongodb.builder.Sort
+import com.mongodb.BasicDBObject
+import com.mongodb.DBCollection
+import com.mongodb.DBCursor
+import com.mongodb.DBObject
 import com.mongodb.util.JSON
-import org.pasmo.repositories.AbstractMongoRepository
+import org.pasmo.persistence.MongoDBClient
 
+import javax.inject.Inject
 
-class LocationCrudService extends AbstractMongoRepository implements LocationRepositoryTrait{
+class LocationCrudService {
+    private final String COLLECTION_NAME = "pasmo_locations"
+    private final MongoDBClient mongoDBClient
+    private final DBCollection mongoCollection
 
-    LocationCrudService(MongoClient mongo, String databaseName) {
-        super(mongo, databaseName)
-        mongoCollection = mongoDatabase.getCollection(collectionName)
+    @Inject
+    LocationCrudService(MongoDBClient mongoDBClient) {
+        this.mongoDBClient = mongoDBClient
+        this.mongoCollection = mongoDBClient.getCollection(COLLECTION_NAME)
     }
 
     LocationEntity create(String json) {
         def params = JSON.parse(json)
-        DocumentBuilder doc = BuilderFactory.start()
-        params.each{ key, value ->
-            if(key == 'loc') {
+        BasicDBObject doc = new BasicDBObject()
+        params.each { key, value ->
+            if(key == "loc") {
                 def loc = [lon: Double.parseDouble(value.lon), lat: Double.parseDouble(value.lat)]
-                doc.add(key, loc)
+                doc.append(key, loc)
             } else {
-                doc.add(key, value)
+                doc.append(key, value)
             }
         }
         mongoCollection.insert(doc)
-        new LocationEntity(findByName(params.name))
+        LocationEntity.create(doc)
     }
 
-    Document findByName(String locationName) {
-        mongoCollection.findOne(QueryBuilder.where("name").equals(locationName))
+    LocationEntity findByName(String locationName) {
+        LocationEntity.create(mongoCollection.findOne(new BasicDBObject("name", locationName)))
     }
 
     List<LocationEntity> findAll() {
         List<LocationEntity> locations = []
-        Aggregate.Builder builder = new Aggregate.Builder()
-        builder.sort(Sort.asc("name"))
-        mongoCollection.aggregate(builder).each { doc ->
-            locations << new LocationEntity(doc)
+        DBCursor cursor = mongoCollection.find()
+        try {
+            while(cursor.hasNext()) {
+                DBObject doc = cursor.next()
+                locations << LocationEntity.create(doc)
+            }
+        }  finally {
+            cursor.close()
         }
         locations
     }

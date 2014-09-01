@@ -1,32 +1,48 @@
 package org.pasmo.locations
 
-import com.allanbank.mongodb.MongoClient
-import com.allanbank.mongodb.bson.Document
-import com.allanbank.mongodb.builder.QueryBuilder
-import org.pasmo.repositories.AbstractMongoRepository
+import com.mongodb.BasicDBObject
+import com.mongodb.DBCollection
+import com.mongodb.DBCursor
+import com.mongodb.DBObject
+import org.pasmo.persistence.MongoDBClient
 
-class LocationMongoGateway extends AbstractMongoRepository implements LocationRepositoryTrait, LocationGateway {
+import javax.inject.Inject
 
-     LocationMongoGateway(MongoClient mongo, String databaseName) {
-        super(mongo, databaseName)
-        mongoCollection = mongoDatabase.getCollection(collectionName)
+class LocationMongoGateway implements LocationGateway {
+    private final String COLLECTION_NAME = "pasmo_locations"
+    private DBCollection mongoCollection
+    private MongoDBClient mongoDBClient
+
+    @Inject
+    LocationMongoGateway(MongoDBClient mongoDBClient) {
+        this.mongoDBClient = mongoDBClient
+        mongoCollection = mongoDBClient.getCollection(COLLECTION_NAME)
     }
 
-    long countBySurvey(String month, String year) {
-        1
+    @Override
+    List<LocationSurvey> findSurveys(String locationId) {
+        //Retrieve location
+        return null
     }
 
     long countByType(String locationType) {
-        mongoCollection.count(QueryBuilder.where("locationType").equals(locationType))
-
+        mongoCollection.count(new BasicDBObject("locationType", locationType))
     }
 
     List<LocationEntity> findAllByType(String locationType) {
+        List<LocationEntity> locations = []
         if(locationType == "Non_traditional") {
             locationType = "Non-Traditional"
         }
-        mongoCollection.find(QueryBuilder.where("locationType").equals(locationType)).collect{ Document doc ->
-            new LocationEntity(doc)
+        DBCursor cursor = mongoCollection.find(new BasicDBObject("locationType", locationType))
+        try {
+            while(cursor.hasNext()) {
+                DBObject doc = cursor.next()
+                locations << LocationEntity.create(doc)
+            }
+        } finally {
+            cursor.close()
         }
+        locations
     }
 }

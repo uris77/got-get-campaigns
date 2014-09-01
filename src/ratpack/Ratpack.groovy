@@ -41,10 +41,10 @@ ratpack {
         add new Pac4jModule<>(google2Client, new AuthPathAuthorizer())
 
         add new DatabaseClientModule()
+        add new LocationCrudModule()
         add new SurveyGatewayModule()
         add new UserRepositoryModule()
         add new SurveyCrudModule()
-        add new LocationCrudModule()
         add new TraditionalOutletSurveyModule()
         add new NonTraditionalOutletSurveyModule()
         add new HotspotSurveyModule()

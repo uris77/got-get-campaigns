@@ -1,13 +1,14 @@
 package org.pasmo.locations
 
 import com.google.inject.AbstractModule
-import org.pasmo.MongoClientTrait
+import com.google.inject.Scopes
 
-class LocationCrudModule extends AbstractModule implements MongoClientTrait {
+class LocationCrudModule extends AbstractModule {
 
     @Override
     protected void configure() {
-        bind(LocationCrudService).toInstance(new LocationCrudService(mongoClient, System.getProperty("USER_DB_NAME")))
+        bind(LocationCrudService).in(Scopes.SINGLETON)
+        bind(LocationGateway.class).to(LocationMongoGateway.class).in(Scopes.SINGLETON)
     }
 
 }

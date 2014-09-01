@@ -1,7 +1,6 @@
 package org.pasmo.locations
 
-import com.allanbank.mongodb.bson.Document
-import com.allanbank.mongodb.bson.element.ObjectIdElement
+import com.mongodb.DBObject
 import org.pasmo.entities.PersistentEntity
 
 class LocationEntity implements PersistentEntity {
@@ -11,22 +10,8 @@ class LocationEntity implements PersistentEntity {
     String locationType
     def loc
 
-    LocationEntity() {
-        this
-    }
-
-    LocationEntity(Document  doc) {
-        ObjectIdElement objectId = doc.get("_id")
-        _id = objectId.getId().toHexString()
-        name =  doc.get("name").getValueAsString()
-        district = doc.get("district").getValueAsString()
-        locationType = doc.get("locationType").getValueAsString()
-        loc = doc.get("loc").getValueAsObject()
-        this
-    }
-
     String getId() {
-        _id.toString()
+        _id
     }
 
     Map toMap() {
@@ -35,9 +20,19 @@ class LocationEntity implements PersistentEntity {
                 name: name,
                 district: district,
                 locationType: locationType,
-                loc: [lon: loc.getElements().first().valueAsString, lat: loc.getElements().last().valueAsString]
+                loc: loc
 
         ]
+    }
+
+    static LocationEntity create(DBObject doc) {
+        new LocationEntity(
+                _id: doc.get("_id").toString(),
+                name: doc.get("name"),
+                district: doc.get("district"),
+                locationType: doc.get("locationType"),
+                loc: doc.get("loc")
+        )
     }
 
     public void addError(String error) {
