@@ -4,7 +4,10 @@ import com.mongodb.BasicDBObject
 import com.mongodb.DBCollection
 import com.mongodb.DBCursor
 import com.mongodb.DBObject
+import org.bson.types.ObjectId
 import org.pasmo.persistence.MongoDBClient
+import org.pasmo.surveys.SurveyEntity
+import org.pasmo.surveys.SurveyGateway
 
 import javax.inject.Inject
 
@@ -12,17 +15,31 @@ class LocationMongoGateway implements LocationGateway {
     private final String COLLECTION_NAME = "pasmo_locations"
     private DBCollection mongoCollection
     private MongoDBClient mongoDBClient
+    private final SurveyGateway surveyGateway
 
     @Inject
-    LocationMongoGateway(MongoDBClient mongoDBClient) {
+    LocationMongoGateway(MongoDBClient mongoDBClient, SurveyGateway surveyGateway) {
         this.mongoDBClient = mongoDBClient
         mongoCollection = mongoDBClient.getCollection(COLLECTION_NAME)
+        this.surveyGateway = surveyGateway
     }
 
     @Override
     List<LocationSurvey> findSurveys(String locationId) {
-        //Retrieve location
-        return null
+        List<LocationSurvey> surveys = []
+        BasicDBObject locationDoc = mongoCollection.findOne(new BasicDBObject("_id", new ObjectId(locationId)))
+        DBCollection surveyCollection = getSurveyCollection(locationDoc.get("locationType"))
+        DBCursor cursor = surveyCollection.find(new BasicDBObject("location.id", new ObjectId(locationId)))
+        try {
+            while(cursor.hasNext()) {
+                BasicDBObject doc = cursor.next()
+                SurveyEntity survey = surveyGateway.findById(doc.get("survey_id").toString())
+                surveys << LocationSurvey.create(doc, survey)
+            }
+        }finally {
+            cursor.close()
+        }
+        surveys
     }
 
     long countByType(String locationType) {
@@ -44,5 +61,21 @@ class LocationMongoGateway implements LocationGateway {
             cursor.close()
         }
         locations
+    }
+
+    private DBCollection getSurveyCollection(String locationType) {
+        String surveyCollection
+        switch(locationType) {
+            case "Hotspot":
+                surveyCollection = "hotspot_surveys"
+                break
+            case "Traditional":
+                surveyCollection = "traditional_outlet_surveys"
+                break
+            case "Non-Traditional":
+                surveyCollection = "nontraditional_outlet_surveys"
+                break
+        }
+        mongoDBClient.getCollection(surveyCollection)
     }
 }
