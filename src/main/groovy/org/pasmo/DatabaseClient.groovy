@@ -9,7 +9,7 @@ import com.allanbank.mongodb.MongoFactory
 
 class DatabaseClient {
     private final String DB_HOST = System.getProperty("USER_DB_HOST")
-    def DB_PORT = Integer.parseInt(System.getProperty("USER_DB_PORT"))
+    def DB_PORT = System.getProperty("USER_DB_PORT")
     private final String DB_NAME = System.getProperty("USER_DB_NAME")
 
     MongoClient _mongoClient
