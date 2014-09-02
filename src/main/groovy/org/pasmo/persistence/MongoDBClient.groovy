@@ -18,17 +18,17 @@ class MongoDBClient {
 
     MongoClient getMongoClient() {
         if(_mongoClient == null) {
-            _mongoClient = new MongoClient(new ServerAddress(DB_HOST, DB_PORT),
-                    [MongoCredential.createMongoCRCredential(USERNAME, DB_NAME, PASSWORD as char[])])
+            if(USERNAME && PASSWORD) {
+                _mongoClient = new MongoClient(new ServerAddress(DB_HOST, DB_PORT),
+                        [MongoCredential.createMongoCRCredential(USERNAME, DB_NAME, PASSWORD as char[])])
+            } else {
+                _mongoClient = new MongoClient(new ServerAddress(DB_HOST, DB_PORT))
+            }
         }
         _mongoClient
     }
 
     DB getDatabase() {
-        if(USERNAME && PASSWORD) {
-
-            mongoClient.getDB(DB_NAME).authenticateCommand(USERNAME, PASSWORD as char[])
-        }
         mongoClient.getDB(DB_NAME)
     }
 
