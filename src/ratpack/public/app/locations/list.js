@@ -3,8 +3,7 @@
     var apiUrls = {
         locations: {
             list: "/api/locations"
-        }
-    
+        }    
     };
 
     function LocationListService ($http) {
@@ -25,16 +24,14 @@
             });
 
         $scope.search = function(locationName) {
-            console.log("Search for location: ", locationName);
             LocationListService.search(locationName)
                 .success(function (data) {
-                    console.log("got data: ", data);
                     $scope.locations = data;
                 })
                 .error(function(error) {
                     console.error("Error executing search: ", error);
                 });
-        }
+        };
     }
 
     ng.module("locations.list", [])
