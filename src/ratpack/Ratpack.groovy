@@ -51,19 +51,13 @@ ratpack {
     }
 
     handlers {
-        get {
-            render groovyTemplate("index.html")
-        }
+
         prefix("admin") {
             handler{SessionStorage  sessionStorage ->
                 CurrentUser currentUser = new CurrentUser()
                 currentUser.setSessionStorage(sessionStorage)
                 request.register(currentUser)
                 next()
-            }
-
-            get("secured") {CurrentUser currentUser ->
-                render groovyTemplate([userName: currentUser.getUsername()], "secured.html")
             }
 
             get("logout"){
@@ -84,7 +78,7 @@ ratpack {
 
             }
 
-            get("app") {
+            get("app") { CurrentUser currentUser ->
                 render groovyTemplate("app.html")
             }
 
@@ -119,6 +113,14 @@ ratpack {
                 handler chain(registry.get(LocationHandlers))
             }
 
+        }
+
+        get { SessionStorage sessionStorage ->
+            if(sessionStorage.get(USER_PROFILE)) {
+                redirect("admin/app")
+            } else {
+                render groovyTemplate("index.html")
+            }
         }
 
         assets "public"
