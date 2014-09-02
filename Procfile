@@ -1,1 +1,1 @@
-web: env "GOT_GET_CAMPAIGNS_OPTS=-Dratpack.publicAddress=$PUBLIC_ADDRESS -DGOOGLE_ID=$GOOGLE_ID -DGOOGLE_SECRET=$GOOGLE_SECRET" build/install/got-get-campaigns/bin/got-get-campaigns
+web: env "GOT_GET_CAMPAIGNS_OPTS=-Dratpack.publicAddress=$PUBLIC_ADDRESS -DGOOGLE_ID=$GOOGLE_ID -DGOOGLE_SECRET=$GOOGLE_SECRET" -DUSER_DB_PORT=$USER_DB_PORT -DUSER_DB_NAME=$USER_DB_NAME -DUSER_DB_HOST=$USER_DDB_HOST build/install/got-get-campaigns/bin/got-get-campaigns
