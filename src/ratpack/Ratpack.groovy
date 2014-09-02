@@ -48,7 +48,14 @@ ratpack {
         add new TraditionalOutletSurveyModule()
         add new NonTraditionalOutletSurveyModule()
         add new HotspotSurveyModule()
+
+        init {
+            println "\n\nSTARTING UP............"
+            println "DB_PORT: ${System.getProperty('USER_DB_PORT')}"
+            println "DB_NAME: ${System.getProperty('USER_DB_NAME')}"
+        }
     }
+
 
     handlers {
 
