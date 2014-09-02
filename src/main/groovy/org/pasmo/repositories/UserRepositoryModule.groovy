@@ -11,7 +11,8 @@ class UserRepositoryModule extends AbstractModule {
 
     private static MongoClient _mongo
     private final static String DB_HOST = System.getProperty("USER_DB_HOST")
-    private final static int DB_PORT = Integer.parseInt(System.getProperty("USER_DB_PORT"))
+    //private final static int DB_PORT = Integer.parseInt(System.getProperty("USER_DB_PORT"))
+
 
     @Override
     protected void configure() {
@@ -20,7 +21,7 @@ class UserRepositoryModule extends AbstractModule {
 
     private static MongoClient getMongo() {
         MongoClientConfiguration config = new MongoClientConfiguration()
-        config.addServer(DB_HOST)
+        config.addServer(DB_HOST  + ":" + System.getProperty("USER_DB_PORT"))
         if(_mongo == null) {
              _mongo = MongoFactory.createClient(config)
         }
