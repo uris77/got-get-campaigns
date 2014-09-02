@@ -50,10 +50,10 @@ ratpack {
         add new HotspotSurveyModule()
 
         init {
-            println "\n\nSTARTING UP............"
-            println "DB_PORT: ${System.getProperty('USER_DB_PORT')}"
-            println "DB_NAME: ${System.getProperty('USER_DB_NAME')}"
+            println "\n\n\nGoogle Secret: ${System.getProperty('GOOGLE_SECRET')}"
+            println "Google ID : ${System.getProperty('GOOGLE_ID')}\n\n\n"
         }
+
     }
 
 
