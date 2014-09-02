@@ -6,7 +6,7 @@ import com.mongodb.Mongo
 
 class MongoDBClient {
     private final String DB_HOST = System.getProperty("USER_DB_HOST")
-    private final String DB_PORT = System.getProperty("USER_DB_PORT") //Integer.parseInt(System.getProperty("USER_DB_PORT"))
+    def DB_PORT = System.getProperty("USER_DB_PORT") //Integer.parseInt(System.getProperty("USER_DB_PORT"))
     private final String DB_NAME = System.getProperty("USER_DB_NAME")
 
     private Mongo _mongoClient
