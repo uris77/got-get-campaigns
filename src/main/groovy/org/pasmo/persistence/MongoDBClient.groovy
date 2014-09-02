@@ -13,7 +13,9 @@ class MongoDBClient {
 
     Mongo getMongoClient() {
         if(_mongoClient == null) {
-            _mongoClient = new Mongo(DB_HOST, DB_PORT)
+            println "\n\nDB_PORT: ${DB_PORT}"
+            println "DB_NAME: ${DB_NAME}"
+            _mongoClient = new Mongo(DB_HOST, Integer.parseInt(DB_PORT.toString()))
         }
         _mongoClient
     }
