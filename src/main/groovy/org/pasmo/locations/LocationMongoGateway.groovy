@@ -67,6 +67,21 @@ class LocationMongoGateway implements LocationGateway {
         locations
     }
 
+    @Override
+    List<LocationEntity> findByName(String locationName) {
+        List<LocationEntity> locations = []
+        DBCursor cursor = mongoCollection.find(new BasicDBObject('$text', ['$search': locationName]))
+        try {
+            while(cursor.hasNext()) {
+                DBObject doc = cursor.next()
+                locations << LocationEntity.create(doc)
+            }
+        } finally {
+            cursor.close()
+        }
+        locations
+    }
+
     private DBCollection getSurveyCollection(String locationType) {
         String surveyCollection
         switch(locationType) {

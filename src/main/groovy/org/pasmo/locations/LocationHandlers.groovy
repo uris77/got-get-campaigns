@@ -30,6 +30,22 @@ class LocationHandlers extends GroovyChainAction {
             }
         }
 
+        handler("search") {
+            byMethod {
+                get {
+                    blocking {
+                        if(request.queryParams.locationName.trim().size() > 0 ) {
+                            locationGateway.findByName(request.queryParams.locationName)
+                        } else {
+                            locationCrudService.findAll()
+                        }
+                    } then { List<LocationEntity> locations ->
+                        render Jackson.json(locations)
+                    }
+                }
+            }
+        }
+
         handler(":locationId") {
             byMethod {
                 get {
