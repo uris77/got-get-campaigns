@@ -43,7 +43,7 @@ ratpack {
         add new DatabaseClientModule()
         add new SurveyGatewayModule()
         add new LocationCrudModule()
-        add new UserRepositoryModule()
+        //add new UserRepositoryModule()
         add new SurveyCrudModule()
         add new TraditionalOutletSurveyModule()
         add new NonTraditionalOutletSurveyModule()
@@ -104,8 +104,8 @@ ratpack {
                 }
             }
 
-            handler("users", registry.get(UsersHandler))
-            handler("users/:id", registry.get(UsersByIdHandler))
+//            handler("users", registry.get(UsersHandler))
+//            handler("users/:id", registry.get(UsersByIdHandler))
             prefix("surveys") {
                 handler chain(new SurveyChainHandler(nonTraditionalOutletSurveyCrud))
             }
