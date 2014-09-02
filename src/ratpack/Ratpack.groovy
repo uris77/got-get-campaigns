@@ -6,14 +6,11 @@ import org.pasmo.locations.LocationCrudModule
 import org.pasmo.locations.LocationHandlers
 import org.pasmo.persistence.MongoDBClientModule
 import org.pasmo.repositories.UserRepository
-import org.pasmo.repositories.UserRepositoryModule
 import org.pasmo.repositories.entities.UserEntity
 import org.pasmo.surveys.SurveyChainHandler
 import org.pasmo.surveys.outlets.hotspot.HotspotSurveyModule
 import org.pasmo.surveys.outlets.nontraditional.NonTraditionalOutletSurveyCrud
 import org.pasmo.surveys.outlets.nontraditional.NonTraditionalOutletSurveyModule
-import org.pasmo.users.UsersByIdHandler
-import org.pasmo.users.UsersHandler
 import org.pasmo.surveys.SurveyCrudModule
 import org.pasmo.surveys.SurveyGatewayModule
 import org.pasmo.surveys.outlets.traditional.TraditionalOutletSurveyModule

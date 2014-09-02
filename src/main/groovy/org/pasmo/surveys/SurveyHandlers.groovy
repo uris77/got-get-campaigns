@@ -35,8 +35,11 @@ class SurveyHandlers extends GroovyHandler {
                 }
 
                 get {
-                    List<SurveyEntity> surveys = surveyGateway.list()
-                    render Jackson.json(surveys.collect{ SurveyEntity survey -> survey.toMap() })
+                    blocking {
+                        surveyGateway.list()
+                    } then { List<SurveyEntity> surveys ->
+                        render Jackson.json(surveys.collect{ SurveyEntity survey -> survey.toMap() })
+                    }
                 }
             }
         }
