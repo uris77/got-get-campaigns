@@ -23,7 +23,7 @@ class MongoDBClient {
 
     DB getDatabase() {
         if(USERNAME && PASSWORD) {
-            return mongoClient.getDB(DB_NAME).authenticate(USERNAME, PASSWORD as char[])
+            mongoClient.getDB(DB_NAME).authenticateCommand(USERNAME, PASSWORD as char[])
         }
         mongoClient.getDB(DB_NAME)
     }
