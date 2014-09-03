@@ -28,6 +28,9 @@ class SurveyCrudService  {
         } else {
             BasicDBObject doc = new BasicDBObject()
             params.each{ key, value->
+                if(key == "year") {
+                    value = Integer.parseInt(value)
+                }
                 doc.append(key, value)
             }
             mongoCollection.insert(doc)
