@@ -45,12 +45,6 @@ ratpack {
         add new TraditionalOutletSurveyModule()
         add new NonTraditionalOutletSurveyModule()
         add new HotspotSurveyModule()
-
-        init {
-            println "\n\n\nGoogle Secret: ${System.getProperty('GOOGLE_SECRET')}"
-            println "Google ID : ${System.getProperty('GOOGLE_ID')}\n\n\n"
-        }
-
     }
 
 
