@@ -20,7 +20,8 @@ class MongoDBClient {
     MongoClient getMongoClient() {
         if(_mongoClient == null) {
             if(USERNAME && PASSWORD) {
-                String connectionString = "mongodb//${USERNAME}:${PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}"
+                String connectionString = "mongodb://${USERNAME}:${PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}"
+                println "\n\n\nConnection String: ${connectionString}\n\n"
                 MongoClientURI uri = new MongoClientURI(connectionString)
                 _mongoClient = new MongoClient(uri)
             } else {
