@@ -4,6 +4,7 @@ import com.mongodb.DB
 import com.mongodb.DBCollection
 import com.mongodb.Mongo
 import com.mongodb.MongoClient
+import com.mongodb.MongoClientURI
 import com.mongodb.MongoCredential
 import com.mongodb.ServerAddress
 
@@ -19,8 +20,9 @@ class MongoDBClient {
     MongoClient getMongoClient() {
         if(_mongoClient == null) {
             if(USERNAME && PASSWORD) {
-                _mongoClient = new MongoClient(new ServerAddress(DB_HOST, DB_PORT),
-                        [MongoCredential.createMongoCRCredential(USERNAME, DB_NAME, PASSWORD as char[])])
+                String connectionString = "mongodb//${USERNAME}:${PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}"
+                MongoClientURI uri = new MongoClientURI(connectionString)
+                _mongoClient = new MongoClient(uri)
             } else {
                 _mongoClient = new MongoClient(new ServerAddress(DB_HOST, DB_PORT))
             }
