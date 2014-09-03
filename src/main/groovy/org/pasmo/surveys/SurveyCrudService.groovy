@@ -1,22 +1,22 @@
 package org.pasmo.surveys
 
-import com.allanbank.mongodb.MongoCollection
-import com.allanbank.mongodb.bson.builder.BuilderFactory
-import com.allanbank.mongodb.bson.builder.DocumentBuilder
+import com.mongodb.BasicDBObject
+import com.mongodb.DBCollection
 import com.mongodb.util.JSON
-import org.pasmo.DatabaseClient
-
+import org.pasmo.persistence.MongoDBClient
 import javax.inject.Inject
 
 class SurveyCrudService  {
     private final String COLLECTION_NAME = "pasmo_surveys"
 
-    private final MongoCollection mongoCollection
+    private final DBCollection mongoCollection
     private final SurveyGateway surveyGateway
+    private final MongoDBClient mongoDBClient
 
     @Inject
-    SurveyCrudService(DatabaseClient databaseClient, SurveyGateway surveyGateway) {
-        mongoCollection = databaseClient.getCollection(COLLECTION_NAME)
+    SurveyCrudService(MongoDBClient mongoDBClient, SurveyGateway surveyGateway) {
+        this.mongoDBClient = mongoDBClient
+        mongoCollection = mongoDBClient.getCollection(COLLECTION_NAME)
         this.surveyGateway = surveyGateway
     }
 
@@ -26,13 +26,9 @@ class SurveyCrudService  {
         if(surveyGateway.findByMonthAndYear(params.month, params.year)) {
             surveyEntity.addError("Survey already exists!")
         } else {
-            DocumentBuilder doc = BuilderFactory.start()
+            BasicDBObject doc = new BasicDBObject()
             params.each{ key, value->
-                if(key == 'year') {
-                    doc.addInteger(key, Integer.parseInt(value))
-                } else {
-                    doc.add(key, value)
-                }
+                doc.append(key, value)
             }
             mongoCollection.insert(doc)
             surveyEntity = surveyGateway.findByMonthAndYear(params.month, params.year)
