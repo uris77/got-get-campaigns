@@ -47,16 +47,15 @@ ratpack {
         add new HotspotSurveyModule()
     }
 
-
     handlers {
-
+        handler{SessionStorage  sessionStorage ->
+            CurrentUser currentUser = new CurrentUser()
+            currentUser.setSessionStorage(sessionStorage)
+            request.register(currentUser)
+            next()
+        }
         prefix("admin") {
-            handler{SessionStorage  sessionStorage ->
-                CurrentUser currentUser = new CurrentUser()
-                currentUser.setSessionStorage(sessionStorage)
-                request.register(currentUser)
-                next()
-            }
+
 
             get("logout"){
                 SessionStorage sessionStorage = request.get(SessionStorage)
@@ -86,12 +85,12 @@ ratpack {
         }
 
         prefix("api") { NonTraditionalOutletSurveyCrud nonTraditionalOutletSurveyCrud ->
-            handler {SessionStorage  sessionStorage ->
-                CurrentUser currentUser = new CurrentUser()
-                currentUser.setSessionStorage(sessionStorage)
-                request.register(currentUser)
-                next()
-            }
+//            handler {SessionStorage  sessionStorage ->
+//                CurrentUser currentUser = new CurrentUser()
+//                currentUser.setSessionStorage(sessionStorage)
+//                request.register(currentUser)
+//                next()
+//            }
 
             get("my_details") { CurrentUser currentUser, UserRepository repository ->
                 String email = currentUser.getEmail()
@@ -110,7 +109,6 @@ ratpack {
             prefix("locations") {
                 handler chain(registry.get(LocationHandlers))
             }
-
         }
 
         get { SessionStorage sessionStorage ->

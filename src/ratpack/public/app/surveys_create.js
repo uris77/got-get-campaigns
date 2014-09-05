@@ -30,7 +30,7 @@
 		}
 	}
 
-	function SurveysCreateController($scope, $state, CreateSurveyService) {
+	function SurveysCreateController($scope, $state, urlUtils, CreateSurveyService) {
 		$scope.months = [
 			{name: "January"}, {name: "February"}, {name: "March"}, {name: "April"},
 			{name: "May"}, {name: "June"}, {name: "July"}, {name: "August"},
@@ -46,8 +46,11 @@
 				.success(function() {
 					$state.transitionTo("surveys.list");
 				})
-				.error(function(data){
+				.error(function(data, status){
 					$scope.errors = data.errors;
+					if(status == 401) {
+						urlUtils.redirectHome();
+					}
 				});
 			}
 		};

@@ -18,21 +18,30 @@
 		}
 	}
 
-	function SurveysListController ($scope, SurveyRepositoryService) {
+	function SurveysListController ($scope, urlUtils, SurveyRepositoryService) {
 		SurveyRepositoryService.list()
 			.success( function(data) {
 				$scope.surveys = data;
+			})
+			.error( function(error, status, headers) {
+				if(status == 401) {
+					urlUtils.redirectHome();	
+				}
+				console.error("ERROR: ", error);
 			});
 	}
 
-	function SurveyShowController ($scope, $stateParams, SurveyRepositoryService) {
+	function SurveyShowController ($scope, $stateParams, urlUtils, SurveyRepositoryService) {
 		SurveyRepositoryService.fetch($stateParams.id)
 			.success( function(data) {
 				$scope.survey = data.survey;
 				$scope.locations = data.locations;
 			})
-			.error( function(data) {
+			.error( function(data, status, headers) {
 				console.error("ERROR: ", data);
+				if(status == 401) {
+					urlUtils.redirectHome();
+				}
 			});
 	}
 

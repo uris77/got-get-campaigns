@@ -17,6 +17,13 @@ class CurrentUser {
         _sessionStorage
     }
 
+    public Boolean isLoggedIn() {
+        if(userProfile) {
+            return Boolean.TRUE
+        }
+        Boolean.FALSE
+    }
+
     private  UserProfile getUserProfile() {
         getSessionStorage().get(USER_PROFILE)
     }
