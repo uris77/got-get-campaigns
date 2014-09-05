@@ -1,5 +1,6 @@
 package org.pasmo.surveys.outlets.nontraditional
 
+import org.pasmo.auth.CurrentUser
 import ratpack.groovy.handling.GroovyChainAction
 
 import javax.inject.Inject
@@ -14,25 +15,34 @@ class NonTraditionalOutletSurveyChainHandler extends GroovyChainAction{
         this.surveyCrud = surveyCrud
     }
 
-
     @Override
     protected void execute() throws Exception {
 
         handler(":outletSurveyId") {
             byMethod {
-                get {
-                    blocking {
-                        surveyCrud.findById(pathTokens.outletSurveyId)
-                    } then { NonTraditionalOutletSurveyEntity outlet ->
-                        render json(outlet)
+                get { CurrentUser currentUser ->
+                    if(currentUser.isLoggedIn()) {
+                        blocking {
+                            surveyCrud.findById(pathTokens.outletSurveyId)
+                        } then { NonTraditionalOutletSurveyEntity outlet ->
+                            render json(outlet)
+                        }
+                    } else {
+                        response.status(401)
+                        render json([status: "Unauthorized"])
                     }
                 }
 
-                put {
-                    blocking {
-                        surveyCrud.update(parse(Map), pathTokens.outletSurveyId)
-                    } then { NonTraditionalOutletSurveyEntity outletSurvey ->
-                        render json(outletSurvey)
+                put { CurrentUser currentUser ->
+                    if(currentUser.isLoggedIn()) {
+                        blocking {
+                            surveyCrud.update(parse(Map), pathTokens.outletSurveyId)
+                        } then { NonTraditionalOutletSurveyEntity outletSurvey ->
+                            render json(outletSurvey)
+                        }
+                    } else {
+                        response.status(401)
+                        render json([status: "Unauthorized"])
                     }
                 }
             }
@@ -40,25 +50,34 @@ class NonTraditionalOutletSurveyChainHandler extends GroovyChainAction{
 
         handler {
             byMethod {
-                post {
-                    blocking {
-                        def params = parse Map
-                        params.surveyId =  pathTokens.surveyId
-                        surveyCrud.create(params)
-                    } then { NonTraditionalOutletSurveyEntity survey ->
-                        render json(survey)
+                post { CurrentUser currentUser ->
+                    if(currentUser.isLoggedIn()) {
+                        blocking {
+                            def params = parse Map
+                            params.surveyId =  pathTokens.surveyId
+                            surveyCrud.create(params)
+                        } then { NonTraditionalOutletSurveyEntity survey ->
+                            render json(survey)
+                        }
+                    } else {
+                        response.status(401)
+                        render json([status: "Unauthorized"])
                     }
                 }
 
-                get {
-                    blocking {
-                        surveyCrud.listAll(pathTokens.surveyId)
-                    } then { List<NonTraditionalOutletSurveyEntity> surveys ->
-                        render json(surveys)
+                get { CurrentUser currentUser ->
+                    if(currentUser.isLoggedIn()) {
+                        blocking {
+                            surveyCrud.listAll(pathTokens.surveyId)
+                        } then { List<NonTraditionalOutletSurveyEntity> surveys ->
+                            render json(surveys)
+                        }
+                    } else {
+                        response.status(401)
+                        render json([status: "Unauthorized"])
                     }
                 }
             }
         }
-
     }
 }

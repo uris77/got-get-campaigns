@@ -1,6 +1,6 @@
 ( function(ng) {
 
-    function EditController($scope, $state, $stateParams, NonTraditionalSurveyGatewayService) {
+    function EditController($scope, $state, $stateParams, urlUtils, NonTraditionalSurveyGatewayService) {
         $scope.survey_id = $stateParams.survey_id;
         $scope.outlet_survey_id = $stateParams.outlet_survey_id;
         NonTraditionalSurveyGatewayService.fetchSurvey($scope.survey_id, $scope.outlet_survey_id)
@@ -10,6 +10,9 @@
             })
             .error(function(error) {
                 console.error("Error fetching survey data: ", error);
+                if(status == 401) {
+                    urlUtils.redirectHome();
+                }
             });
 
         $scope.cancel = function() {
@@ -28,9 +31,13 @@
                 .success( function(data){
                     $scope.cancel();
                 })
-                .error( function(error) {
-                    console.error("ERROR: ", error);
-                    alert("An error occurred!");
+                .error( function(error, status) {
+                    if(status == 401) { 
+                        urlUtils.redirectHome();
+                    } else {
+                        console.error("ERROR: ", error);
+                        alert("An error occurred!");
+                    }
                 });
             
         };

@@ -1,6 +1,6 @@
 ( function (ng) {
 
-    function CreateController ($scope, $state, $stateParams, NonTraditionalSurveyGatewayService) {
+    function CreateController ($scope, $state, $stateParams, urlUtils, NonTraditionalSurveyGatewayService) {
         $scope.outlet_types = [
             {name: "Restaurant"}, {name: "Pharmacy"}
         ];
@@ -12,8 +12,11 @@
                     $scope.noLocatons = true;
                 }
             })
-            .error(function(data) {
+            .error(function(data, status) {
                 console.error("Error retreiving outlets: ", data);
+                if(status == 401) {
+                    urlUtils.redirectHome();
+                }
             });
 
         $scope.cancel = function() {
@@ -49,9 +52,13 @@
                     .success( function(data){
                         $state.transitionTo("listNonTraditionalOutlets", {id: $stateParams.id});
                     })
-                    .error( function(error) {
-                        console.error("ERROR: ", error);
-                        alert("An error occurred!");
+                    .error( function(error, status) {
+                        if(status == 401) {
+                            urlUtils.redirectHome();
+                        } else {
+                            console.error("ERROR: ", error);
+                            alert("An error occurred!");
+                        }
                     });
             }
         };
