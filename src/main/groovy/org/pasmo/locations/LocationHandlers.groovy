@@ -1,6 +1,7 @@
 package org.pasmo.locations
 
 import com.fasterxml.jackson.databind.node.ObjectNode
+import org.pasmo.auth.CurrentUser
 import ratpack.groovy.handling.GroovyChainAction
 import ratpack.jackson.Jackson
 
@@ -20,11 +21,16 @@ class LocationHandlers extends GroovyChainAction {
     protected void execute() throws Exception {
         handler("byType/:locationType") {
             byMethod {
-                get {
-                    blocking {
-                        locationGateway.findAllByType(pathTokens.locationType.capitalize())
-                    } then { List<LocationEntity> locations ->
-                        render Jackson.json(locations.collect{ LocationEntity location -> location.toMap() })
+                get { CurrentUser currentUser ->
+                    if(currentUser.isLoggedIn()) {
+                        blocking {
+                            locationGateway.findAllByType(pathTokens.locationType.capitalize())
+                        } then { List<LocationEntity> locations ->
+                            render Jackson.json(locations.collect{ LocationEntity location -> location.toMap() })
+                        }
+                    } else {
+                        response.status(401)
+                        render Jackson.json([status: "Unauthorized"])
                     }
                 }
             }
@@ -32,15 +38,20 @@ class LocationHandlers extends GroovyChainAction {
 
         handler("search") {
             byMethod {
-                get {
-                    blocking {
-                        if(request.queryParams.locationName.trim().size() > 0 ) {
-                            locationGateway.findByName(request.queryParams.locationName)
-                        } else {
-                            locationCrudService.findAll()
+                get { CurrentUser currentUser ->
+                    if(currentUser.isLoggedIn()) {
+                        blocking {
+                            if(request.queryParams.locationName.trim().size() > 0 ) {
+                                locationGateway.findByName(request.queryParams.locationName)
+                            } else {
+                                locationCrudService.findAll()
+                            }
+                        } then { List<LocationEntity> locations ->
+                            render Jackson.json(locations)
                         }
-                    } then { List<LocationEntity> locations ->
-                        render Jackson.json(locations)
+                    } else {
+                        response.status(401)
+                        render Jackson.json([status: "Unauthorized"])
                     }
                 }
             }
@@ -48,12 +59,17 @@ class LocationHandlers extends GroovyChainAction {
 
         handler(":locationId") {
             byMethod {
-                get {
-                    blocking {
-                        locationGateway.findSurveys(pathTokens.locationId)
-                    } then { List<LocationSurvey> surveys ->
-                        LocationEntity location = locationGateway.findById(pathTokens.locationId)
-                        render Jackson.json([location: location, surveys: surveys])
+                get { CurrentUser currentUser ->
+                    if(currentUser.isLoggedIn()) {
+                        blocking {
+                            locationGateway.findSurveys(pathTokens.locationId)
+                        } then { List<LocationSurvey> surveys ->
+                            LocationEntity location = locationGateway.findById(pathTokens.locationId)
+                            render Jackson.json([location: location, surveys: surveys])
+                        }
+                    } else {
+                        response.status(401)
+                        render Jackson.json([status: "Unauthorized"])
                     }
                 }
             }
@@ -61,20 +77,30 @@ class LocationHandlers extends GroovyChainAction {
 
         handler {
             byMethod {
-                post {
-                    blocking {
-                        ObjectNode node = parse Jackson.jsonNode()
-                        locationCrudService.create(node.toString())
-                    } then { LocationEntity location ->
-                        render Jackson.json(location.toMap())
+                post { CurrentUser currentUser ->
+                    if(currentUser.isLoggedIn()) {
+                        blocking {
+                            ObjectNode node = parse Jackson.jsonNode()
+                            locationCrudService.create(node.toString())
+                        } then { LocationEntity location ->
+                            render Jackson.json(location.toMap())
+                        }
+                    } else {
+                        response.status(401)
+                        render Jackson.json([status: "Unauthorized"])
                     }
                 }
 
-                get {
-                    blocking {
-                        locationCrudService.findAll()
-                    } then { List<LocationEntity> locations ->
-                        render Jackson.json(locations.collect{ LocationEntity location -> location.toMap()})
+                get { CurrentUser currentUser ->
+                    if(currentUser.isLoggedIn()) {
+                        blocking {
+                            locationCrudService.findAll()
+                        } then { List<LocationEntity> locations ->
+                            render Jackson.json(locations.collect{ LocationEntity location -> location.toMap()})
+                        }
+                    } else {
+                        response.status(401)
+                        render Jackson.json([status: "Unauthorized"])
                     }
                 }
             }

@@ -9,7 +9,7 @@
         }
     }
 
-    function LocationDetailsController($scope, $stateParams, LocationSurveysGateway) {
+    function LocationDetailsController($scope, $stateParams, urlUtils, LocationSurveysGateway) {
         $scope.summary = true;
         $scope.locationId = $stateParams.locationId;
         LocationSurveysGateway.fetchDetails($scope.locationId)
@@ -17,9 +17,13 @@
                 $scope.surveys = data.surveys;
                 $scope.location = data.location;
             })
-            .error(function (error) {
-                alert("An error occurred fetching the data from the server!");
-                console.error("ERROR fetching data: ", error);
+            .error(function (error, status) {
+                if(status == 401) {
+                    urlUtils.redirectHome();
+                } else {
+                    alert("An error occurred fetching the data from the server!");
+                    console.error("ERROR fetching data: ", error);
+                }
             });
 
         $scope.showMore = function(survey) {

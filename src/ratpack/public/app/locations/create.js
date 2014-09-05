@@ -43,7 +43,7 @@
         };  
     }
 
-    function LocationCreateController ($scope, $state, LocationCreateService) {
+    function LocationCreateController ($scope, $state, urlUtils, LocationCreateService) {
         $scope.districts = [
             {name: 'Corozal'}, {name: 'Orange Walk'}, {name: 'Belize'},
             {name: 'Cayo'}, {name: 'Stann Creek'}, {name: 'Toledo'}
@@ -70,8 +70,11 @@
                 .success(function() {
                     $state.transitionTo("locations.list")
                 })
-                .error(function(data) {
+                .error(function(data, status) {
                     $scope.errors = data.errors;
+                    if(status == 401) {
+                        urlUtils.redirectHome();
+                    }
                 });
             }   
         };

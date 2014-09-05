@@ -1,6 +1,7 @@
 package org.pasmo.surveys
 
 import com.google.inject.Inject
+import org.pasmo.auth.CurrentUser
 import org.pasmo.locations.LocationGateway
 import ratpack.groovy.handling.GroovyContext
 import ratpack.groovy.handling.GroovyHandler
@@ -23,14 +24,19 @@ class SurveyByIdHandler extends GroovyHandler {
     protected void handle(GroovyContext context) {
         context.with {
             byMethod {
-                get {
-                    SurveyEntity survey = surveyGateway.findById(pathTokens.id)
-                    def locations = []
-                    LOCATION_TYPES.each { String locationType ->
-                        def surveyed = surveyGateway.countBySurveyAndLocationType(survey, locationType)
-                        locations << [name: locationType, totalLocations: locationGateway.countByType(locationType), surveyed: surveyed]
+                get { CurrentUser currentUser ->
+                    if(currentUser.isLoggedIn()) {
+                        SurveyEntity survey = surveyGateway.findById(pathTokens.id)
+                        def locations = []
+                        LOCATION_TYPES.each { String locationType ->
+                            def surveyed = surveyGateway.countBySurveyAndLocationType(survey, locationType)
+                            locations << [name: locationType, totalLocations: locationGateway.countByType(locationType), surveyed: surveyed]
+                        }
+                        render json([survey: survey.toMap(), locations: locations])
+                    } else {
+                        response.status(401)
+                        render json([status: "Unauthorized"])
                     }
-                    render json([survey: survey.toMap(), locations: locations])
                 }
             }
         }

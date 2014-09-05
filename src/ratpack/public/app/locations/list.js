@@ -17,10 +17,16 @@
         };
     }
 
-    function LocationListController ($scope, LocationListService) {
+    function LocationListController ($scope, urlUtils, LocationListService) {
         LocationListService.list()
             .success(function (data) {
                 $scope.locations = data;
+            })
+            .error(function(data, status){
+                console.error("ERROR: ", data);
+                if(status == 401) {
+                    urlUtils.redirectHome();
+                }
             });
 
         $scope.search = function(locationName) {
@@ -28,8 +34,11 @@
                 .success(function (data) {
                     $scope.locations = data;
                 })
-                .error(function(error) {
+                .error(function(error, status) {
                     console.error("Error executing search: ", error);
+                    if(status == 401) {
+                        urlUtils.redirectHome();
+                    }
                 });
         };
     }
