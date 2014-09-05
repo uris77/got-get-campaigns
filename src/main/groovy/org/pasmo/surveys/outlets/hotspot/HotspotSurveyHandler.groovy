@@ -1,5 +1,6 @@
 package org.pasmo.surveys.outlets.hotspot
 
+import org.pasmo.auth.CurrentUser
 import ratpack.groovy.handling.GroovyChainAction
 
 import javax.inject.Inject
@@ -19,16 +20,26 @@ class HotspotSurveyHandler extends GroovyChainAction {
 
         handler(":hotspotSurveyId") {
             byMethod {
-                get {
-                    HotspotEntity hotspot = hotspotSurveyCrud.findById(pathTokens.hotspotSurveyId)
-                    render json(hotspot)
+                get { CurrentUser currentUser ->
+                    if(currentUser.isLoggedIn()) {
+                        HotspotEntity hotspot = hotspotSurveyCrud.findById(pathTokens.hotspotSurveyId)
+                        render json(hotspot)
+                    } else {
+                        response.status(401)
+                        render json([status: "Unauthorized"])
+                    }
                 }
 
-                put {
-                    blocking {
-                        hotspotSurveyCrud.update(parse(Map), pathTokens.hotspotSurveyId)
-                    } then { HotspotEntity hotspot ->
-                        render json(hotspot)
+                put { CurrentUser currentUser ->
+                    if(currentUser.isLoggedIn()) {
+                        blocking {
+                            hotspotSurveyCrud.update(parse(Map), pathTokens.hotspotSurveyId)
+                        } then { HotspotEntity hotspot ->
+                            render json(hotspot)
+                        }
+                    } else {
+                        response.status(401)
+                        render json([status: "Unauthorized"])
                     }
                 }
             }
@@ -36,21 +47,31 @@ class HotspotSurveyHandler extends GroovyChainAction {
 
         handler {
             byMethod {
-                post {
-                    blocking {
-                        def params = parse Map
-                        params.surveyId =  pathTokens.surveyId
-                        hotspotSurveyCrud.create(params)
-                    } then { HotspotEntity hotspot ->
-                        render json(hotspot)
+                post { CurrentUser currentUser ->
+                    if(currentUser.isLoggedIn()) {
+                        blocking {
+                            def params = parse Map
+                            params.surveyId =  pathTokens.surveyId
+                            hotspotSurveyCrud.create(params)
+                        } then { HotspotEntity hotspot ->
+                            render json(hotspot)
+                        }
+                    } else {
+                        response.status(401)
+                        render json([status: "Unauthorized"])
                     }
                 }
 
-                get {
-                    blocking {
-                        hotspotSurveyCrud.listAll(pathTokens.surveyId)
-                    } then { List<HotspotEntity> hotspots ->
-                        render json(hotspots)
+                get { CurrentUser currentUser ->
+                    if(currentUser.isLoggedIn()) {
+                        blocking {
+                            hotspotSurveyCrud.listAll(pathTokens.surveyId)
+                        } then { List<HotspotEntity> hotspots ->
+                            render json(hotspots)
+                        }
+                    } else {
+                        response.status(401)
+                        render json([status: "Unauthorized"])
                     }
                 }
             }

@@ -1,14 +1,17 @@
 ( function(ng) {
 
-    function EditController($scope, $state, $stateParams, GatewayService) {
+    function EditController($scope, $state, $stateParams, urlUtils, GatewayService) {
         $scope.surveyId = $stateParams.survey_id;
         $scope.hotspotSurveyId = $stateParams.hotspot_survey_id;
         GatewayService.fetchHotspotSurvey($scope.surveyId, $scope.hotspotSurveyId)
             .success(function (data){
                 $scope.survey = data;
             })
-            .error(function(error){
+            .error(function(error, status){
                 console.error("Error fetching hotspot survey: ", error);
+                if(status == 401) {
+                    urlUtils.redirectHome();
+                }
             });
 
         $scope.cancel = function() {
@@ -27,9 +30,13 @@
                 .success( function(data){
                     $scope.cancel();
                 })
-                .error( function(error) {
-                    console.error("ERROR: ", error);
-                    alert("An error occurred!");
+                .error( function(error, status) {
+                    if(status == 401) {
+                        urlUtils.redirectHome();
+                    } else {
+                        console.error("ERROR: ", error);
+                        alert("An error occurred!");
+                    }
                 });
         
         };
