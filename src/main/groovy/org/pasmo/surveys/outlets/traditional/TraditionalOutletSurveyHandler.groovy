@@ -1,5 +1,6 @@
 package org.pasmo.surveys.outlets.traditional
 
+import org.pasmo.auth.CurrentUser
 import ratpack.groovy.handling.GroovyChainAction
 import javax.inject.Inject
 import static ratpack.jackson.Jackson.json
@@ -16,20 +17,30 @@ class TraditionalOutletSurveyHandler extends GroovyChainAction {
     protected void execute() throws Exception {
         handler(":traditionalOutletSurveyId") {
             byMethod {
-                get {
-                    blocking {
-                        surveyOutletCrud.findById(pathTokens.traditionalOutletSurveyId)
-                    } then { TraditionalOutletSurveyEntity outlet ->
-                        render json(outlet)
+                get { CurrentUser currentUser ->
+                    if(currentUser.isLoggedIn()) {
+                        blocking {
+                            surveyOutletCrud.findById(pathTokens.traditionalOutletSurveyId)
+                        } then { TraditionalOutletSurveyEntity outlet ->
+                            render json(outlet)
+                        }
+                    } else {
+                        response.status(401)
+                        render json([status: "Unauthorized"])
                     }
                 }
 
-                put {
-                    blocking {
-                        def params = parse Map
-                        surveyOutletCrud.update(params, pathTokens.traditionalOutletSurveyId)
-                    } then { TraditionalOutletSurveyEntity outlet ->
-                        render json(outlet)
+                put { CurrentUser currentUser ->
+                    if(currentUser.isLoggedIn()) {
+                        blocking {
+                            def params = parse Map
+                            surveyOutletCrud.update(params, pathTokens.traditionalOutletSurveyId)
+                        } then { TraditionalOutletSurveyEntity outlet ->
+                            render json(outlet)
+                        }
+                    } else {
+                        response.status(401)
+                        render json([status: "Unauthorized"])
                     }
                 }
             }
@@ -37,60 +48,34 @@ class TraditionalOutletSurveyHandler extends GroovyChainAction {
 
         handler {
             byMethod {
-                post {
-                    blocking {
-                        def params = parse Map
-                        params.surveyId = pathTokens.surveyId
-                        surveyOutletCrud.create(params)
-                    }  then { TraditionalOutletSurveyEntity outletSurveyEntity ->
-                        render json(outletSurveyEntity)
+                post { CurrentUser currentUser ->
+                    if(currentUser.isLoggedIn()) {
+                        blocking {
+                            def params = parse Map
+                            params.surveyId = pathTokens.surveyId
+                            surveyOutletCrud.create(params)
+                        }  then { TraditionalOutletSurveyEntity outletSurveyEntity ->
+                            render json(outletSurveyEntity)
+                        }
+                    } else {
+                        response.status(401)
+                        render json([status: "Unauthorized"])
                     }
                 }
 
-                get {
-                    blocking {
-                        surveyOutletCrud.listAll(pathTokens.surveyId)
-                    } then { List<TraditionalOutletSurveyEntity> surveys ->
-                        render json(surveys)
+                get { CurrentUser currentUser ->
+                    if(currentUser.isLoggedIn()) {
+                        blocking {
+                            surveyOutletCrud.listAll(pathTokens.surveyId)
+                        } then { List<TraditionalOutletSurveyEntity> surveys ->
+                            render json(surveys)
+                        }
+                    } else {
+                        response.status(401)
+                        render json([status: "Unauthorized"])
                     }
                 }
             }
         }
     }
 }
-
-
-//
-//class TraditionalOutletSurveyHandler extends GroovyHandler {
-//    private final TraditionalOutletSurveyCrud surveyOutletCrudService
-//
-//    @Inject
-//    TraditionalOutletSurveyHandler(TraditionalOutletSurveyCrud surveyOutletCrudService) {
-//        this.surveyOutletCrudService = surveyOutletCrudService
-//    }
-//
-//    @Override
-//    protected void handle(GroovyContext context) {
-//        context.with {
-//            byMethod {
-//                post {
-//                    blocking {
-//                        def params = parse Map
-//                        params.surveyId = pathTokens.surveyId
-//                        surveyOutletCrudService.create(params)
-//                    }  then { TraditionalOutletSurveyEntity outletSurveyEntity ->
-//                        render json(outletSurveyEntity)
-//                    }
-//                }
-//
-//                get {
-//                    blocking {
-//                        surveyOutletCrudService.listAll(pathTokens.surveyId)
-//                    } then { List<TraditionalOutletSurveyEntity> surveys ->
-//                        render json(surveys)
-//                    }
-//                }
-//            }
-//        }
-//    }
-//}

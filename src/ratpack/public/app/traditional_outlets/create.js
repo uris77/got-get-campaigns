@@ -1,5 +1,5 @@
 ( function (ng) {
-    function CreateController($scope, $state, $stateParams, TraditionalOutletGatewayService) {
+    function CreateController($scope, $state, $stateParams, urlUtils, TraditionalOutletGatewayService) {
         TraditionalOutletGatewayService
             .fetchTraditionalOutlets()
             .success(function(data) {
@@ -10,8 +10,11 @@
                     console.log("No Locations: ", $scope.noLocations);
                 }
             })
-            .error(function(err) {
+            .error(function(err, status) {
                 console.error("ERROR: ", err);
+                if(status == 401) {
+                    urlUtils.redirectHome();
+                }
             });
 
         $scope.submit = function() {
@@ -29,7 +32,14 @@
             TraditionalOutletGatewayService.createTraditonalOutlet(params, $stateParams.id)
                 .success(function(data) {
                     $state.transitionTo("surveys.listTraditionalOutlets", {id: $stateParams.id});
-                });
+                })
+                .error(function(data, status) {
+                    if(status == 401) {
+                        urlUtils.redirectHome();
+                    } else {
+                        console.error("ERROR: ", data);
+                    }
+                })
         };
 
         $scope.cancel = function() {
