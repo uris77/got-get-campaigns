@@ -1,0 +1,48 @@
+<div class="panel panel-primary" ng-show="summary">
+    <div class="panel-heading">
+        <span> {{ location.name }} Details </span>
+    </div>
+    <div class="panel-body">
+        <table class="table table-striped table-bordered">
+            <thead>
+                <th>Survey</th>
+                <th>District</th>
+                <th>Condoms Available</th>
+                <th>Lubes Available</th>
+                <th>Gigi</th>
+                <th ng-if="location.locationType == 'Hotspot' || location.locationType == 'Non-Traditional'"></th>
+            </thead>
+            <tbody>
+                <tr ng-repeat="survey in surveys">
+                    <td>
+                        <a ui-sref="surveys.show({id: survey.survey.id})">
+                            {{ survey.survey.year }} | {{ survey.survey.month}}
+                        </a>
+                    </td>
+                    <td>
+                        {{ survey.district }}
+                    </td>
+                    <td>
+                        <span ng-if="survey.condomsAvailable == true" class="glyphicon glyphicon-ok"></span>
+                        <span ng-if="survey.condomsAvailable == false" class="glyphicon glyphicon-remove"></span>
+                    </td>
+                    <td>
+                        <span ng-if="survey.lubesAvailable == true" class="glyphicon glyphicon-ok"></span>
+                        <span ng-if="survey.lubesAvailable == false" class="glyphicon glyphicon-remove"></span>
+                    </td>
+                    <td>
+                        <span ng-if="survey.gigi == true" class="glyphicon glyphicon-ok"></span>
+                        <span ng-if="survey.gigi == false" class="glyphicon glyphicon-remove"></span>
+                    </td>
+                    <td ng-if="location.locationType == 'Hotspot' || location.locationType == 'Non-Traditional'">
+                        <button class="btn btn-default" ng-click="showMore(survey)">More</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div ng-hide="summary">
+    <div ng-include="'/locations/survey_details.html'"></div>
+</div>

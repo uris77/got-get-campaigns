@@ -1,3 +1,5 @@
+import com.eriwen.gradle.js.tasks.CombineJsTask
+
 buildscript {
   repositories {
     jcenter()
@@ -41,6 +43,58 @@ task stage{
     dependsOn installApp
 }
 
+javascript.source {
+    dev {
+        js {
+            srcDir "assets/js"
+            include "*.js"
+            exclude "*.min.js"
+        }
+    }
+    prod {
+        js {
+            srcDir "assets/js"
+            include "*.min.js"
+        }
+    }
+}
+
+combineJs {
+    source = javascript.source.dev.js.files
+    dest = file("${buildDir}/all.js")
+}
+
+task concatJs(type: com.eriwen.gradle.js.tasks.CombineJsTask) {
+    source = ["assets/js/app/url_utils.js", "assets/js/app/utils.js",
+        "assets/js/app/surveys_list.js", "assets/js//app/surveys_create.js", "assets/js/app/surveys.js",
+        "assets/js/app/locations/create.js", "assets/js/app/locations/list.js", "assets/js/app/locations/details.js", "assets/js/app/locations/locations.js",
+        "assets/js/app/non_traditional_outlets/gateway_service.js", "assets/js/app/non_traditional_outlets/list.js",
+        "assets/js/app/non_traditional_outlets/create.js",  "assets/js/app/non_traditional_outlets/edit.js",
+        "assets/js/app/non_traditional_outlets/non_traditional_outlet_survey.js",
+        "assets/js/app/hotspots/gateway_service.js", "assets/js/app/hotspots/list.js", "assets/js/app/hotspots/create.js",
+        "assets/js/app/hotspots/edit.js", "assets/js/app/hotspots/hotspots_surveys.js",
+        "assets/js/app/traditional_outlets/gateway_service.js", "assets/js/app/traditional_outlets/list.js",
+        "assets/js/app/traditional_outlets/create.js", "assets/js/app/traditional_outlets/edit.js", "assets/js/app/traditional_outlets/traditional_outlet_survey.js",
+        "assets/js/app/pasmo_crud_app.js"]
+
+    dest = file("./src/ratpack/public/app/pasmo.js")
+
+}
+
+minifyJs {
+    dependsOn concatJs
+    source = "./src/ratpack/public/app/pasmo.js"
+    dest = file("./src/ratpack/public/app/pasmo-min.js")
+    closure {
+        warningLevel = 'QUIET'
+    }
+}
+
+gzipJs {
+    dependsOn minifyJs
+    source = "./src/ratpack/public/app/pasmo-min.js"
+    dest = file("./src/ratpack/public/app/pasmo-gzip.js")
+}
 
 run{
     Properties properties = new Properties(System.getProperties())

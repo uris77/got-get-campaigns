@@ -1,0 +1,6 @@
+{
+  "node"    :true,
+  "nomen"   :false,
+  "asi"     :false,
+  "es5"     :true
+}

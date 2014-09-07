@@ -1,0 +1,40 @@
+<div class="panel panel-primary" ui-view>
+	<div class="panel-heading">
+		<span>Locations List</span> | 
+		<a class="btn btn-primary btn-xs" ui-sref="locations.create">
+			<span class="glyphicon glyphicon-plus"></span>	
+		</a>
+		<form class="form-inline" role="search" style="float:right" ng-submit="search(locationName)">
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder="Search Locations" ng-model="locationName">
+            </div>
+            <button type="submit" class="btn btn-default">
+            	<span class="glyphicon glyphicon-search"></span> Search
+            </button>
+        </form>
+	</div>
+	<div class="panel-body" ng-if="locations">
+		<table class="table table-striped table-bordered">
+			<thead>
+				<th>Name</th>
+				<th>Type of Outlet</th>
+				<th>District</th>
+				<th>Longitude</th>
+				<th>Latitude</th>
+				<th />
+			</thead>
+			<tbody>
+				<tr ng-repeat="location in locations">
+					<td>{{ location.name }}</td>
+					<td>{{ location.locationType }}</td>
+					<td>{{ location.district }}</td>
+					<td>{{ location.loc.lon }}</td>
+					<td>{{ location.loc.lat }}</td>
+					<td>
+						<a ui-sref="locations.summary({ locationId: location.id })">Details</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>

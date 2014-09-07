@@ -1,0 +1,37 @@
+<div class="panel panel-primary" ui-view>
+	<div class="panel-heading">
+		Survey Locations for {{ survey.month }}, {{ survey.year }}
+	</div>
+	<div class="panel-body" ng-if="locations">
+		<table class="table table-striped table-bordered">
+			<thead>
+				<th>Location</th>
+				<th>Total Locations</th>
+				<th>Locations Surveyed</th>
+				<th></th>
+			</thead>
+			<tbody>
+				<tr ng-repeat="location in locations">
+						<td>{{ location.name }}</td>
+						<td>{{ location.totalLocations }}</td>
+						<td>{{ location.surveyed }}</td>
+						<td ng-if="location.name == 'Traditional'">
+							<a ui-sref="surveys.listTraditionalOutlets({id: survey.id})">
+								View
+							</a>
+						</td>
+						<td ng-if="location.name == 'Non-Traditional'">
+							<a ui-sref="listNonTraditionalOutlets({id: survey.id})">
+								View
+							</a>
+						</td>
+						<td ng-if="location.name == 'Hotspot'">
+							<a ui-sref="hotspotsList({id: survey.id})">
+								View
+							</a>
+						</td>						
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>

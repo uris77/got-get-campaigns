@@ -1,0 +1,24 @@
+<div class="panel panel-primary" ui-view>
+	<div class="panel-heading">
+		<span>Surveys List</span>
+		<a class="btn btn-primary btn-xs" ui-sref="surveysCreate">
+			<span class="glyphicon glyphicon-plus"></span>	
+		</a>
+	</div>
+	<div class="panel-body" ng-if="surveys">
+		<table class="table table-striped table-bordered">
+			<thead>
+				<th>Month</th>
+				<th>Year</th>
+				<th></th>
+			</thead>
+			<tbody>
+				<tr ng-repeat="survey in surveys">
+					<td>{{ survey.month }}</td>
+					<td>{{ survey.year }}</td>
+					<td> <a ui-sref="surveys.show({ id: survey.id })">View</a> </td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
