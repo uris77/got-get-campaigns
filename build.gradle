@@ -65,7 +65,8 @@ combineJs {
 }
 
 task concatJs(type: com.eriwen.gradle.js.tasks.CombineJsTask) {
-    source = ["assets/js/app/url_utils.js", "assets/js/app/utils.js",
+    source = [ "assets/js/vendor/underscore.js", "assets/js/vendor/angular-route.js", "assets/js/vendor/angular-ui-router.js",
+        "assets/js/app/url_utils.js", "assets/js/app/utils.js",
         "assets/js/app/surveys_list.js", "assets/js//app/surveys_create.js", "assets/js/app/surveys.js",
         "assets/js/app/locations/create.js", "assets/js/app/locations/list.js", "assets/js/app/locations/details.js", "assets/js/app/locations/locations.js",
         "assets/js/app/non_traditional_outlets/gateway_service.js", "assets/js/app/non_traditional_outlets/list.js",
