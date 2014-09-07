@@ -12,6 +12,7 @@
     function LocationDetailsController($scope, $stateParams, urlUtils, LocationSurveysGateway) {
         $scope.summary = true;
         $scope.locationId = $stateParams.locationId;
+        console.log("Started details controller");
         LocationSurveysGateway.fetchDetails($scope.locationId)
             .success( function(data) {
                 $scope.surveys = data.surveys;
@@ -38,6 +39,6 @@
 
     ng.module("locations.details", [])
         .factory("LocationSurveysGateway", ["$http", LocationSurveysGateway])
-        .controller("LocationDetailsController", ["$scope, $stateParams", "urlUtils", "LocationSurveysGateway", LocationDetailsController]);
+        .controller("LocationDetailsController", ["$scope", "$stateParams", "urlUtils", "LocationSurveysGateway", LocationDetailsController]);
 
 }(angular));
