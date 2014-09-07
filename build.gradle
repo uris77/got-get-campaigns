@@ -4,12 +4,14 @@ buildscript {
   }
   dependencies {
     classpath "io.ratpack:ratpack-gradle:0.9.8"
+    classpath "com.eriwen:gradle-js-plugin:1.12.1"
   }
 }
 
 apply plugin: "io.ratpack.ratpack-groovy"
 apply plugin: "idea"
 apply plugin: "eclipse"
+apply plugin: "com.eriwen.gradle.js"
 
 repositories {
   jcenter()
