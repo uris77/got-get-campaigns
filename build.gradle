@@ -1,6 +1,5 @@
 import com.eriwen.gradle.js.tasks.CombineJsTask
 import com.eriwen.gradle.js.tasks.MinifyJsTask
-import com.eriwen.gradle.js.tasks.GzipJsTask
 
 buildscript {
   repositories {
@@ -75,11 +74,6 @@ project(":assets"){
         dest = file("../src/ratpack/public/app/pasmo-min.js")
     }
 
-    task zipJs(task: GzipJsTask) {
-        source = "./compiled/pasmo.js"
-        dest = file("../src/ratpack/public/app/pasmo-min.js")
-    }
-
     watch {
         assets {
             files files("js/app")
@@ -90,6 +84,7 @@ project(":assets"){
 
 
 run {
+    dependsOn "assets:compressJs"
     Properties properties = new Properties(System.getProperties())
     try {
         FileInputStream inputStream = new FileInputStream(".env")
@@ -103,10 +98,5 @@ run {
         println "This is normal in production."
     } catch (Exception e) {
         e.printStackTrace()
-    }
-    if(System.getProperty("RATPACK_ENVIRONMENT") == "PRODUCTION") {
-        dependsOn { "assets:zipJs" }
-    }else {
-        dependsOn { "assets:compressJs" }
     }
 }

@@ -10,3 +10,4 @@ out
 .env
 .vagrant
 assets/compiled
+src/ratpack/public/app/pasmo-min.js
