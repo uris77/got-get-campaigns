@@ -19,6 +19,7 @@
 	}
 
 	function SurveysListController ($scope, urlUtils, SurveyRepositoryService) {
+		console.log("List Controller");
 		SurveyRepositoryService.list()
 			.success( function(data) {
 				$scope.surveys = data;

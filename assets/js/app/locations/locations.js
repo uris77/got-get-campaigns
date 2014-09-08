@@ -1,4 +1,4 @@
-( function (ng) {
+(function (ng) {
 
     function router($stateProvider) {
         $stateProvider
