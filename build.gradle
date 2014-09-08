@@ -84,7 +84,6 @@ project(":assets"){
 
 
 run {
-    dependsOn "assets:compressJs"
     Properties properties = new Properties(System.getProperties())
     try {
         FileInputStream inputStream = new FileInputStream(".env")
@@ -98,5 +97,8 @@ run {
         println "This is normal in production."
     } catch (Exception e) {
         e.printStackTrace()
+    }
+    if(System.getProperty("RATPACK_ENVIRONMENT") != "PRODUCTION") {
+        dependsOn "assets:compressJs"
     }
 }
