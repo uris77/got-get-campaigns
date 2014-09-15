@@ -24,7 +24,7 @@ class NonTraditionalOutletSurveyCrud {
         this.surveyGateway = surveyGateway
     }
 
-    NonTraditionalOutletSurveyEntity create(Map params) {
+    NonTraditionalOutletSurveyEntity create(Map params, String userName) {
         BasicDBObject doc = new BasicDBObject()
         params.each{key, value ->
             if(key == "surveyId") {
@@ -37,11 +37,13 @@ class NonTraditionalOutletSurveyCrud {
                 doc.append(key, value)
             }
         }
+        doc.append("createdBy", userName)
+        doc.append("dateCreated", new Date())
         mongoCollection.insert(doc)
         NonTraditionalOutletSurveyEntity.create(doc)
     }
 
-    NonTraditionalOutletSurveyEntity update(Map params, String outletSurveyId) {
+    NonTraditionalOutletSurveyEntity update(Map params, String outletSurveyId, String userName) {
         BasicDBObject doc = new BasicDBObject()
         BasicDBObject updateDoc = new BasicDBObject()
         updateDoc.append("condomsAvailable", params.condomsAvailable)
@@ -49,6 +51,8 @@ class NonTraditionalOutletSurveyCrud {
         updateDoc.append("gigi", params.gigi)
         updateDoc.append("outreach", params.outreach)
         updateDoc.append("targetPopulations", params.targetPopulations)
+        updateDoc.append("updatedBy", userName)
+        updateDoc.append("dateUpdated", new Date())
         doc.append('$set', updateDoc)
         mongoCollection.update(new BasicDBObject("_id", new ObjectId(outletSurveyId)), doc)
         findById(outletSurveyId)

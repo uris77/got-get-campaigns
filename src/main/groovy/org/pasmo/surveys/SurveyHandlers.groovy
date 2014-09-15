@@ -25,7 +25,7 @@ class SurveyHandlers extends GroovyHandler {
                     if(currentUser.isLoggedIn()) {
                         blocking {
                             ObjectNode node = parse Jackson.jsonNode()
-                            crudService.create(node.toString())
+                            crudService.create(node.toString(), currentUser.username)
                         } then { SurveyEntity survey ->
                             if(survey.hasErrors()) {
                                 response.status(500)

@@ -22,7 +22,7 @@ class TraditionalOutletSurveyCrud {
         this.surveyGateway = surveyGateway
     }
 
-    TraditionalOutletSurveyEntity create(Map params) {
+    TraditionalOutletSurveyEntity create(Map params, String userName) {
         BasicDBObject doc = new BasicDBObject()
         params.each{ key, value ->
             if(key == "surveyId") {
@@ -35,15 +35,19 @@ class TraditionalOutletSurveyCrud {
                 doc.append(key, value)
             }
         }
+        doc.append("createdBy", userName)
+        doc.append("dateCreated", new Date())
         mongoCollection.insert(doc)
         TraditionalOutletSurveyEntity.create(doc)
     }
 
-    TraditionalOutletSurveyEntity update(Map params, String outletSurveyId) {
+    TraditionalOutletSurveyEntity update(Map params, String outletSurveyId, String userName) {
         BasicDBObject doc = new BasicDBObject()
         BasicDBObject updateDoc = new BasicDBObject("gigi", params.gigi)
         updateDoc.append("condomsAvailable", params.condomsAvailable)
         updateDoc.append("lubesAvailable", params.lubesAvailable)
+        updateDoc.append("updatedBy", userName)
+        updateDoc.append("dateUpdated", new Date())
         doc.append('$set', updateDoc)
         mongoCollection.update(new BasicDBObject("_id", new ObjectId(outletSurveyId)), doc)
         findById(outletSurveyId)

@@ -36,7 +36,7 @@ class NonTraditionalOutletSurveyChainHandler extends GroovyChainAction{
                 put { CurrentUser currentUser ->
                     if(currentUser.isLoggedIn()) {
                         blocking {
-                            surveyCrud.update(parse(Map), pathTokens.outletSurveyId)
+                            surveyCrud.update(parse(Map), pathTokens.outletSurveyId, currentUser.username)
                         } then { NonTraditionalOutletSurveyEntity outletSurvey ->
                             render json(outletSurvey)
                         }
@@ -55,7 +55,7 @@ class NonTraditionalOutletSurveyChainHandler extends GroovyChainAction{
                         blocking {
                             def params = parse Map
                             params.surveyId =  pathTokens.surveyId
-                            surveyCrud.create(params)
+                            surveyCrud.create(params, currentUser.username)
                         } then { NonTraditionalOutletSurveyEntity survey ->
                             render json(survey)
                         }

@@ -20,7 +20,7 @@ class LocationCrudService {
         this.mongoCollection = mongoDBClient.getCollection(COLLECTION_NAME)
     }
 
-    LocationEntity create(String json) {
+    LocationEntity create(String json, String userName) {
         def params = JSON.parse(json)
         BasicDBObject doc = new BasicDBObject()
         params.each { key, value ->
@@ -31,6 +31,8 @@ class LocationCrudService {
                 doc.append(key, value)
             }
         }
+        doc.append("createdBy", userName)
+        doc.append("dateCreated", new Date())
         mongoCollection.insert(doc)
         LocationEntity.create(doc)
     }

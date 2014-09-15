@@ -34,7 +34,7 @@ class TraditionalOutletSurveyHandler extends GroovyChainAction {
                     if(currentUser.isLoggedIn()) {
                         blocking {
                             def params = parse Map
-                            surveyOutletCrud.update(params, pathTokens.traditionalOutletSurveyId)
+                            surveyOutletCrud.update(params, pathTokens.traditionalOutletSurveyId, currentUser.username)
                         } then { TraditionalOutletSurveyEntity outlet ->
                             render json(outlet)
                         }
@@ -53,7 +53,7 @@ class TraditionalOutletSurveyHandler extends GroovyChainAction {
                         blocking {
                             def params = parse Map
                             params.surveyId = pathTokens.surveyId
-                            surveyOutletCrud.create(params)
+                            surveyOutletCrud.create(params, currentUser.username)
                         }  then { TraditionalOutletSurveyEntity outletSurveyEntity ->
                             render json(outletSurveyEntity)
                         }

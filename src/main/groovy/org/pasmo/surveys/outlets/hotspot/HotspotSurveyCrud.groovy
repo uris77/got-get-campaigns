@@ -21,7 +21,7 @@ class HotspotSurveyCrud {
         this.surveyGateway = surveyGateway
     }
 
-    HotspotEntity create(Map params) {
+    HotspotEntity create(Map params, String userName) {
         BasicDBObject obj = new BasicDBObject()
         params.each{ key, value ->
             if(key == "surveyId") {
@@ -34,6 +34,8 @@ class HotspotSurveyCrud {
                 obj.append(key, value)
             }
         }
+        obj.append("createdBy", userName)
+        obj.append("dateCreated", new Date())
         mongoCollection.insert(obj)
         HotspotEntity.create(obj)
     }
@@ -51,13 +53,15 @@ class HotspotSurveyCrud {
         hotspots
     }
 
-    HotspotEntity update(Map params, String surveyId) {
+    HotspotEntity update(Map params, String surveyId, String userName) {
         BasicDBObject doc = new BasicDBObject()
         BasicDBObject updateDoc = new BasicDBObject("gigi", params.gigi)
         updateDoc.append("condomsAvailable", params.condomsAvailable)
         updateDoc.append("lubesAvailable", params.lubesAvailable)
         updateDoc.append("targetAopulations", params.targetPopulations)
         updateDoc.append("outreach", params.outreach)
+        updateDoc.append("updatedBy", userName)
+        updateDoc.append("dateUpdated", new Date())
         doc.append('$set', updateDoc)
         mongoCollection.update(new BasicDBObject("_id", new ObjectId(surveyId)), doc)
         findById(surveyId)

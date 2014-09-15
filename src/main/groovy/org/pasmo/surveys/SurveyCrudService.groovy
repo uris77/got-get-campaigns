@@ -20,7 +20,7 @@ class SurveyCrudService  {
         this.surveyGateway = surveyGateway
     }
 
-    SurveyEntity create(String json){
+    SurveyEntity create(String json,  String userName){
         def params = JSON.parse(json)
         SurveyEntity surveyEntity = new SurveyEntity()
         if(surveyGateway.findByMonthAndYear(params.month, params.year)) {
@@ -33,6 +33,8 @@ class SurveyCrudService  {
                 }
                 doc.append(key, value)
             }
+            doc.append("userName", userName)
+            doc.append("dateCreated", new Date())
             mongoCollection.insert(doc)
             surveyEntity = surveyGateway.findByMonthAndYear(params.month, params.year)
         }

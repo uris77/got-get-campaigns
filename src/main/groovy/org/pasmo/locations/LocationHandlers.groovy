@@ -81,7 +81,7 @@ class LocationHandlers extends GroovyChainAction {
                     if(currentUser.isLoggedIn()) {
                         blocking {
                             ObjectNode node = parse Jackson.jsonNode()
-                            locationCrudService.create(node.toString())
+                            locationCrudService.create(node.toString(), currentUser.username)
                         } then { LocationEntity location ->
                             render Jackson.json(location.toMap())
                         }

@@ -33,7 +33,7 @@ class HotspotSurveyHandler extends GroovyChainAction {
                 put { CurrentUser currentUser ->
                     if(currentUser.isLoggedIn()) {
                         blocking {
-                            hotspotSurveyCrud.update(parse(Map), pathTokens.hotspotSurveyId)
+                            hotspotSurveyCrud.update(parse(Map), pathTokens.hotspotSurveyId, currentUser.username)
                         } then { HotspotEntity hotspot ->
                             render json(hotspot)
                         }
@@ -52,7 +52,7 @@ class HotspotSurveyHandler extends GroovyChainAction {
                         blocking {
                             def params = parse Map
                             params.surveyId =  pathTokens.surveyId
-                            hotspotSurveyCrud.create(params)
+                            hotspotSurveyCrud.create(params, currentUser.username)
                         } then { HotspotEntity hotspot ->
                             render json(hotspot)
                         }
