@@ -19,7 +19,7 @@
             });
     }
     
-    ng.module("Hotspots", []) //"Hotspots.gateway", "Hotspots.list"]) //"Hotspots.create", "Hotspots.edit"])
+    ng.module("Hotspots", ["Hotspots.gateway", "Hotspots.list", "Hotspots.create", "Hotspots.edit"])
         .config(["$stateProvider", routes]);
 
 }(angular));
