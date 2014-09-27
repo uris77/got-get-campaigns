@@ -44,7 +44,7 @@ class LocationCrudService {
 
     List<LocationEntity> findAll() {
         List<LocationEntity> locations = []
-        DBCursor cursor = mongoCollection.find()
+        DBCursor cursor = mongoCollection.find(new BasicDBObject("deleted", false))
         try {
             while(cursor.hasNext()) {
                 DBObject doc = cursor.next()
