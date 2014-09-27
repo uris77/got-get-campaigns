@@ -28,8 +28,8 @@
 					<td>{{ location.name }}</td>
 					<td>{{ location.locationType }}</td>
 					<td>{{ location.district }}</td>
-					<td>{{ location.loc.lon }}</td>
-					<td>{{ location.loc.lat }}</td>
+					<td>{{ location.loc.coordinates[0] }}</td>
+					<td>{{ location.loc.coordinates[1] }}</td>
 					<td>
 						<a ui-sref="locations.summary({ locationId: location.id })">Details</a>
 					</td>

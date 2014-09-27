@@ -25,7 +25,8 @@ class LocationCrudService {
         BasicDBObject doc = new BasicDBObject()
         params.each { key, value ->
             if(key == "loc") {
-                def loc = [lon: Double.parseDouble(value.lon), lat: Double.parseDouble(value.lat)]
+                //def loc = [lon: Double.parseDouble(value.lon), lat: Double.parseDouble(value.lat)]
+                def loc = [type: "Point", coordinates: [Double.parseDouble(value.lon), Double.parseDouble(value.lat)]]
                 doc.append(key, loc)
             } else {
                 doc.append(key, value)
