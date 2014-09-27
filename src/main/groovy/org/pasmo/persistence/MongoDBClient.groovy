@@ -2,10 +2,8 @@ package org.pasmo.persistence
 
 import com.mongodb.DB
 import com.mongodb.DBCollection
-import com.mongodb.Mongo
 import com.mongodb.MongoClient
 import com.mongodb.MongoClientURI
-import com.mongodb.MongoCredential
 import com.mongodb.ServerAddress
 
 class MongoDBClient {
@@ -21,7 +19,6 @@ class MongoDBClient {
         if(_mongoClient == null) {
             if(USERNAME && PASSWORD) {
                 String connectionString = "mongodb://${USERNAME}:${PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}"
-                println "\n\n\nConnection String: ${connectionString}\n\n"
                 MongoClientURI uri = new MongoClientURI(connectionString)
                 _mongoClient = new MongoClient(uri)
             } else {

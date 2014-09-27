@@ -32,6 +32,9 @@ class SurveyCrudService  {
                     value = Integer.parseInt(value)
                 }
                 doc.append(key, value)
+                if(key == "month") {
+                    appendMonth(doc, value)
+                }
             }
             doc.append("userName", userName)
             doc.append("dateCreated", new Date())
@@ -39,5 +42,15 @@ class SurveyCrudService  {
             surveyEntity = surveyGateway.findByMonthAndYear(params.month, params.year)
         }
         surveyEntity
+    }
+
+    private void appendMonth(BasicDBObject doc, String monthName) {
+        Map<String, Integer> months = [
+                "January": 1, "February": 2, "March": 3, "April": 4,
+                "May": 5, "June": 6, "July": 7, "August": 8,
+                "September": 9, "October": 10, "November": 11, "December": 12
+        ]
+
+        doc.append("monthOrder", months[monthName])
     }
 }

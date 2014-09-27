@@ -33,6 +33,7 @@ class LocationCrudService {
         }
         doc.append("createdBy", userName)
         doc.append("dateCreated", new Date())
+        doc.append("deleted", false)
         mongoCollection.insert(doc)
         LocationEntity.create(doc)
     }
