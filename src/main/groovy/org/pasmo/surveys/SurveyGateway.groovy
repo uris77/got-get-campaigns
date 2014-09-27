@@ -34,7 +34,7 @@ class SurveyGateway {
 
     List<SurveyEntity> list() {
         List<SurveyEntity> surveys = []
-        DBCursor cursor = mongoCollection.find().sort(new BasicDBObject("year", -1))
+        DBCursor cursor = mongoCollection.find().sort(new BasicDBObject("year", -1).append("monthOrder", 1))
         try {
             while(cursor.hasNext()) {
                 DBObject obj = cursor.next()
