@@ -21,6 +21,14 @@ class SurveyEntity implements PersistentEntity {
         ]
     }
 
+    static SurveyEntity create(Map values) {
+        new SurveyEntity(
+                id: values.id.toString(),
+                year: values.year,
+                month: values.month
+        )
+    }
+
     public void addError(String error) {
         errors << error
     }

@@ -35,6 +35,15 @@ class LocationEntity implements PersistentEntity {
         )
     }
 
+    static LocationEntity create(Map values) {
+        new LocationEntity(
+                _id: values.id.toString(),
+                name: values.name,
+                district: values.district,
+                loc: values.loc
+        )
+    }
+
     public void addError(String error) {
         errors << error
     }
