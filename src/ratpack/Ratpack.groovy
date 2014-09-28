@@ -8,6 +8,8 @@ import org.pasmo.persistence.MongoDBClientModule
 import org.pasmo.repositories.UserRepository
 import org.pasmo.repositories.entities.UserEntity
 import org.pasmo.surveys.SurveyChainHandler
+import org.pasmo.surveys.outlets.OutletSurveyModule
+import org.pasmo.surveys.outlets.OutletSurveysHandler
 import org.pasmo.surveys.outlets.hotspot.HotspotSurveyModule
 import org.pasmo.surveys.outlets.nontraditional.NonTraditionalOutletSurveyCrud
 import org.pasmo.surveys.outlets.nontraditional.NonTraditionalOutletSurveyModule
@@ -45,6 +47,7 @@ ratpack {
         add new TraditionalOutletSurveyModule()
         add new NonTraditionalOutletSurveyModule()
         add new HotspotSurveyModule()
+        add new OutletSurveyModule()
     }
 
     handlers {
@@ -108,6 +111,9 @@ ratpack {
             }
             prefix("locations") {
                 handler chain(registry.get(LocationHandlers))
+            }
+            prefix("outletSurveys") {
+                handler chain(registry.get(OutletSurveysHandler))
             }
         }
 

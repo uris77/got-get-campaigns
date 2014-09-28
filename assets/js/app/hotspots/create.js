@@ -27,6 +27,7 @@
 
             if($scope.errors.length == 0) {
                 var params = {
+                    outletType: "hotspot",
                     outreach: $scope.outreach,
                     targetPopulations: $scope.target_populations,
                     condomsAvailable: _.isBoolean($scope.condoms_available) ? $scope.condoms_available : false,

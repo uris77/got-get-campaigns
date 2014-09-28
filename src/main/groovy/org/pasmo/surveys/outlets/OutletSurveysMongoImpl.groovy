@@ -1,8 +1,6 @@
 package org.pasmo.surveys.outlets
 
-import com.mongodb.BasicDBObject
 import com.mongodb.DBCollection
-import com.mongodb.DBCursor
 import com.mongodb.DBObject
 import org.bson.types.ObjectId
 import org.pasmo.mongo.MongoQuery
@@ -26,15 +24,7 @@ class OutletSurveysMongoImpl implements OutletSurveys {
     @Override
     List<OutletSurvey> listAll(String outletType, String surveyId) {
         List<OutletSurvey> surveys = []
-//        DBCursor cursor = mongoCollection.find(new BasicDBObject("survey.id", new ObjectId(surveyId)))
-//        try {
-//            while(cursor.hasNext()) {
-//                surveys << OutletSurvey.create(cursor.next())
-//            }
-//        } finally {
-//            cursor.close()
-//        }
-        mongoQuery.find(mongoCollection, ["survey.id": surveyId, "outletType": outletType]){DBObject doc ->
+        mongoQuery.find(mongoCollection, ["survey.id": new ObjectId(surveyId), "outletType": outletType]){DBObject doc ->
             surveys << OutletSurvey.create(doc)
         }
         surveys

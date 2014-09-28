@@ -3,32 +3,41 @@ package org.pasmo.mongo
 import com.mongodb.BasicDBObject
 import com.mongodb.DBCollection
 import com.mongodb.DBCursor
-import com.mongodb.DBObject
 
 class MongoQueryImpl implements MongoQuery {
+    public static final int ASC = 1
+    public static final int DSC = -1
 
     public void find(DBCollection collection, Map query, Closure cls) {
-        Map _sort = [:]
-        Map _query = query
-        if(query.containsKey("sort")) {
-            _sort = query.sort
-            _query = query.findAll{ item ->
-                item.getKey().toString() != 'sort'
-            }
-        }
-        DBCursor cursor = collection.find(_query)
-        if(query.containsKey('sort')) {
-            DBObject sort = new BasicDBObject()
-            String sortBy = _sort.keySet().first().toString()
-            sort.put(sortBy, _sort['sortBy'])
-            cursor.sort((DBObject) (new BasicDBObject(sortBy, query.sort['sortBy'])))
-        }
+        DBCursor cursor = collection.find(queryDoc(query))
+        sort(cursor, query)
         try {
             while(cursor.hasNext()) {
                 cls(cursor.next())
             }
         } finally {
             cursor.close()
+        }
+    }
+
+    private BasicDBObject queryDoc(Map query) {
+        BasicDBObject queryDoc = new BasicDBObject()
+        Map _query = query.findAll{ it ->
+            it.getKey().toString() != "sort"
+        }
+        _query.each{key, value ->
+            queryDoc.append(key, value)
+        }
+        queryDoc
+    }
+
+    private void sort(DBCursor cursor, Map query) {
+        if(query.containsKey("sort")) {
+            BasicDBObject orderBy = new BasicDBObject()
+            query.sort.each{key,value ->
+                orderBy.append(key, value)
+            }
+            cursor.sort(orderBy)
         }
     }
 
