@@ -1,8 +1,8 @@
 ( function (ng) {
 
-    function ListController($scope, $state, $stateParams, urlUtils, GatewayService) {
+    function ListController($scope, $state, $stateParams, urlUtils, OutletSurveyService) {
         $scope.surveyId = $stateParams.id;
-        GatewayService.fetchSurveys($stateParams.id)
+        OutletSurveyService.fetchSurveys($stateParams.id)
             .success(function (data) {
                 $scope.surveys = data;
             })
@@ -15,6 +15,6 @@
     }
 
     ng.module("Hotspots.list", [])
-        .controller("ListController", ["$scope", "$state", "$stateParams", "urlUtils", "GatewayService", ListController]);
+        .controller("ListController", ["$scope", "$state", "$stateParams", "urlUtils", "OutletSurveyService", ListController]);
 
 }(angular));

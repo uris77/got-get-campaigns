@@ -15,4 +15,4 @@
     ng.module("OutletSurveyService", [])
         .factory("OutletSurveyService", ["$http", OutletSurveyService])
 
-})(angular)
+}(angular));
