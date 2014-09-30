@@ -61,17 +61,18 @@ class SurveyGateway {
 
     long countBySurveyAndLocationType(SurveyEntity survey, String locationType) {
         DBObject doc = new BasicDBObject()
+        DBCollection outletSurveysCollection = mongoDBClient.getCollection("outlet_surveys")
         doc.append("survey.id", new ObjectId(survey.id))
         long count = 0
         switch(locationType) {
             case "Traditional":
-                count = mongoDBClient.getCollection("traditional_outlet_surveys").count(doc)
+                count = outletSurveysCollection.count(doc.append("outletType", "traditional"))
                 break
             case "Non-Traditional":
-                count = mongoDBClient.getCollection("nontraditional_outlet_surveys").count(doc)
+                count = outletSurveysCollection.count(doc.append("outletType", "non-traditional"))
                 break
             case "Hotspot":
-                count = mongoDBClient.getCollection("hotspot_surveys").count(doc)
+                count = outletSurveysCollection.count(doc.append("outletType", "hotspot"))
                 break
         }
         count
