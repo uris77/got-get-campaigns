@@ -10,11 +10,8 @@ import org.pasmo.repositories.entities.UserEntity
 import org.pasmo.surveys.SurveyChainHandler
 import org.pasmo.surveys.outlets.OutletSurveyModule
 import org.pasmo.surveys.outlets.OutletSurveysHandler
-import org.pasmo.surveys.outlets.nontraditional.NonTraditionalOutletSurveyCrud
-import org.pasmo.surveys.outlets.nontraditional.NonTraditionalOutletSurveyModule
 import org.pasmo.surveys.SurveyCrudModule
 import org.pasmo.surveys.SurveyGatewayModule
-import org.pasmo.surveys.outlets.traditional.TraditionalOutletSurveyModule
 import ratpack.jackson.JacksonModule
 import ratpack.pac4j.Pac4jModule
 import ratpack.pac4j.internal.Pac4jCallbackHandler
@@ -42,8 +39,6 @@ ratpack {
         add new SurveyGatewayModule()
         add new LocationCrudModule()
         add new SurveyCrudModule()
-        add new TraditionalOutletSurveyModule()
-        add new NonTraditionalOutletSurveyModule()
         add new OutletSurveyModule()
     }
 
@@ -84,7 +79,7 @@ ratpack {
             }
         }
 
-        prefix("api") { NonTraditionalOutletSurveyCrud nonTraditionalOutletSurveyCrud ->
+        prefix("api") {
 
             get("my_details") { CurrentUser currentUser, UserRepository repository ->
                 String email = currentUser.getEmail()
@@ -96,7 +91,7 @@ ratpack {
             }
 
             prefix("surveys") {
-                handler chain(new SurveyChainHandler(nonTraditionalOutletSurveyCrud))
+                handler chain(new SurveyChainHandler())
             }
             prefix("locations") {
                 handler chain(registry.get(LocationHandlers))
