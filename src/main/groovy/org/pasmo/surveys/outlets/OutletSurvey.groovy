@@ -6,6 +6,7 @@ import org.pasmo.surveys.SurveyEntity
 
 class OutletSurvey {
     String id
+    String locationType
     LocationEntity location
     SurveyEntity survey
     boolean condomsAvailable
@@ -23,7 +24,8 @@ class OutletSurvey {
                 lubesAvailable: doc.get("lubesAvailable") as Boolean,
                 gigi: doc.get("gigi") as Boolean,
                 targetPopulations: doc.get("targetPopulations") as Map,
-                outreach: doc.get("outreach") as Map
+                outreach: doc.get("outreach") as Map,
+                locationType: doc.get("locationType").toString() ?: "N/A"
         )
     }
 }
