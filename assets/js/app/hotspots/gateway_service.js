@@ -6,8 +6,8 @@
                 return $http.get("/api/locations/byType/hotspot");
             },
 
-            fetchSurveys: function(survey_id) {
-                return $http.get("/api/outletSurveys/" + survey_id + "/" + "hotspot");
+            fetchSurveys: function(surveyId) {
+                return $http.get("/api/outletSurveys/" + surveyId + "/hotspot");
             },
 
             createSurvey: function(surveyId, params) {
@@ -15,7 +15,7 @@
             },
 
             fetchHotspotSurvey: function(surveyId, outletSurveyId) {
-                return $http.get("/api/outletSurveys/" + outletSurveyId)
+                return $http.get("/api/outletSurveys/" + outletSurveyId);
             },
 
             editHotspotSurvey: function(surveyId, hotspotSurveyId, params) {

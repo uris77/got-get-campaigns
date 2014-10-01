@@ -3,7 +3,6 @@
         TraditionalOutletGatewayService
             .fetchTraditionalOutlets()
             .success(function(data) {
-                console.log("Got traditional outlets: ", data);
                 $scope.locations = data;
                 if(data.length == 0) {
                     $scope.noLocations = true;
@@ -19,6 +18,7 @@
 
         $scope.submit = function() {
             var params = {
+                outletType: "traditional",
                 condomsAvailable: _.isBoolean($scope.condoms_available) ? $scope.condoms_available : false,
                 lubesAvailable: _.isBoolean($scope.lube_available) ? $scope.lube_available : false,
                 gigi: _.isBoolean($scope.gigi) ? $scope.gigi : false,
@@ -29,7 +29,7 @@
                     loc: $scope.location.loc
                 }
             };
-            TraditionalOutletGatewayService.createTraditonalOutlet(params, $stateParams.id)
+            TraditionalOutletGatewayService.createTraditonalOutlet($stateParams.id, params)
                 .success(function(data) {
                     $state.transitionTo("surveys.listTraditionalOutlets", {id: $stateParams.id});
                 })

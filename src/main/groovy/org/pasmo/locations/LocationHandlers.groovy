@@ -2,6 +2,7 @@ package org.pasmo.locations
 
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.pasmo.auth.CurrentUser
+import org.pasmo.surveys.outlets.OutletSurvey
 import ratpack.groovy.handling.GroovyChainAction
 import ratpack.jackson.Jackson
 
@@ -63,7 +64,7 @@ class LocationHandlers extends GroovyChainAction {
                     if(currentUser.isLoggedIn()) {
                         blocking {
                             locationGateway.findSurveys(pathTokens.locationId)
-                        } then { List<LocationSurvey> surveys ->
+                        } then { List<OutletSurvey> surveys ->
                             LocationEntity location = locationGateway.findById(pathTokens.locationId)
                             render Jackson.json([location: location, surveys: surveys])
                         }

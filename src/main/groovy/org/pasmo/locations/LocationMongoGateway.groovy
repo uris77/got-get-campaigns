@@ -8,11 +8,13 @@ import org.bson.types.ObjectId
 import org.pasmo.persistence.MongoDBClient
 import org.pasmo.surveys.SurveyEntity
 import org.pasmo.surveys.SurveyGateway
+import org.pasmo.surveys.outlets.OutletSurvey
 
 import javax.inject.Inject
 
 class LocationMongoGateway implements LocationGateway {
     private final String COLLECTION_NAME = "pasmo_locations"
+    private final String SURVEYS_COLLECTION = "outlet_surveys"
     private DBCollection mongoCollection
     private MongoDBClient mongoDBClient
     private final SurveyGateway surveyGateway
@@ -30,15 +32,15 @@ class LocationMongoGateway implements LocationGateway {
     }
 
     @Override
-    List<LocationSurvey> findSurveys(String locationId) {
-        List<LocationSurvey> surveys = []
-        DBObject locationDoc = mongoCollection.findOne(new BasicDBObject("_id", new ObjectId(locationId)))
-        DBCollection surveyCollection = getSurveyCollection(locationDoc.get("locationType").toString())
+    List<OutletSurvey> findSurveys(String locationId) {
+        List<OutletSurvey> surveys = []
+        //DBObject locationDoc = mongoCollection.findOne(new BasicDBObject("_id", new ObjectId(locationId)))
+        //DBCollection surveyCollection = getSurveyCollection(locationDoc.get("locationType").toString())
+        DBCollection surveyCollection = mongoDBClient.getCollection(SURVEYS_COLLECTION)
         DBCursor cursor = surveyCollection.find(new BasicDBObject("location.id", new ObjectId(locationId)))
         try {
             while(cursor.hasNext()) {
-                BasicDBObject doc = cursor.next()
-                surveys << LocationSurvey.create(doc)
+                surveys << OutletSurvey.create(cursor.next())
             }
         }finally {
             cursor.close()

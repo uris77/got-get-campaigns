@@ -2,9 +2,11 @@
 
     function EditController($scope, $state, $stateParams, urlUtils, TraditionalOutletGatewayService) {
         $scope.surveyId = $stateParams.survey_id;
-        TraditionalOutletGatewayService.fetchSurvey($stateParams.survey_id, $stateParams.traditional_outlet_survey_id)
+        console.log("In Edit Controller::: ", $stateParams);
+        TraditionalOutletGatewayService.fetchSurvey($stateParams.traditional_outlet_survey_id)
             .success(function(data) {
                 $scope.survey = data;
+                console.log("survey: ", $scope.survey);
             })
             .error(function(error, status){
                 if(status == 401) {
@@ -21,7 +23,7 @@
                 lubesAvailable: _.isBoolean($scope.survey.lubesAvailable) ? $scope.survey.lubesAvailable : false,
                 gigi: _.isBoolean($scope.survey.gigi) ? $scope.survey.gigi : false
             };
-            TraditionalOutletGatewayService.updateSurvey(params, $stateParams.survey_id, $stateParams.traditional_outlet_survey_id)
+            TraditionalOutletGatewayService.updateSurvey($stateParams.traditional_outlet_survey_id, params)
                 .success(function(data) {
                     $state.transitionTo("surveys.listTraditionalOutlets", {id: $stateParams.survey_id});
                 })
