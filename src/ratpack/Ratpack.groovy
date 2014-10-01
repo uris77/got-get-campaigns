@@ -10,7 +10,6 @@ import org.pasmo.repositories.entities.UserEntity
 import org.pasmo.surveys.SurveyChainHandler
 import org.pasmo.surveys.outlets.OutletSurveyModule
 import org.pasmo.surveys.outlets.OutletSurveysHandler
-import org.pasmo.surveys.outlets.hotspot.HotspotSurveyModule
 import org.pasmo.surveys.outlets.nontraditional.NonTraditionalOutletSurveyCrud
 import org.pasmo.surveys.outlets.nontraditional.NonTraditionalOutletSurveyModule
 import org.pasmo.surveys.SurveyCrudModule
@@ -42,11 +41,9 @@ ratpack {
         add new DatabaseClientModule()
         add new SurveyGatewayModule()
         add new LocationCrudModule()
-        //add new UserRepositoryModule()
         add new SurveyCrudModule()
         add new TraditionalOutletSurveyModule()
         add new NonTraditionalOutletSurveyModule()
-        add new HotspotSurveyModule()
         add new OutletSurveyModule()
     }
 
@@ -88,12 +85,6 @@ ratpack {
         }
 
         prefix("api") { NonTraditionalOutletSurveyCrud nonTraditionalOutletSurveyCrud ->
-//            handler {SessionStorage  sessionStorage ->
-//                CurrentUser currentUser = new CurrentUser()
-//                currentUser.setSessionStorage(sessionStorage)
-//                request.register(currentUser)
-//                next()
-//            }
 
             get("my_details") { CurrentUser currentUser, UserRepository repository ->
                 String email = currentUser.getEmail()
@@ -104,8 +95,6 @@ ratpack {
                 }
             }
 
-//            handler("users", registry.get(UsersHandler))
-//            handler("users/:id", registry.get(UsersByIdHandler))
             prefix("surveys") {
                 handler chain(new SurveyChainHandler(nonTraditionalOutletSurveyCrud))
             }
