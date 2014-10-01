@@ -42,6 +42,24 @@ class OutletSurveysHandler extends GroovyChainAction {
                         render json(outletSurvey)
                     }
                 }
+
+                put { CurrentUser currentUser ->
+                    if(currentUser.isLoggedIn()) {
+                        blocking {
+                            outletSurveyCrud.update(parse(Map), pathTokens.surveyId, currentUser.username)
+                        } then { OutletSurvey outletSurvey ->
+                            render json(outletSurvey)
+                        }
+                    }
+                }
+
+                get {
+                    blocking {
+                        outletSurveys.findById(pathTokens.surveyId)
+                    } then { OutletSurvey outletSurvey ->
+                        render json(outletSurvey)
+                    }
+                }
             }
         }
     }

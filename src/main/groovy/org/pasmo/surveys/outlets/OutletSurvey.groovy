@@ -5,6 +5,7 @@ import org.pasmo.locations.LocationEntity
 import org.pasmo.surveys.SurveyEntity
 
 class OutletSurvey {
+    String id
     LocationEntity location
     SurveyEntity survey
     boolean condomsAvailable
@@ -15,6 +16,7 @@ class OutletSurvey {
 
     static OutletSurvey create(DBObject doc) {
         new OutletSurvey(
+                id: doc.get('_id').toString(),
                 location: LocationEntity.create(doc.get('location') as Map),
                 survey: SurveyEntity.create(doc.get('survey') as Map),
                 condomsAvailable: doc.get('condomsAvailable') as Boolean,

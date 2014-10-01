@@ -7,21 +7,19 @@
             },
 
             fetchSurveys: function(survey_id) {
-                //return $http.get("/api/surveys/" + survey_id + "/hotspots");
                 return $http.get("/api/outletSurveys/" + survey_id + "/" + "hotspot");
             },
 
             createSurvey: function(surveyId, params) {
-                //return $http.post("/api/surveys/" + survey_id + "/hotspots", params);
                 return $http.post("/api/outletSurveys/" + surveyId, params);
             },
 
-            fetchHotspotSurvey: function(survey_id, hotspot_survey_id) {
-                return $http.get("/api/surveys/" + survey_id + "/hotspots/" + hotspot_survey_id);
+            fetchHotspotSurvey: function(surveyId, outletSurveyId) {
+                return $http.get("/api/outletSurveys/" + outletSurveyId)
             },
 
-            editHotspotSurvey: function(survey_id, hotspot_survey_id, params) {
-                return $http.put("/api/surveys/" + survey_id + "/hotspots/" + hotspot_survey_id, params);
+            editHotspotSurvey: function(surveyId, hotspotSurveyId, params) {
+                return $http.put("/api/outletSurveys/" + hotspotSurveyId, params);
             }    
         };
     }

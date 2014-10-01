@@ -1,5 +1,6 @@
 package org.pasmo.surveys.outlets
 
+import com.mongodb.BasicDBObject
 import com.mongodb.DBCollection
 import com.mongodb.DBObject
 import org.bson.types.ObjectId
@@ -28,5 +29,10 @@ class OutletSurveysMongoImpl implements OutletSurveys {
             surveys << OutletSurvey.create(doc)
         }
         surveys
+    }
+
+    @Override
+    OutletSurvey findById(String id) {
+        OutletSurvey.create mongoCollection.findOne(new BasicDBObject("_id", new ObjectId(id)))
     }
 }

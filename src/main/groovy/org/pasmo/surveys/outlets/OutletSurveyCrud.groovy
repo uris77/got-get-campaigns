@@ -40,4 +40,17 @@ class OutletSurveyCrud {
         mongoCollection.insert(doc)
         OutletSurvey.create(doc)
     }
+
+    OutletSurvey update(Map params, String outletSurveyId, String userName) {
+        BasicDBObject doc = new BasicDBObject()
+        BasicDBObject updateDoc = new BasicDBObject("gigi", params.gigi)
+        params.each{ key, val ->
+            updateDoc.append(key, val)
+        }
+        updateDoc.append("updatedBy", userName)
+        updateDoc.append("dateUpdated", new Date())
+        doc.append('$set', updateDoc)
+        mongoCollection.update(new BasicDBObject("_id", new ObjectId(outletSurveyId)), doc)
+        OutletSurvey.create(mongoCollection.findOne(new BasicDBObject("_id", new ObjectId(outletSurveyId))))
+    }
 }
