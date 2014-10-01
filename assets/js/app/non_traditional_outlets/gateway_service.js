@@ -5,19 +5,19 @@
                 return $http.get("/api/locations/byType/non_traditional");
             },
 
-            fetchSurveys: function(survey_id) {
-                return $http.get("/api/surveys/" + survey_id + "/non_traditional_outlets");
+            fetchSurveys: function(surveyId) {
+                return $http.get("/api/outletSurveys/" + surveyId + "/non-traditional");
             },
 
-            createSurvey: function(survey_id, params) {
-                return $http.post("/api/surveys/" + survey_id + "/non_traditional_outlets", params)
+            createSurvey: function(surveyId, params) {
+                return $http.post("/api/outletSurveys/" + surveyId, params)
 ;           },
 
-            fetchSurvey: function(survey_id, outlet_survey_id) {
-                return $http.get("/api/surveys/" + survey_id + "/non_traditional_outlets/" + outlet_survey_id);
+            fetchSurvey: function(surveyId, outletSurveyId) {
+                return $http.get("/api/outletSurveys/" + outletSurveyId);
             },
-            editSurvey: function(survey_id, outlet_survey_id, params) {
-                return $http.put("/api/surveys/" + survey_id + "/non_traditional_outlets/" + outlet_survey_id, params);
+            editSurvey: function(surveyId, outletSurveyId, params) {
+                return $http.put("/api/outletSurveys/" + outletSurveyId, params);
             }
         };
     }

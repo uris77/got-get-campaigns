@@ -21,10 +21,10 @@
 			<tbody>
 				<tr ng-repeat="survey in surveys">
 					<td>
-						{{ survey.locationName }}
+						{{ survey.location.name }}
 					</td>
 					<td>
-						{{ survey.district }}
+						{{ survey.location.district }}
 					</td>
 					<td>
 						<span ng-if="survey.condomsAvailable == true" class="glyphicon glyphicon-ok"></span>

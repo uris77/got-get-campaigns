@@ -36,7 +36,8 @@
             if($scope.errors.length == 0) {
                 var params = {
                     outreach: $scope.outreach,
-                    outletType: $scope.outlet_type,
+                    outletType: "non-traditional",
+                    locationType: $scope.outlet_type,
                     targetPopulations: $scope.target_populations,
                     condomsAvailable: _.isBoolean($scope.condoms_available) ? $scope.condoms_available : false,
                     lubesAvailable: _.isBoolean($scope.lube_available) ? $scope.lube_available : false,
