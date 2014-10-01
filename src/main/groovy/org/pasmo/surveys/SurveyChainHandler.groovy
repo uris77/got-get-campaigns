@@ -1,6 +1,5 @@
 package org.pasmo.surveys
 
-import org.pasmo.surveys.outlets.hotspot.HotspotSurveyHandler
 import org.pasmo.surveys.outlets.nontraditional.NonTraditionalOutletSurveyChainHandler
 import org.pasmo.surveys.outlets.nontraditional.NonTraditionalOutletSurveyCrud
 import org.pasmo.surveys.outlets.traditional.TraditionalOutletSurveyHandler
@@ -20,9 +19,6 @@ class SurveyChainHandler extends GroovyChainAction {
         }
         prefix(":surveyId/non_traditional_outlets") {
             handler(chain(registry.get(NonTraditionalOutletSurveyChainHandler)))
-        }
-        prefix(":surveyId/hotspots") {
-            handler(chain(registry.get(HotspotSurveyHandler)))
         }
         handler(":id", registry.get(SurveyByIdHandler))
 
