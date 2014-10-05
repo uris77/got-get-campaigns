@@ -91,7 +91,7 @@ ratpack {
             }
 
             prefix("surveys") {
-                handler chain(new SurveyChainHandler())
+                handler chain(registry.get(SurveyChainHandler))
             }
             prefix("locations") {
                 handler chain(registry.get(LocationHandlers))
