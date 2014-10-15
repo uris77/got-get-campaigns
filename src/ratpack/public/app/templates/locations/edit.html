@@ -1,0 +1,57 @@
+<div id="create_traditional_outlet" class="row">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            Create New Outlet
+        </div>
+        <div class="panel-body">
+            <form role="form" class="form-horizontal" name="create_traditional_outlet" ng-submit="submit()">
+                <div class="form-group">
+                    <div class="alert alert-danger" role="alert" ng-show="errors">
+                        <li ng-repeat="error in errors">
+                            <ul>{{ error }}</ul>
+                        </li>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="name" class="col-sm-2 control-label">Outlet Name</label>
+                    <div class="col-sm-5">
+                        <input type="text" class="form-control" name="name" ng-model="location.name" required/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="locationType" class="col-sm-2 control-label">
+                        Type of Location
+                    </label>
+                    <div class="col-sm-5">
+                        <select ng-model="locationType" ng-options="locationType.name for locationType in locationTypes"></select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="district" class="col-sm-2 control-label">District</label>
+                    <div class="col-sm-5">
+                        <select ng-model="location.district" ng-options="district.name for district in districts"></select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="longitude" class="col-sm-2 control-label">Longitude</label>
+                    <div  class="col-sm-5">
+                        <input type="text" class="form-control" name="longitude" ng-model="location.loc.lon" required />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="latitude" class="col-sm-2 control-label">Latitude</label>
+                    <div  class="col-sm-5">
+                        <input type="text" class="form-control" name="latitutde" ng-model="locaiton.loc.lat" required />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-5">
+                        <button type="submit" class="btn btn-primary">
+                            Save
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

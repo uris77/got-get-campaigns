@@ -73,6 +73,20 @@ class LocationHandlers extends GroovyChainAction {
                         render Jackson.json([status: "Unauthorized"])
                     }
                 }
+
+                put { CurrentUser currentUser ->
+                    if (currentUser.isLoggedIn()) {
+                        blocking {
+                            Map params = parse Map
+                            locationCrudService.update(pathTokens.locationId, params)
+                        } then { LocationEntity location ->
+                            render Jackson.json(location)
+                        }
+                    } else {
+                        response.status(401)
+                        render Jackson.json([status: "Unauthorized"])
+                    }
+                }
             }
         }
 

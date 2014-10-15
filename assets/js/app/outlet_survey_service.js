@@ -13,6 +13,6 @@
     }
 
     ng.module("OutletSurveyService", [])
-        .factory("OutletSurveyService", ["$http", OutletSurveyService])
+        .factory("OutletSurveyService", ["$http", OutletSurveyService]);
 
 }(angular));

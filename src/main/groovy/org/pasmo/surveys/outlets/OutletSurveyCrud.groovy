@@ -2,6 +2,7 @@ package org.pasmo.surveys.outlets
 
 import com.mongodb.BasicDBObject
 import com.mongodb.DBCollection
+import com.mongodb.DBCursor
 import org.bson.types.ObjectId
 import org.pasmo.persistence.MongoDBClient
 import org.pasmo.surveys.SurveyEntity
@@ -52,5 +53,22 @@ class OutletSurveyCrud {
         doc.append('$set', updateDoc)
         mongoCollection.update(new BasicDBObject("_id", new ObjectId(outletSurveyId)), doc)
         OutletSurvey.create(mongoCollection.findOne(new BasicDBObject("_id", new ObjectId(outletSurveyId))))
+    }
+
+    public void updateLocation(String locationId, BasicDBObject updateDoc) {
+        DBCursor surveysWithLocationCursor = findSurveysWithLocation(locationId)
+        try {
+            while(surveysWithLocationCursor.hasNext()) {
+                BasicDBObject doc = new BasicDBObject('$set', updateDoc)
+                mongoCollection.update(surveysWithLocationCursor.next(), doc)
+            }
+        } finally {
+            surveysWithLocationCursor.close()
+        }
+    }
+
+    private DBCursor findSurveysWithLocation(String locationId) {
+        BasicDBObject queryDoc = new BasicDBObject("location.id", new ObjectId(locationId))
+        mongoCollection.find(queryDoc, new BasicDBObject("_id", 1))
     }
 }

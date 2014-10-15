@@ -16,6 +16,11 @@
                 templateUrl: "/locations/create.html",
                 controller: 'LocationCreateController'
             })
+            .state("locations.edit", {
+                url: '/edit/:locationId',
+                templateUrl: '/locations/edit.html',
+                controlelr: "LocationEditController"
+            })
             .state("locations.summary", {
                 url: "/:locationId/summary",
                 templateUrl: "/locations/surveys_summary.html",
@@ -23,7 +28,7 @@
             });
     }
 
-    ng.module("PasmoLocation", ["location.create", "locations.list", "locations.details"])
+    ng.module("PasmoLocation", ["location.create", "locations.list", "locations.details", "location.edit"])
         .config(["$stateProvider", router]);
 
 }(angular)); 

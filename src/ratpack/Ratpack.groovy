@@ -37,8 +37,8 @@ ratpack {
 
         add new DatabaseClientModule()
         add new SurveyGatewayModule()
-        add new LocationCrudModule()
         add new SurveyCrudModule()
+        add new LocationCrudModule()
         add new OutletSurveyModule()
     }
 
