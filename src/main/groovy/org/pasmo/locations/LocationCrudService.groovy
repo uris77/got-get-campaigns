@@ -58,7 +58,6 @@ class LocationCrudService {
             }
         }
         mongoCollection.update(queryDoc, new BasicDBObject(new BasicDBObject('$set',updateDoc)))
-        //update survey
         LocationEntity.create(updateDoc)
     }
 

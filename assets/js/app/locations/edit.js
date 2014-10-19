@@ -14,17 +14,14 @@
             errors.push("Type of location: select what type of outlet this location is.");
         }
 
-        if(_.isUndefined(params.loc)) {
-            errors.push("Latitude: specify the latitude.");
-            errors.push("Longitude: specify the longitude.");
-        } else {
-            if(_.isUndefined(params.loc.lon) || !utils.isNumber(params.loc.lon)) {
-                errors.push("Longitude: specify a valid longitude");
-            }
-            if(_.isUndefined(params.loc.lat) || !utils.isNumber(params.loc.lat)) {
-                errors.push("Latitude: specify a valid latitude.");
-            }
+        if(_.isUndefined(params.longitude) || !utils.isNumber(params.longitude)) {
+            errors.push("Longitude: specify a valid longitude");
         }
+
+        if(_.isUndefined(params.latitude) || !utils.isNumber(params.latitude)) {
+            errors.push("Latitude: specify a valid latitude.");
+        }
+
         return errors;
     }
 
@@ -35,62 +32,86 @@
                 return $http.update("/api/locations/" + locationId, params);
             },
             fetch: function(locationId) {
-                return $http.get("/api/locations" + locationId);
+                return $http.get("/api/locations/" + locationId);
             }
         };  
     }
 
-    function LocationEditController ($scope, $state, urlUtils, LocationUpdateService) {
-        $scope.districts = [
+    function submit() {
+        console.log("Submitting: ", this);
+        var params = {
+            name: this.outlet.name,
+            district: this.district ? this.district.name : undefined,
+            locationType: this.locationType ? this.locationType.name : undefined,
+            loc: {lon: this.longitude, lat: this.latitude}
+        };
+        var errors = validateLocationForm(this);
+        console.log("ERRORS: ", errors);
+        if(errors.length > 0) {
+            this.errors = errors;
+        } else {
+            console.log("UPDATE location with params: ", params);
+        }
+    }
+
+    function LocationEditController ($scope, $stateParams, urlUtils, LocationUpdateService, outlet) {
+        var ctrl = this;
+
+        var districts = [
             {name: 'Corozal'}, {name: 'Orange Walk'}, {name: 'Belize'},
             {name: 'Cayo'}, {name: 'Stann Creek'}, {name: 'Toledo'}
         ];
 
-        $scope.locationTypes = [
+        var locationTypes = [
             {name: "Traditional"},
             {name: "Non-Traditional"},
             {name: "Hotspot"}
         ];
-        LocationUpdateService.fetch($stateParams.locationId)
-            .success(function(data) {
-                $scope.location = data;
-            })
-            .error(function(error, status){
-                console.error("Error fetching location: ", error);
-                if(status == 401) {
-                    urlUtils.redirectHome();
-                }
-            });
+        var locationType = _.findWhere(locationTypes, {name: outlet.locationType});
+        var district = _.findWhere(districts, {name: outlet.district});
 
-        $scope.submit = function () {
-            var params = {
-                name: $scope.name,
-                district: $scope.district ? $scope.district.name : undefined,
-                locationType: $scope.locationType ? $scope.locationType.name : undefined,
-                loc: {lon: $scope.longitude, lat: $scope.latitude}
-            };
-            var errors = validateLocationForm(params);
-            if(errors.length > 0) {
-                $scope.errors = errors;
-            } else {
-                LocationCreateService.create(params)
-                .success(function() {
-                    $state.transitionTo("locations.list")
-                })
-                .error(function(data, status) {
-                    $scope.errors = data.errors;
-                    if(status == 401) {
-                        urlUtils.redirectHome();
-                    }
-                });
-            }   
-        };
+        // $scope.submit = function () {
+        //     var params = {
+        //         name: $scope.name,
+        //         district: $scope.district ? $scope.district.name : undefined,
+        //         locationType: $scope.locationType ? $scope.locationType.name : undefined,
+        //         loc: {lon: $scope.longitude, lat: $scope.latitude}
+        //     };
+        //     var errors = validateLocationForm(params);
+        //     if(errors.length > 0) {
+        //         $scope.errors = errors;
+        //     } else {
+        //         LocationCreateService.create(params)
+        //         .success(function() {
+        //             $state.transitionTo("locations.list")
+        //         })
+        //         .error(function(data, status) {
+        //             $scope.errors = data.errors;
+        //             if(status == 401) {
+        //                 urlUtils.redirectHome();
+        //             }
+        //         });
+        //     }   
+        // };
+        _.extend(ctrl, {
+            districts: districts,
+            locationTypes: locationTypes,
+            district: district,
+            locationType: locationType,
+            outlet: outlet,
+            name: outlet.name,
+            longitude: "" + outlet.loc.lon,
+            latitude: "" + outlet.loc.lat,
+            submit: submit
+        });
+        console.log("Controller: ", ctrl);
+
 
     }
 
     ng.module("location.edit", [])
         .factory("LocationUpdateService", ["$http", LocationUpdateService])
-        .controller("LocationEditController", ["$scope", "$state", "urlUtils", "LocationUpdateService", LocationEditController]);
+        .controller("LocationEditController", ["$scope", "$stateParams", "urlUtils", "LocationUpdateService", "outlet", LocationEditController]);
         
 
 }(angular));

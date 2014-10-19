@@ -19,7 +19,19 @@
             .state("locations.edit", {
                 url: '/edit/:locationId',
                 templateUrl: '/locations/edit.html',
-                controlelr: "LocationEditController"
+                controller: "LocationEditController",
+                controllerAs: "ctrl",
+                resolve: {
+                    outlet: ["$stateParams", "LocationUpdateService", function locationResolver($stateParams, LocationUpdateService){
+                        return LocationUpdateService.fetch($stateParams.locationId)
+                            .then(function fetchLocation(obj) {
+                                var outlet =  obj.data.location;
+                                outlet.loc.lat = outlet.loc.coordinates[1];
+                                outlet.loc.lon = outlet.loc.coordinates[0];
+                                return outlet;
+                             });
+                        }]
+                    }               
             })
             .state("locations.summary", {
                 url: "/:locationId/summary",

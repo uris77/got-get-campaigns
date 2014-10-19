@@ -11,7 +11,6 @@
                 <th>Lubes Available</th>
                 <th>Gigi</th>
                 <th ng-if="location.locationType == 'Hotspot' || location.locationType == 'Non-Traditional'"></th>
-                <th/>
             </thead>
             <tbody>
                 <tr ng-repeat="survey in surveys">
@@ -38,9 +37,7 @@
                     <td ng-if="location.locationType == 'Hotspot' || location.locationType == 'Non-Traditional'">
                         <button class="btn btn-default" ng-click="showMore(survey)">More</button>
                     </td>
-                    <td>
-                        <a ui-sref="locations.edit({ locationId: location.id })">Edit</a>
-                    </td>
+                    
                 </tr>
             </tbody>
         </table>

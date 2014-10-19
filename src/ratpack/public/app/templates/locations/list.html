@@ -22,6 +22,7 @@
 				<th>Longitude</th>
 				<th>Latitude</th>
 				<th />
+				<th />
 			</thead>
 			<tbody>
 				<tr ng-repeat="location in locations">
@@ -33,6 +34,9 @@
 					<td>
 						<a ui-sref="locations.summary({ locationId: location.id })">Details</a>
 					</td>
+					<td>
+                        <a ui-sref="locations.edit({ locationId: location.id })">Edit</a>
+                    </td>
 				</tr>
 			</tbody>
 		</table>

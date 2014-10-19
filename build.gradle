@@ -75,10 +75,19 @@ project(":assets"){
         dest = file("../src/ratpack/public/app/pasmo-min.js")
     }
 
+    task copyTemplates(type: Copy) {
+        from 'js/app/templates'
+        into '../src/ratpack/public/app/templates'
+    }
+
     watch {
         assets {
             files files("js/app")
             tasks "compressJs"
+        }
+        templates {
+            files files("js/app/templates")
+            tasks "copyTemplates"
         }
     }
 }
@@ -100,6 +109,6 @@ run {
         e.printStackTrace()
     }
     if(System.getProperty("RATPACK_ENVIRONMENT") != "PRODUCTION") {
-        dependsOn "assets:compressJs"
+        dependsOn "assets:compressJs", "assets:copyTemplates"
     }
 }
