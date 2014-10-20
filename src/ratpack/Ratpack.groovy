@@ -4,6 +4,7 @@ import org.pasmo.auth.CurrentUser
 import org.pac4j.oauth.client.Google2Client
 import org.pasmo.locations.LocationCrudModule
 import org.pasmo.locations.LocationHandlers
+import org.pasmo.locations.messagebus.module.LocationEventBusModule
 import org.pasmo.persistence.MongoDBClientModule
 import org.pasmo.repositories.UserRepository
 import org.pasmo.repositories.entities.UserEntity
@@ -36,6 +37,7 @@ ratpack {
         add new Pac4jModule<>(google2Client, new AuthPathAuthorizer())
 
         add new DatabaseClientModule()
+        add new LocationEventBusModule()
         add new SurveyGatewayModule()
         add new SurveyCrudModule()
         add new LocationCrudModule()

@@ -9,10 +9,10 @@ import javax.inject.Inject
 
 class OutletSurveysHandler extends GroovyChainAction {
     private final OutletSurveys outletSurveys
-    private final OutletSurveyCrud outletSurveyCrud
+    private final OutletSurveyMongoCrud outletSurveyCrud
 
     @Inject
-    OutletSurveysHandler(OutletSurveys outletSurveys, OutletSurveyCrud outletSurveyCrud) {
+    OutletSurveysHandler(OutletSurveys outletSurveys, OutletSurveyMongoCrud outletSurveyCrud) {
         this.outletSurveys = outletSurveys
         this.outletSurveyCrud = outletSurveyCrud
     }

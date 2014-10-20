@@ -40,6 +40,7 @@ dependencies {
     compile "com.allanbank:mongodb-async-driver:2.0.0"
 
     testCompile "org.spockframework:spock-core:0.7-groovy-2.0"
+    testRuntime "org.objenesis:objenesis:1.2"
 }
 
 task stage{

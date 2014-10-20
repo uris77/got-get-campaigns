@@ -6,8 +6,10 @@ import com.mongodb.DBCursor
 import com.mongodb.DBObject
 import com.mongodb.util.JSON
 import org.bson.types.ObjectId
+import org.pasmo.locations.messagebus.LocationMessagePublisher
+import org.pasmo.locations.messagebus.LocationTrackEvent
 import org.pasmo.persistence.MongoDBClient
-import org.pasmo.surveys.outlets.OutletSurveyCrud
+import org.pasmo.surveys.outlets.OutletSurveyMongoCrud
 
 import javax.inject.Inject
 
@@ -15,13 +17,13 @@ class LocationCrudService {
     private final String COLLECTION_NAME = "pasmo_locations"
     private final MongoDBClient mongoDBClient
     private final DBCollection mongoCollection
-    private final OutletSurveyCrud outletSurveyCrud
+    private final LocationMessagePublisher publisher
 
     @Inject
-    LocationCrudService(MongoDBClient mongoDBClient, OutletSurveyCrud outletSurveyCrud) {
+    LocationCrudService(MongoDBClient mongoDBClient, LocationMessagePublisher publisher) {
         this.mongoDBClient = mongoDBClient
         this.mongoCollection = mongoDBClient.getCollection(COLLECTION_NAME)
-        this.outletSurveyCrud = outletSurveyCrud
+        this.publisher = publisher
     }
 
     LocationEntity create(String json, String userName) {
@@ -58,7 +60,10 @@ class LocationCrudService {
             }
         }
         mongoCollection.update(queryDoc, new BasicDBObject(new BasicDBObject('$set',updateDoc)))
-        LocationEntity.create(updateDoc)
+        LocationEntity locationEntity = LocationEntity.create(updateDoc)
+        LocationTrackEvent locationTrackEvent = new LocationTrackEvent(locationEntity, LocationTrackEvent.ACTION.UPDATE)
+        publisher.notifyChange(locationTrackEvent)
+        locationEntity
     }
 
     List<LocationEntity> findAll() {
