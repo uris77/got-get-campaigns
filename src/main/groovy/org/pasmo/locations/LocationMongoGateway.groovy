@@ -34,8 +34,6 @@ class LocationMongoGateway implements LocationGateway {
     @Override
     List<OutletSurvey> findSurveys(String locationId) {
         List<OutletSurvey> surveys = []
-        //DBObject locationDoc = mongoCollection.findOne(new BasicDBObject("_id", new ObjectId(locationId)))
-        //DBCollection surveyCollection = getSurveyCollection(locationDoc.get("locationType").toString())
         DBCollection surveyCollection = mongoDBClient.getCollection(SURVEYS_COLLECTION)
         DBCursor cursor = surveyCollection.find(new BasicDBObject("location.id", new ObjectId(locationId)))
         try {
