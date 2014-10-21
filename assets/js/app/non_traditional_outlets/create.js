@@ -2,7 +2,7 @@
 
     function CreateController ($scope, $state, $stateParams, urlUtils, NonTraditionalSurveyGatewayService) {
         $scope.outlet_types = [
-            {name: "Restaurant"}, {name: "Pharmacy"}
+            {name: "Restaurant"}, {name: "Barber Shop"}, {name: "Other"}
         ];
 
         NonTraditionalSurveyGatewayService.fetchOutlets()
