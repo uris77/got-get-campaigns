@@ -10,7 +10,6 @@ class OutletSurveyModule extends AbstractModule {
     protected void configure() {
         bind(OutletSurveyCrud.class).to(OutletSurveyMongoCrud.class).in(Scopes.SINGLETON)
         bind(OutletSurveys.class).to(OutletSurveysMongoImpl.class).in(Scopes.SINGLETON)
-        bind(SurveyLocationSubscriber.class).in(Scopes.SINGLETON)
-
+        //bind(SurveyLocationSubscriber.class).in(Scopes.SINGLETON)
     }
 }

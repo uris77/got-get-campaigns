@@ -70,10 +70,10 @@ class OutletSurveyMongoCrud implements OutletSurveyCrud {
 
     public void updateLocationInSurveys(LocationEntity locationEntity) {
         BasicDBObject updateDoc = new BasicDBObject()
-        updateDoc.append("name", locationEntity.name)
-            .append("district", locationEntity.district)
-            .append("locationType", locationEntity.locationType)
-            .append("loc", locationEntity.loc)
+        updateDoc.append("location.name", locationEntity.name)
+            .append("location.district", locationEntity.district)
+            .append("location.locationType", locationEntity.locationType)
+            .append("location.loc", locationEntity.loc)
         updateLocation(locationEntity._id, updateDoc)
     }
 

@@ -60,10 +60,15 @@ class LocationCrudService {
             }
         }
         mongoCollection.update(queryDoc, new BasicDBObject(new BasicDBObject('$set',updateDoc)))
-        LocationEntity locationEntity = LocationEntity.create(updateDoc)
+        LocationEntity locationEntity = findById(locationId)
         LocationTrackEvent locationTrackEvent = new LocationTrackEvent(locationEntity, LocationTrackEvent.ACTION.UPDATE)
         publisher.notifyChange(locationTrackEvent)
         locationEntity
+    }
+
+    LocationEntity findById(String id) {
+        BasicDBObject queryDoc = new BasicDBObject("_id", new ObjectId(id))
+        LocationEntity.create(mongoCollection.findOne(queryDoc))
     }
 
     List<LocationEntity> findAll() {

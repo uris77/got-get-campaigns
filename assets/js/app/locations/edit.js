@@ -29,7 +29,7 @@
         var self = this;
         return {
             update: function(locationId, params) {
-                return $http.update("/api/locations/" + locationId, params);
+                return $http.put("/api/locations/" + locationId, params);
             },
             fetch: function(locationId) {
                 return $http.get("/api/locations/" + locationId);
@@ -37,24 +37,9 @@
         };  
     }
 
-    function submit() {
-        console.log("Submitting: ", this);
-        var params = {
-            name: this.outlet.name,
-            district: this.district ? this.district.name : undefined,
-            locationType: this.locationType ? this.locationType.name : undefined,
-            loc: {lon: this.longitude, lat: this.latitude}
-        };
-        var errors = validateLocationForm(this);
-        console.log("ERRORS: ", errors);
-        if(errors.length > 0) {
-            this.errors = errors;
-        } else {
-            console.log("UPDATE location with params: ", params);
-        }
-    }
+    
 
-    function LocationEditController ($scope, $stateParams, urlUtils, LocationUpdateService, outlet) {
+    function LocationEditController ($scope, $stateParams, $state, urlUtils, LocationUpdateService, outlet) {
         var ctrl = this;
 
         var districts = [
@@ -70,29 +55,32 @@
         var locationType = _.findWhere(locationTypes, {name: outlet.locationType});
         var district = _.findWhere(districts, {name: outlet.district});
 
-        // $scope.submit = function () {
-        //     var params = {
-        //         name: $scope.name,
-        //         district: $scope.district ? $scope.district.name : undefined,
-        //         locationType: $scope.locationType ? $scope.locationType.name : undefined,
-        //         loc: {lon: $scope.longitude, lat: $scope.latitude}
-        //     };
-        //     var errors = validateLocationForm(params);
-        //     if(errors.length > 0) {
-        //         $scope.errors = errors;
-        //     } else {
-        //         LocationCreateService.create(params)
-        //         .success(function() {
-        //             $state.transitionTo("locations.list")
-        //         })
-        //         .error(function(data, status) {
-        //             $scope.errors = data.errors;
-        //             if(status == 401) {
-        //                 urlUtils.redirectHome();
-        //             }
-        //         });
-        //     }   
-        // };
+        function submit() {
+            console.log("Submitting: ", ctrl);
+            var params = {
+                name: ctrl.name,
+                district: ctrl.district ? ctrl.district.name : undefined,
+                locationType: ctrl.locationType ? ctrl.locationType.name : undefined,
+                loc: {lon: ctrl.longitude, lat: ctrl.latitude}
+            };
+            var errors = validateLocationForm(ctrl);
+            console.log("ERRORS: ", errors);
+            if(errors.length > 0) {
+                ctrl.errors = errors;
+            } else {
+                LocationUpdateService.update(outlet.id, params)
+                    .success(function() {
+                        $state.transitionTo("locations.list");
+                    })
+                    .error(function(data, status) {
+                        $scope.errors = data.errors;
+                        if(status == 401) {
+                            urlUtils.redirectHome();
+                        }
+                    });
+            }
+        }
+        
         _.extend(ctrl, {
             districts: districts,
             locationTypes: locationTypes,
@@ -111,7 +99,7 @@
 
     ng.module("location.edit", [])
         .factory("LocationUpdateService", ["$http", LocationUpdateService])
-        .controller("LocationEditController", ["$scope", "$stateParams", "urlUtils", "LocationUpdateService", "outlet", LocationEditController]);
+        .controller("LocationEditController", ["$scope", "$stateParams", "$state", "urlUtils", "LocationUpdateService", "outlet", LocationEditController]);
         
 
 }(angular));

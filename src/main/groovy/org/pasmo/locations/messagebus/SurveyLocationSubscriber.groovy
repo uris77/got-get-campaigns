@@ -5,12 +5,12 @@ import com.google.common.eventbus.AsyncEventBus
 import com.google.common.eventbus.Subscribe
 import org.pasmo.surveys.outlets.OutletSurveyCrud
 
-import javax.inject.Inject
+//import javax.inject.Inject
 
 class SurveyLocationSubscriber implements LocationMessageSubscriber {
     OutletSurveyCrud outletSurveyCrud
 
-    @Inject
+    //@Inject
     public SurveyLocationSubscriber(AsyncEventBus eventBus, OutletSurveyCrud outletSurveyCrud) {
         this.outletSurveyCrud = outletSurveyCrud
         eventBus.register(this)

@@ -1,14 +1,17 @@
+import com.google.common.eventbus.AsyncEventBus
 import org.pasmo.DatabaseClientModule
 import org.pasmo.auth.AuthPathAuthorizer
 import org.pasmo.auth.CurrentUser
 import org.pac4j.oauth.client.Google2Client
 import org.pasmo.locations.LocationCrudModule
 import org.pasmo.locations.LocationHandlers
+import org.pasmo.locations.messagebus.SurveyLocationSubscriber
 import org.pasmo.locations.messagebus.module.LocationEventBusModule
 import org.pasmo.persistence.MongoDBClientModule
 import org.pasmo.repositories.UserRepository
 import org.pasmo.repositories.entities.UserEntity
 import org.pasmo.surveys.SurveyChainHandler
+import org.pasmo.surveys.outlets.OutletSurveyCrud
 import org.pasmo.surveys.outlets.OutletSurveyModule
 import org.pasmo.surveys.outlets.OutletSurveysHandler
 import org.pasmo.surveys.SurveyCrudModule
@@ -42,6 +45,10 @@ ratpack {
         add new SurveyCrudModule()
         add new LocationCrudModule()
         add new OutletSurveyModule()
+
+        init {AsyncEventBus eventBus, OutletSurveyCrud outletSurveyCrud ->
+            new SurveyLocationSubscriber(eventBus, outletSurveyCrud)
+        }
     }
 
     handlers {
