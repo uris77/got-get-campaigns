@@ -56,7 +56,6 @@
         var district = _.findWhere(districts, {name: outlet.district});
 
         function submit() {
-            console.log("Submitting: ", ctrl);
             var params = {
                 name: ctrl.name,
                 district: ctrl.district ? ctrl.district.name : undefined,
@@ -92,9 +91,6 @@
             latitude: "" + outlet.loc.lat,
             submit: submit
         });
-        console.log("Controller: ", ctrl);
-
-
     }
 
     ng.module("location.edit", [])
