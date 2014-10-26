@@ -74,6 +74,7 @@ project(":assets"){
         dependsOn concatJs
         source = "./compiled/pasmo.js"
         dest = file("../src/ratpack/public/app/pasmo-min.js")
+        closure.compilerOptions = [languageIn: "ECMASCRIPT5"]
     }
 
     task copyTemplates(type: Copy) {
@@ -84,7 +85,7 @@ project(":assets"){
     watch {
         assets {
             files files("js/app")
-            tasks "compressJs"
+            tasks "compressJs", "copyTemplates"
         }
         templates {
             files files("js/app/templates")

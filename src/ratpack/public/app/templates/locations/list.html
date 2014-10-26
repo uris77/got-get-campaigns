@@ -23,6 +23,7 @@
 				<th>Latitude</th>
 				<th />
 				<th />
+                <th />
 			</thead>
 			<tbody>
 				<tr ng-repeat="location in locations">
@@ -36,6 +37,9 @@
 					</td>
 					<td>
                         <a ui-sref="locations.edit({ locationId: location.id })">Edit</a>
+                    </td>
+                    <td>
+                        <button class="btn btn-danger" ng-click="remove(location)">Delete</button>
                     </td>
 				</tr>
 			</tbody>

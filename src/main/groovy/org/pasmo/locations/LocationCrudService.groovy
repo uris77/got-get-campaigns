@@ -84,4 +84,8 @@ class LocationCrudService {
         }
         locations
     }
+
+    public void delete(String locationId) {
+        mongoCollection.remove(new BasicDBObject("_id", new ObjectId(locationId)))
+    }
 }

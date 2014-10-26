@@ -13,12 +13,17 @@
             },
             search: function(locationName) {
                 return $http.get(apiUrls.locations.list + "/search?locationName="+locationName);
+            },
+            remove: function(locationId) {
+                return $http.delete(apiUrls.locations.list + "/" + locationId);
             }
         };
     }
 
+
     function LocationListController ($scope, urlUtils, LocationListService) {
-        LocationListService.list()
+        $scope.getList = function () {
+            LocationListService.list()
             .success(function (data) {
                 $scope.locations = data;
             })
@@ -28,6 +33,9 @@
                     urlUtils.redirectHome();
                 }
             });
+        };
+
+        $scope.getList();
 
         $scope.search = function(locationName) {
             LocationListService.search(locationName)
@@ -40,6 +48,14 @@
                         urlUtils.redirectHome();
                     }
                 });
+        };
+
+        $scope.remove = function(location) {
+            console.log("You are about to delete " + location.name + "! Do you want to continue?");
+            if(confirm("You are about to delete " + location.name + "! Do you want to continue?")) {
+                LocationListService.remove(location.id);
+                $scope.locations = _.filter($scope.locations, function(it) { return it.id != location.id; });
+            }
         };
     }
 

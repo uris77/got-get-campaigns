@@ -91,6 +91,21 @@ class LocationHandlers implements Action<Chain> {
                             render Jackson.json([status: "Unauthorized"])
                         }
                     }
+
+                    delete { CurrentUser currentUser ->
+                        if(currentUser.isLoggedIn()) {
+                            blocking {
+                                if(pathTokens.locationId) {
+                                    locationCrudService.delete(pathTokens.locationId)
+                                }
+                            } then {
+                                render Jackson.json([message: "Location Deleted!"])
+                            }
+                        } else {
+                            response.status(401)
+                            render Jackson.json([status: "Unauthorized"])
+                        }
+                    }
                 }
             }
 
