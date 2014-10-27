@@ -51,7 +51,6 @@
         };
 
         $scope.remove = function(location) {
-            console.log("You are about to delete " + location.name + "! Do you want to continue?");
             if(confirm("You are about to delete " + location.name + "! Do you want to continue?")) {
                 LocationListService.remove(location.id);
                 $scope.locations = _.filter($scope.locations, function(it) { return it.id != location.id; });
