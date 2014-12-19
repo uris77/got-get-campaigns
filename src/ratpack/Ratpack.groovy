@@ -3,6 +3,7 @@ import org.pasmo.DatabaseClientModule
 import org.pasmo.auth.AuthPathAuthorizer
 import org.pasmo.auth.CurrentUser
 import org.pac4j.oauth.client.Google2Client
+import org.pasmo.errors.UnauthorizedHandler
 import org.pasmo.locations.LocationCrudModule
 import org.pasmo.locations.LocationHandlers
 import org.pasmo.locations.messagebus.SurveyLocationSubscriber
@@ -49,6 +50,7 @@ ratpack {
         init {AsyncEventBus eventBus, OutletSurveyCrud outletSurveyCrud ->
             new SurveyLocationSubscriber(eventBus, outletSurveyCrud)
         }
+
     }
 
     handlers {
@@ -58,8 +60,15 @@ ratpack {
             request.register(currentUser)
             next()
         }
-        prefix("admin") {
 
+        prefix("admin") {
+            handler { CurrentUser currentUser ->
+                if(currentUser.isLoggedIn()) {
+                    next()
+                } else {
+                    redirect(401, "unauthorized")
+                }
+            }
 
             get("logout"){
                 SessionStorage sessionStorage = request.get(SessionStorage)
@@ -89,6 +98,13 @@ ratpack {
         }
 
         prefix("api") {
+            handler { CurrentUser currentUser ->
+                if(currentUser.isLoggedIn()) {
+                    next()
+                } else {
+                    redirect(401, "unauthorized")
+                }
+            }
 
             get("my_details") { CurrentUser currentUser, UserRepository repository ->
                 String email = currentUser.getEmail()
@@ -108,6 +124,10 @@ ratpack {
             prefix("outletSurveys") {
                 handler chain(registry.get(OutletSurveysHandler))
             }
+        }
+
+        get("unauthorized") {
+            render json([status: "Unauthorized"])
         }
 
         get { SessionStorage sessionStorage ->

@@ -25,18 +25,13 @@ class SurveyByIdHandler extends GroovyHandler {
         context.with {
             byMethod {
                 get { CurrentUser currentUser ->
-                    if(currentUser.isLoggedIn()) {
-                        SurveyEntity survey = surveyGateway.findById(pathTokens.id)
-                        def locations = []
-                        LOCATION_TYPES.each { String locationType ->
-                            def surveyed = surveyGateway.countBySurveyAndLocationType(survey, locationType)
-                            locations << [name: locationType, totalLocations: locationGateway.countByType(locationType), surveyed: surveyed]
-                        }
-                        render json([survey: survey.toMap(), locations: locations])
-                    } else {
-                        response.status(401)
-                        render json([status: "Unauthorized"])
+                    SurveyEntity survey = surveyGateway.findById(pathTokens.id)
+                    def locations = []
+                    LOCATION_TYPES.each { String locationType ->
+                        def surveyed = surveyGateway.countBySurveyAndLocationType(survey, locationType)
+                        locations << [name: locationType, totalLocations: locationGateway.countByType(locationType), surveyed: surveyed]
                     }
+                    render json([survey: survey.toMap(), locations: locations])
                 }
             }
         }

@@ -17,6 +17,7 @@ class SurveyLocationSubscriber implements LocationMessageSubscriber {
     @Subscribe
     @AllowConcurrentEvents
     void handleMessage(LocationTrackEvent locationTrackEvent) {
+        outletSurveyCrud.updateLocationInSurveys(locationTrackEvent.location)
         switch(locationTrackEvent.action) {
             case LocationTrackEvent.ACTION.UPDATE:
                 outletSurveyCrud.updateLocationInSurveys(locationTrackEvent.location)
