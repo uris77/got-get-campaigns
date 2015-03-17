@@ -14,6 +14,7 @@ class OutletSurvey {
     boolean gigi
     Map<String, Boolean> targetPopulations
     Map<String, Boolean> outreach
+    String notes
 
     static OutletSurvey create(DBObject doc) {
         new OutletSurvey(
@@ -25,7 +26,8 @@ class OutletSurvey {
                 gigi: doc.get("gigi") as Boolean,
                 targetPopulations: doc.get("targetPopulations") as Map,
                 outreach: doc.get("outreach") as Map,
-                locationType: doc.get("locationType").toString() ?: "N/A"
+                locationType: doc.get("locationType").toString() ?: "N/A",
+                notes: doc.get("notes") ?: ""
         )
     }
 }

@@ -11,8 +11,8 @@
 				templateUrl: "/surveys/traditional_outlets/list.html",
 				controller: "TraditionalOutletSurveyListController"
 			}).
-			state("surveys.editTraditionalOutlet", {
-				url: "/surveys/:survey_id/traditional_outlet/:traditional_outlet_survey_id",
+			state("editTraditionalOutlet", {
+				url: "/:survey_id/traditional_outlet/:traditional_outlet_survey_id/edit",
 				templateUrl: "/surveys/traditional_outlets/edit.html",
 				controller: "TraditionalOutletSurveyEditController"
 			});

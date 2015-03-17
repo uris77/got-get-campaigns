@@ -16,6 +16,7 @@ class NonTraditionalOutletSurveyEntity {
     String locationName
     String district
     Map<String, String> survey
+    String notes
 
     static NonTraditionalOutletSurveyEntity create(DBObject doc) {
         new NonTraditionalOutletSurveyEntity(
@@ -32,7 +33,8 @@ class NonTraditionalOutletSurveyEntity {
                         month: doc.get("survey").month
                 ],
                 locationName: doc.get("location").name,
-                district: doc.get("location").district
+                district: doc.get("location").district,
+                notes: doc.get("notes") ?: ""
         )
     }
 }

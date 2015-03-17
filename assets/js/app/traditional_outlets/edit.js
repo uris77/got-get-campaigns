@@ -21,7 +21,8 @@
             var params = {
                 condomsAvailable: _.isBoolean($scope.survey.condomsAvailable) ? $scope.survey.condomsAvailable : false,
                 lubesAvailable: _.isBoolean($scope.survey.lubesAvailable) ? $scope.survey.lubesAvailable : false,
-                gigi: _.isBoolean($scope.survey.gigi) ? $scope.survey.gigi : false
+                gigi: _.isBoolean($scope.survey.gigi) ? $scope.survey.gigi : false,
+                notes: $scope.survey.notes
             };
             TraditionalOutletGatewayService.updateSurvey($stateParams.traditional_outlet_survey_id, params)
                 .success(function(data) {

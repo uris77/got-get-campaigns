@@ -47,7 +47,8 @@
                         name: $scope.location.name,
                         district: $scope.location.district,
                         loc: $scope.location.loc
-                    }
+                    },
+                    notes: $scope.notes
                 };
                 NonTraditionalSurveyGatewayService.createSurvey($stateParams.id, params)
                     .success( function(data){

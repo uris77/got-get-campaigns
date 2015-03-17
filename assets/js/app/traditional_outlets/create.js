@@ -27,7 +27,8 @@
                     name: $scope.location.name,
                     district: $scope.location.district,
                     loc: $scope.location.loc
-                }
+                },
+                notes: $scope.notes
             };
             TraditionalOutletGatewayService.createTraditonalOutlet($stateParams.id, params)
                 .success(function(data) {
